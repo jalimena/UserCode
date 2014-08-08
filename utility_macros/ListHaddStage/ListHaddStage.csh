@@ -1,5 +1,5 @@
 #!/bin/tcsh
-source /uscms/home/alimena/jalimena/utility_macros/ListHaddStage/hosts.csh
+source hosts.csh
 
 #make a directory for everything
 #argument is: dataset name (like SingleMu_Run2012A)
