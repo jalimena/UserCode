@@ -5,6 +5,8 @@ process.load("Analyzers.TriggerAnalyzers.meanTimerAnalyzer_cfi")
 process.load("FWCore.MessageService.MessageLogger_cfi")
 process.load('Configuration.StandardSequences.FrontierConditions_GlobalTag_cff')
 
+#process.Tracer = cms.Service("Tracer")
+
 process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(-1) )
 #process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(10) )
 
@@ -21,12 +23,13 @@ if 'GlobalTag' in process.__dict__:
 
 process.source = cms.Source("PoolSource",
     fileNames = cms.untracked.vstring(
-        'file:/afs/cern.ch/work/j/jalimena/CMSSW_7_2_0_pre7/src/HLTrigger/Configuration/test/outputA_mchamp500_womeantimer.root'
+        'file:/afs/cern.ch/work/j/jalimena/CMSSW_7_2_0_pre7/src/HLTrigger/Configuration/test/outputA_DisplacedStops_meantimer.root'
     )
 )
 
 process.TFileService = cms.Service( "TFileService",
-                                    fileName = cms.string( 'histosMeanTimerAnalyzer_mchamp500_womeantimer.root' )
+                                    fileName = cms.string( 'histosMeanTimerAnalyzer_DisplacedStops_meantimer.root' )
+                                    #fileName = cms.string( 'TEST.root' )
                                     )
 
 

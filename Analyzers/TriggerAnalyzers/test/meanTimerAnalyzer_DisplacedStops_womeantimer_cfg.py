@@ -21,12 +21,12 @@ if 'GlobalTag' in process.__dict__:
 
 process.source = cms.Source("PoolSource",
     fileNames = cms.untracked.vstring(
-        'file:/afs/cern.ch/work/j/jalimena/CMSSW_7_2_0_pre7/src/HLTrigger/Configuration/test/outputA_mchamp500_womeantimer.root'
+        'file:/afs/cern.ch/work/j/jalimena/CMSSW_7_2_0_pre7/src/HLTrigger/Configuration/test/outputA_DisplacedStops_womeantimer.root'
     )
 )
 
 process.TFileService = cms.Service( "TFileService",
-                                    fileName = cms.string( 'histosMeanTimerAnalyzer_mchamp500_womeantimer.root' )
+                                    fileName = cms.string( 'histosMeanTimerAnalyzer_DisplacedStops_womeantimer.root' )
                                     )
 
 
