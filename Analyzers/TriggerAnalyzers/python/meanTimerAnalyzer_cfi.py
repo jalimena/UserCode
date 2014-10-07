@@ -11,7 +11,7 @@ demo = cms.EDAnalyzer('HLTMeanTimerAnalyzer',
                       hltFilterTag_DiMuonGlb30Trk11 = cms.untracked.InputTag("hltDiMuonGlb30Trk11DzFiltered0p2","","TEST"),
                       hltFilterTag_DiMuonGlb17Glb8Iso = cms.untracked.InputTag("hltDiMuonGlb17Glb8DzFiltered0p2RelTrkIsoFiltered0p4","","TEST"),
                       hltFilterTag_DiMuonGlb17Trk8Iso = cms.untracked.InputTag("hltDiMuonGlb17Trk8DzFiltered0p2RelTrkIsoFiltered0p4","","TEST"),
-                      hltFilterTag_DiMuonL3NoFilters33 = cms.untracked.InputTag("hltL3fDimuonL1f0L2NVf10L3NoFiltersNoVtxFiltered33 ","","TEST"),
+                      hltFilterTag_DiMuonL3NoFilters33 = cms.untracked.InputTag("hltL3fDimuonL1f0L2NVf10L3NoFiltersNoVtxFiltered33","","TEST"),
                       hltFilterTag_L2MuNoBptx20 = cms.untracked.InputTag("hltL2fL1sMu6NotBptxORL1f0L2Filtered20Sta3","","TEST"),
                       hltFilterTag_L2DoubleMu28 = cms.untracked.InputTag("hltL2DoubleMu28NoVertexL2Filtered2ChaAngle2p5Mass10","","TEST")                      
                       )
