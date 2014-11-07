@@ -10,7 +10,7 @@ process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(-1) )
 
 if 'GlobalTag' in process.__dict__:
     from Configuration.AlCa.GlobalTag_condDBv2 import GlobalTag as customiseGlobalTag
-    process.GlobalTag = customiseGlobalTag(process.GlobalTag, globaltag = 'auto:run2_mc_GRun')
+    process.GlobalTag = customiseGlobalTag(process.GlobalTag, globaltag = 'MCRUN2_72_V1A')
     process.GlobalTag.connect   = 'frontier://FrontierProd/CMS_CONDITIONS'
     process.GlobalTag.pfnPrefix = cms.untracked.string('frontier://FrontierProd/')
     for pset in process.GlobalTag.toGet.value():
@@ -21,7 +21,7 @@ if 'GlobalTag' in process.__dict__:
 
 process.source = cms.Source("PoolSource",
     fileNames = cms.untracked.vstring(
-        'file:/afs/cern.ch/work/j/jalimena/CMSSW_7_2_0_pre7/src/HLTrigger/Configuration/test/outputA_mchamp500_womeantimer.root'
+        'file:/afs/cern.ch/work/j/jalimena/CMSSW_7_2_1_patch1/src/HLTrigger/Configuration/test/outputA_mchamp500_womeantimer.root'
     )
 )
 

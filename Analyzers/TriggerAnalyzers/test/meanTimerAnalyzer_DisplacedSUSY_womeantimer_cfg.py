@@ -5,6 +5,9 @@ process.load("Analyzers.TriggerAnalyzers.meanTimerAnalyzer_cfi")
 process.load("FWCore.MessageService.MessageLogger_cfi")
 process.load('Configuration.StandardSequences.FrontierConditions_GlobalTag_cff')
 
+process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(-1) )
+#process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(10) )
+
 if 'GlobalTag' in process.__dict__:
     from Configuration.AlCa.GlobalTag_condDBv2 import GlobalTag as customiseGlobalTag
     process.GlobalTag = customiseGlobalTag(process.GlobalTag, globaltag = 'MCRUN2_72_V1A')
@@ -16,17 +19,14 @@ if 'GlobalTag' in process.__dict__:
     process.GlobalTag.ReconnectEachRun = cms.untracked.bool( False )
 
 
-process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(-1) )
-#process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(10) )
-
 process.source = cms.Source("PoolSource",
     fileNames = cms.untracked.vstring(
-
+        'file:/afs/cern.ch/work/j/jalimena/CMSSW_7_2_1_patch1/src/HLTrigger/Configuration/test/outputA_DisplacedSUSY_womeantimer.root'
     )
 )
 
 process.TFileService = cms.Service( "TFileService",
-                                    fileName = cms.string( 'histosMeanTimerAnalyzer_QCD_50to80_womeantimer.root' )
+                                    fileName = cms.string( 'histosMeanTimerAnalyzer_DisplacedSUSY_womeantimer.root' )
                                     )
 
 

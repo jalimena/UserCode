@@ -5,14 +5,9 @@ process.load("Analyzers.TriggerAnalyzers.meanTimerAnalyzer_cfi")
 process.load("FWCore.MessageService.MessageLogger_cfi")
 process.load('Configuration.StandardSequences.FrontierConditions_GlobalTag_cff')
 
-#process.Tracer = cms.Service("Tracer")
-
-process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(-1) )
-#process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(10) )
-
 if 'GlobalTag' in process.__dict__:
     from Configuration.AlCa.GlobalTag_condDBv2 import GlobalTag as customiseGlobalTag
-    process.GlobalTag = customiseGlobalTag(process.GlobalTag, globaltag = 'auto:run2_mc_GRun')
+    process.GlobalTag = customiseGlobalTag(process.GlobalTag, globaltag = 'MCRUN2_72_V1A')
     process.GlobalTag.connect   = 'frontier://FrontierProd/CMS_CONDITIONS'
     process.GlobalTag.pfnPrefix = cms.untracked.string('frontier://FrontierProd/')
     for pset in process.GlobalTag.toGet.value():
@@ -21,15 +16,18 @@ if 'GlobalTag' in process.__dict__:
     process.GlobalTag.ReconnectEachRun = cms.untracked.bool( False )
 
 
+process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(-1) )
+#process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(10) )
+
+process.options   = cms.untracked.PSet( wantSummary = cms.untracked.bool(True) )
+
 process.source = cms.Source("PoolSource",
     fileNames = cms.untracked.vstring(
-        'file:/afs/cern.ch/work/j/jalimena/CMSSW_7_2_0_pre7/src/HLTrigger/Configuration/test/outputA_DisplacedStops_meantimer.root'
     )
 )
 
 process.TFileService = cms.Service( "TFileService",
-                                    fileName = cms.string( 'histosMeanTimerAnalyzer_DisplacedStops_meantimer.root' )
-                                    #fileName = cms.string( 'TEST.root' )
+                                    fileName = cms.string( 'histosMeanTimerAnalyzer_HToLL_womeantimer.root' )
                                     )
 
 
