@@ -3,7 +3,7 @@ import FWCore.ParameterSet.Config as cms
 demo = cms.EDAnalyzer('HLTMeanTimerAnalyzer',
                       hltResultsTag = cms.untracked.InputTag("TriggerResults","","TEST"),
                       hltEventTag = cms.untracked.InputTag("hltTriggerSummaryAOD","","TEST"),
-                      hltFilterTag_L3Mu40 = cms.untracked.InputTag("hltL3fL1sMu16L1f0L2f16QL3Filtered40Q","","TEST"),
+                      hltFilterTag_L3Mu40 = cms.untracked.InputTag("hltL3fL1sMu16orMu25L1f0L2f16QL3Filtered40Q","","TEST"),
                       hltFilterTag_L3Mu24Iso = cms.untracked.InputTag("hltL3crIsoL1sMu16L1f0L2f16QL3f24QL3crIsoRhoFiltered0p15IterTrk02","","TEST"),
                       hltFilterTag_L3TrkMu24Iso = cms.untracked.InputTag("hltL3fL1sMu16L1f0TkFiltered24QL3crIsoRhoFiltered0p15IterTrk02","","TEST"),
                       hltFilterTag_DiMuonGlb17Glb8 = cms.untracked.InputTag("hltDiMuonGlb17Glb8DzFiltered0p2","","TEST"),

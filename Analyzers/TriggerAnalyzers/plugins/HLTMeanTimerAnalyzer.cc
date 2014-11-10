@@ -123,7 +123,7 @@ HLTMeanTimerAnalyzer::HLTMeanTimerAnalyzer(const edm::ParameterSet& iConfig):
   hltEventTag_(iConfig.getUntrackedParameter<edm::InputTag>("hltEventTag",edm::InputTag("hltTriggerSummaryAOD","","HLT"))),
   //hltEventToken_(consumes<trigger::TriggerEvent>(hltEventTag_)),
 
-  hltFilterTag_L3Mu40_(iConfig.getUntrackedParameter<edm::InputTag>("hltFilterTag_L3Mu40",edm::InputTag("hltL3fL1sMu16L1f0L2f16QL3Filtered40Q","","HLT"))),
+  hltFilterTag_L3Mu40_(iConfig.getUntrackedParameter<edm::InputTag>("hltFilterTag_L3Mu40",edm::InputTag("hltL3fL1sMu16orMu25L1f0L2f16QL3Filtered40Q","","HLT"))),
   hltFilterTag_L3Mu24Iso_(iConfig.getUntrackedParameter<edm::InputTag>("hltFilterTag_L3Mu24Iso",edm::InputTag("hltL3crIsoL1sMu16L1f0L2f16QL3f24QL3crIsoRhoFiltered0p15IterTrk02","","HLT"))),
   hltFilterTag_L3TrkMu24Iso_(iConfig.getUntrackedParameter<edm::InputTag>("hltFilterTag_L3TrkMu24Iso",edm::InputTag("hltL3fL1sMu16L1f0TkFiltered24QL3crIsoRhoFiltered0p15IterTrk02","","HLT"))),
   hltFilterTag_DiMuonGlb17Glb8_(iConfig.getUntrackedParameter<edm::InputTag>("hltFilterTag_DiMuonGlb17Glb8",edm::InputTag("hltDiMuonGlb17Glb8DzFiltered0p2","","HLT"))),
