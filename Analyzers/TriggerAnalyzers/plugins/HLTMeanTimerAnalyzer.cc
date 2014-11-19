@@ -86,7 +86,9 @@ private:
   int triggerBit_DoubleMu23NoFiltersNoVtxDisplaced;
   int triggerBit_L2DoubleMu28_NoVertex_2Cha_Angle2p5_Mass10;
   int triggerBit_L2Mu20_NoVertex_3Sta_NoBPTX3BX_NoHalo;
- 
+  int triggerBit_Mu38NoFiltersNoVtx_Photon38_CaloIdL;
+  int triggerBit_Mu28NoFiltersNoVtxDisplaced_Photon28_CaloIdL;
+
   edm::InputTag hltResultsTag_;
   //edm::EDGetTokenT<edm::TriggerResults> hltResultsToken_;
   edm::InputTag hltEventTag_;
@@ -103,6 +105,8 @@ private:
   edm::InputTag hltFilterTag_DiMuonL3NoFilters23Displaced_;
   edm::InputTag hltFilterTag_L2DoubleMu28_;
   edm::InputTag hltFilterTag_L2MuNoBptx20_;
+  edm::InputTag hltFilterTag_Mu38NoVtx_Photon38_;
+  edm::InputTag hltFilterTag_Mu28NoVtxDisplaced_Photon28_;
 
 };
 
@@ -134,7 +138,9 @@ HLTMeanTimerAnalyzer::HLTMeanTimerAnalyzer(const edm::ParameterSet& iConfig):
   hltFilterTag_DiMuonL3NoFilters33_(iConfig.getUntrackedParameter<edm::InputTag>("hltFilterTag_DiMuonL3NoFilters33",edm::InputTag("hltL3fDimuonL1f0L2NVf10L3NoFiltersNoVtxFiltered33","","HLT"))),
   hltFilterTag_DiMuonL3NoFilters23Displaced_(iConfig.getUntrackedParameter<edm::InputTag>("hltFilterTag_DiMuonL3NoFilters23Displaced",edm::InputTag("hltL3fDimuonL1f0L2NVf10L3NoFiltersNoVtxDisplacedFiltered23","","HLT"))),
   hltFilterTag_L2DoubleMu28_(iConfig.getUntrackedParameter<edm::InputTag>("hltFilterTag_L2DoubleMu28",edm::InputTag("hltL2DoubleMu28NoVertexL2Filtered2ChaAngle2p5Mass10","","HLT"))),
-  hltFilterTag_L2MuNoBptx20_(iConfig.getUntrackedParameter<edm::InputTag>("hltFilterTag_L2MuNoBptx20",edm::InputTag("hltL2fL1sMu6NotBptxORL1f0L2Filtered20Sta3","","HLT")))
+  hltFilterTag_L2MuNoBptx20_(iConfig.getUntrackedParameter<edm::InputTag>("hltFilterTag_L2MuNoBptx20",edm::InputTag("hltL2fL1sMu6NotBptxORL1f0L2Filtered20Sta3","","HLT"))),
+  hltFilterTag_Mu38NoVtx_Photon38_(iConfig.getUntrackedParameter<edm::InputTag>("hltFilterTag_Mu38NoVtx_Photon38",edm::InputTag("hltMu38NoFiltersNoVtxPhoton38CaloIdLHEFilter","","HLT"))),
+  hltFilterTag_Mu28NoVtxDisplaced_Photon28_(iConfig.getUntrackedParameter<edm::InputTag>("hltFilterTag_Mu38NoVtx_Photon38",edm::InputTag("hltMu28NoFiltersNoVtxDisplacedPhoton28CaloIdLHEFilter","","HLT")))
 
 {
    //now do what ever initialization is needed
@@ -191,6 +197,9 @@ HLTMeanTimerAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& i
      triggerBit_DoubleMu23NoFiltersNoVtxDisplaced = -1;
      triggerBit_L2DoubleMu28_NoVertex_2Cha_Angle2p5_Mass10 = -1;
      triggerBit_L2Mu20_NoVertex_3Sta_NoBPTX3BX_NoHalo = -1;
+     triggerBit_Mu38NoFiltersNoVtx_Photon38_CaloIdL = -1;
+     triggerBit_Mu28NoFiltersNoVtxDisplaced_Photon28_CaloIdL = -1;
+
      
      for (size_t j = 0; j < hltConfig.triggerNames().size(); j++) {
        if (TString(hltConfig.triggerNames()[j]).Contains("HLT_Mu40")) triggerBit_Mu40 = j;
@@ -205,6 +214,9 @@ HLTMeanTimerAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& i
        if (TString(hltConfig.triggerNames()[j]).Contains("HLT_DoubleMu23NoFiltersNoVtxDisplaced")) triggerBit_DoubleMu23NoFiltersNoVtxDisplaced = j;
        if (TString(hltConfig.triggerNames()[j]).Contains("HLT_L2DoubleMu28_NoVertex_2Cha_Angle2p5_Mass10")) triggerBit_L2DoubleMu28_NoVertex_2Cha_Angle2p5_Mass10 = j;
        if (TString(hltConfig.triggerNames()[j]).Contains("HLT_L2Mu20_NoVertex_3Sta_NoBPTX3BX_NoHalo")) triggerBit_L2Mu20_NoVertex_3Sta_NoBPTX3BX_NoHalo = j;
+       if (TString(hltConfig.triggerNames()[j]).Contains("HLT_Mu38NoFiltersNoVtx_Photon38_CaloIdL")) triggerBit_Mu38NoFiltersNoVtx_Photon38_CaloIdL = j;
+       if (TString(hltConfig.triggerNames()[j]).Contains("HLT_Mu28NoFiltersNoVtxDisplaced_Photon28_CaloIdL")) triggerBit_Mu28NoFiltersNoVtxDisplaced_Photon28_CaloIdL = j;
+
      }
      if (triggerBit_Mu40 == -1) cout << "HLT path Mu40 not found" << endl;
      if (triggerBit_IsoMu24_IterTrk02 == -1) cout << "HLT path IsoMu24_IterTrk02 not found" << endl;
@@ -218,6 +230,8 @@ HLTMeanTimerAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& i
      if (triggerBit_DoubleMu23NoFiltersNoVtxDisplaced == -1) cout << "HLT path DoubleMu23NoFiltersNoVtxDisplaced not found" << endl;
      if (triggerBit_L2DoubleMu28_NoVertex_2Cha_Angle2p5_Mass10 == -1) cout << "HLT path L2DoubleMu28_NoVertex_2Cha_Angle2p5_Mass10 not found" << endl;
      if (triggerBit_L2Mu20_NoVertex_3Sta_NoBPTX3BX_NoHalo == -1) cout << "HLT path L2Mu20_NoVertex_3Sta_NoBPTX3BX_NoHalo not found" << endl;
+     if (triggerBit_Mu38NoFiltersNoVtx_Photon38_CaloIdL == -1) cout << "HLT path Mu38NoFiltersNoVtx_Photon38_CaloIdL not found" << endl;
+     if (triggerBit_Mu28NoFiltersNoVtxDisplaced_Photon28_CaloIdL == -1) cout << "HLT path Mu28NoFiltersNoVtxDisplaced_Photon28_CaloIdL not found" << endl;
    }
 
    cout<<"triggerBit_Mu40 is: "<<triggerBit_Mu40<<endl;
@@ -232,6 +246,8 @@ HLTMeanTimerAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& i
    cout<<"triggerBit_DoubleMu23NoFiltersNoVtxDisplaced is: "<<triggerBit_DoubleMu23NoFiltersNoVtxDisplaced<<endl;
    cout<<"triggerBit_L2DoubleMu28_NoVertex_2Cha_Angle2p5_Mass10 is: "<<triggerBit_L2DoubleMu28_NoVertex_2Cha_Angle2p5_Mass10<<endl<<endl;
    cout<<"triggerBit_L2Mu20_NoVertex_3Sta_NoBPTX3BX_NoHalo is: "<<triggerBit_L2Mu20_NoVertex_3Sta_NoBPTX3BX_NoHalo<<endl;
+   cout<<"triggerBit_Mu38NoFiltersNoVtx_Photon38_CaloId is: "<<triggerBit_Mu38NoFiltersNoVtx_Photon38_CaloIdL<<endl;
+   cout<<"triggerBit_Mu28NoFiltersNoVtxDisplaced_Photon28_CaloId is: "<<triggerBit_Mu28NoFiltersNoVtxDisplaced_Photon28_CaloIdL<<endl;
 
    //find last run trigger filters and if accepted by the trigger bit, fill histos
    if (trgEvent.isValid()) {
@@ -251,6 +267,8 @@ HLTMeanTimerAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& i
      const unsigned int filterIndexDiMuonL3NoFilters23Displaced (trgEvent->filterIndex(hltFilterTag_DiMuonL3NoFilters23Displaced_) );
      const unsigned int filterIndexL2DoubleMu28 (trgEvent->filterIndex(hltFilterTag_L2DoubleMu28_) );
      const unsigned int filterIndexL2MuNoBptx20 (trgEvent->filterIndex(hltFilterTag_L2MuNoBptx20_) );
+     const unsigned int filterIndexMu38NoVtxPhoton38 (trgEvent->filterIndex(hltFilterTag_Mu38NoVtx_Photon38_) );
+     const unsigned int filterIndexMu28NoVtxDisplacedPhoton28 (trgEvent->filterIndex(hltFilterTag_Mu28NoVtxDisplaced_Photon28_) );
 
      cout<<"trgEvent->sizeFilters is: "<<trgEvent->sizeFilters()<<endl;
      cout<<"filterIndexL3Mu40 is: "<<filterIndexL3Mu40<<endl;
@@ -265,6 +283,8 @@ HLTMeanTimerAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& i
      cout<<"filterIndexDiMuonL3NoFilters23Displaced is: "<<filterIndexDiMuonL3NoFilters23Displaced<<endl;
      cout<<"filterIndexL2DoubleMu28 is: "<<filterIndexL2DoubleMu28<<endl<<endl;
      cout<<"filterIndexL2MuNoBptx20 is: "<<filterIndexL2MuNoBptx20<<endl;
+     cout<<"filterIndexMu38NoVtxPhoton38 is: "<<filterIndexMu38NoVtxPhoton38<<endl;
+     cout<<"filterIndexMu28NoVtxDisplacedPhoton28 is: "<<filterIndexMu28NoVtxDisplacedPhoton28<<endl;
 
 
      if (triggerResults->accept(triggerBit_Mu40)) {
@@ -521,6 +541,48 @@ HLTMeanTimerAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& i
        cout<<endl;
      }//end of pass trigger
 
+     if (triggerResults->accept(triggerBit_Mu38NoFiltersNoVtx_Photon38_CaloIdL)) {
+       cout<<"passed Mu38NoFiltersNoVtx_Photon38_CaloIdL"<<endl;
+       if (filterIndexMu38NoVtxPhoton38 < trgEvent->sizeFilters()) {
+	 const trigger::Keys& keys( trgEvent->filterKeys(filterIndexMu38NoVtxPhoton38) );
+	 cout << "Found " << keys.size() << " HLT muons from Mu38NoVtxPhoton38" << endl;
+	 histos1D_[ "nMuons_Mu38NoFiltersNoVtx_Photon38_CaloIdL" ]->Fill(keys.size());
+	 
+	 double pt0;
+	 double eta0;
+	 double phi0;
+	 triggerObjects(pt0, eta0, phi0, keys, TOC);
+	 
+	 //fill histos with leading trig obj info
+	 histos1D_[ "ptMuon_Mu38NoFiltersNoVtx_Photon38_CaloIdL" ]->Fill(pt0);
+	 histos1D_[ "etaMuon_Mu38NoFiltersNoVtx_Photon38_CaloIdL" ]->Fill(eta0);
+	 histos1D_[ "phiMuon_Mu38NoFiltersNoVtx_Photon38_CaloIdL" ]->Fill(phi0);
+	 
+       }//end of index< sizeFilters
+       cout<<endl;
+     }//end of pass trigger
+
+     if (triggerResults->accept(triggerBit_Mu28NoFiltersNoVtxDisplaced_Photon28_CaloIdL)) {
+       cout<<"passed Mu28NoFiltersNoVtxDisplaced_Photon28_CaloIdL"<<endl;
+       if (filterIndexMu28NoVtxDisplacedPhoton28 < trgEvent->sizeFilters()) {
+	 const trigger::Keys& keys( trgEvent->filterKeys(filterIndexMu28NoVtxDisplacedPhoton28) );
+	 cout << "Found " << keys.size() << " HLT muons from Mu28NoVtxDisplacedPhoton28" << endl;
+	 histos1D_[ "nMuons_Mu28NoFiltersNoVtxDisplaced_Photon28_CaloIdL" ]->Fill(keys.size());
+	 
+	 double pt0;
+	 double eta0;
+	 double phi0;
+	 triggerObjects(pt0, eta0, phi0, keys, TOC);
+	 
+	 //fill histos with leading trig obj info
+	 histos1D_[ "ptMuon_Mu28NoFiltersNoVtxDisplaced_Photon28_CaloIdL" ]->Fill(pt0);
+	 histos1D_[ "etaMuon_Mu28NoFiltersNoVtxDisplaced_Photon28_CaloIdL" ]->Fill(eta0);
+	 histos1D_[ "phiMuon_Mu28NoFiltersNoVtxDisplaced_Photon28_CaloIdL" ]->Fill(phi0);
+	 
+       }//end of index< sizeFilters
+       cout<<endl;
+     }//end of pass trigger
+
    }//end of if trgEvent valid
 }//end of analyze()
 
@@ -562,6 +624,8 @@ HLTMeanTimerAnalyzer::beginJob()
   histos1D_[ "nMuons_DoubleMu23NoFiltersNoVtxDisplaced" ] = fileService->make< TH1D >( "nMuons_DoubleMu23NoFiltersNoVtxDisplaced", "Number of muons", 10, 0., 10);
   histos1D_[ "nMuons_L2DoubleMu28_NoVertex_2Cha_Angle2p5_Mass10" ] = fileService->make< TH1D >( "nMuons_L2DoubleMu28_NoVertex_2Cha_Angle2p5_Mass10", "Number of muons", 10, 0., 10);
   histos1D_[ "nMuons_L2Mu20_NoVertex_3Sta_NoBPTX3BX_NoHalo" ] = fileService->make< TH1D >( "nMuons_L2Mu20_NoVertex_3Sta_NoBPTX3BX_NoHalo", "Number of muons", 10, 0., 10);
+  histos1D_[ "nMuons_Mu38NoFiltersNoVtx_Photon38_CaloIdL" ] = fileService->make< TH1D >( "nMuons_Mu38NoFiltersNoVtx_Photon38_CaloIdL", "Number of muons", 10, 0., 10);
+  histos1D_[ "nMuons_Mu28NoFiltersNoVtxDisplaced_Photon28_CaloIdL" ] = fileService->make< TH1D >( "nMuons_Mu28NoFiltersNoVtxDisplaced_Photon28_CaloIdL", "Number of muons", 10, 0., 10);
 
   histos1D_[ "nMuons_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL" ]->SetXTitle( "Number of HLT Muons" );
   histos1D_[ "nMuons_DoubleMu33NoFiltersNoVtx" ]->SetXTitle( "Number of HLT Muons" );
@@ -575,6 +639,8 @@ HLTMeanTimerAnalyzer::beginJob()
   histos1D_[ "nMuons_IsoMu24_IterTrk02" ]->SetXTitle( "Number of HLT Muons" );
   histos1D_[ "nMuons_IsoTkMu24_IterTrk02" ]->SetXTitle( "Number of HLT Muons" );
   histos1D_[ "nMuons_Mu40" ]->SetXTitle( "Number of HLT Muons" );
+  histos1D_[ "nMuons_Mu38NoFiltersNoVtx_Photon38_CaloIdL" ]->SetXTitle( "Number of HLT Muons" );
+  histos1D_[ "nMuons_Mu28NoFiltersNoVtxDisplaced_Photon28_CaloIdL" ]->SetXTitle( "Number of HLT Muons" );
 
   histos1D_[ "nMuons_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL" ]->SetYTitle( "Events" );
   histos1D_[ "nMuons_DoubleMu33NoFiltersNoVtx" ]->SetYTitle( "Events" );
@@ -588,6 +654,8 @@ HLTMeanTimerAnalyzer::beginJob()
   histos1D_[ "nMuons_IsoMu24_IterTrk02" ]->SetYTitle( "Events" );
   histos1D_[ "nMuons_IsoTkMu24_IterTrk02" ]->SetYTitle( "Events" );
   histos1D_[ "nMuons_Mu40" ]->SetYTitle( "Events" );
+  histos1D_[ "nMuons_Mu38NoFiltersNoVtx_Photon38_CaloIdL" ]->SetYTitle( "Events" );
+  histos1D_[ "nMuons_Mu28NoFiltersNoVtxDisplaced_Photon28_CaloIdL" ]->SetYTitle( "Events" );
 
   histos1D_[ "ptMuon_Mu40" ] = fileService->make< TH1D >( "ptMuon_Mu40", "HLT Muon pt", 100, 0., 1000);
   histos1D_[ "ptMuon_IsoMu24_IterTrk02" ] = fileService->make< TH1D >( "ptMuon_IsoMu24_IterTrk02", "HLT Muon pt", 100, 0., 1000);
@@ -601,6 +669,8 @@ HLTMeanTimerAnalyzer::beginJob()
   histos1D_[ "ptMuon_DoubleMu23NoFiltersNoVtxDisplaced" ] = fileService->make< TH1D >( "ptMuon_DoubleMu23NoFiltersNoVtxDisplaced", "HLT Muon pt", 100, 0., 1000);
   histos1D_[ "ptMuon_L2DoubleMu28_NoVertex_2Cha_Angle2p5_Mass10" ] = fileService->make< TH1D >( "ptMuon_L2DoubleMu28_NoVertex_2Cha_Angle2p5_Mass10", "HLT Muon pt", 100, 0., 1000);
   histos1D_[ "ptMuon_L2Mu20_NoVertex_3Sta_NoBPTX3BX_NoHalo" ] = fileService->make< TH1D >( "ptMuon_L2Mu20_NoVertex_3Sta_NoBPTX3BX_NoHalo", "HLT Muon pt", 100, 0., 1000);
+  histos1D_[ "ptMuon_Mu38NoFiltersNoVtx_Photon38_CaloIdL" ] = fileService->make< TH1D >( "ptMuon_Mu38NoFiltersNoVtx_Photon38_CaloIdL", "HLT Muon pt", 100, 0., 1000);
+  histos1D_[ "ptMuon_Mu28NoFiltersNoVtxDisplaced_Photon28_CaloIdL" ] = fileService->make< TH1D >( "ptMuon_Mu28NoFiltersNoVtxDisplaced_Photon28_CaloIdL", "HLT Muon pt", 100, 0., 1000);
 
   histos1D_[ "ptMuon_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL" ]->SetXTitle( "HLT Muon p_{T} [GeV]" );
   histos1D_[ "ptMuon_DoubleMu33NoFiltersNoVtx" ]->SetXTitle( "HLT Muon p_{T} [GeV]" );
@@ -614,6 +684,8 @@ HLTMeanTimerAnalyzer::beginJob()
   histos1D_[ "ptMuon_IsoMu24_IterTrk02" ]->SetXTitle( "HLT Muon p_{T} [GeV]" );
   histos1D_[ "ptMuon_IsoTkMu24_IterTrk02" ]->SetXTitle( "HLT Muon p_{T} [GeV]" );
   histos1D_[ "ptMuon_Mu40" ]->SetXTitle( "HLT Muon p_{T} [GeV]" );
+  histos1D_[ "ptMuon_Mu38NoFiltersNoVtx_Photon38_CaloIdL" ]->SetXTitle( "HLT Muon p_{T} [GeV]" );
+  histos1D_[ "ptMuon_Mu28NoFiltersNoVtxDisplaced_Photon28_CaloIdL" ]->SetXTitle( "HLT Muon p_{T} [GeV]" );
 
   histos1D_[ "ptMuon_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL" ]->SetYTitle( "Events" );
   histos1D_[ "ptMuon_DoubleMu33NoFiltersNoVtx" ]->SetYTitle( "Events" );
@@ -627,6 +699,8 @@ HLTMeanTimerAnalyzer::beginJob()
   histos1D_[ "ptMuon_IsoMu24_IterTrk02" ]->SetYTitle( "Events" );
   histos1D_[ "ptMuon_IsoTkMu24_IterTrk02" ]->SetYTitle( "Events" );
   histos1D_[ "ptMuon_Mu40" ]->SetYTitle( "Events" );
+  histos1D_[ "ptMuon_Mu38NoFiltersNoVtx_Photon38_CaloIdL" ]->SetYTitle( "Events" );
+  histos1D_[ "ptMuon_Mu28NoFiltersNoVtxDisplaced_Photon28_CaloIdL" ]->SetYTitle( "Events" );
 
   histos1D_[ "etaMuon_Mu40" ] = fileService->make< TH1D >( "etaMuon_Mu40", "HLT Muon eta", 120,-6,6);
   histos1D_[ "etaMuon_IsoMu24_IterTrk02" ] = fileService->make< TH1D >( "etaMuon_IsoMu24_IterTrk02", "HLT Muon eta", 120,-6,6);
@@ -640,6 +714,8 @@ HLTMeanTimerAnalyzer::beginJob()
   histos1D_[ "etaMuon_DoubleMu23NoFiltersNoVtxDisplaced" ] = fileService->make< TH1D >( "etaMuon_DoubleMu23NoFiltersNoVtxDisplaced", "HLT Muon eta", 120,-6,6);
   histos1D_[ "etaMuon_L2DoubleMu28_NoVertex_2Cha_Angle2p5_Mass10" ] = fileService->make< TH1D >( "etaMuon_L2DoubleMu28_NoVertex_2Cha_Angle2p5_Mass10", "HLT Muon eta", 120,-6,6);
   histos1D_[ "etaMuon_L2Mu20_NoVertex_3Sta_NoBPTX3BX_NoHalo" ] = fileService->make< TH1D >( "etaMuon_L2Mu20_NoVertex_3Sta_NoBPTX3BX_NoHalo", "HLT Muon eta", 120,-6,6);
+  histos1D_[ "etaMuon_Mu38NoFiltersNoVtx_Photon38_CaloIdL" ] = fileService->make< TH1D >( "etaMuon_Mu38NoFiltersNoVtx_Photon38_CaloIdL", "HLT Muon eta", 120,-6,6);
+  histos1D_[ "etaMuon_Mu28NoFiltersNoVtxDisplaced_Photon28_CaloIdL" ] = fileService->make< TH1D >( "etaMuon_Mu28NoFiltersNoVtxDisplaced_Photon28_CaloIdL", "HLT Muon eta", 120,-6,6);
 
   histos1D_[ "etaMuon_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL" ]->SetXTitle( "HLT Muon #eta" );
   histos1D_[ "etaMuon_DoubleMu33NoFiltersNoVtx" ]->SetXTitle( "HLT Muon #eta" );
@@ -653,6 +729,8 @@ HLTMeanTimerAnalyzer::beginJob()
   histos1D_[ "etaMuon_IsoMu24_IterTrk02" ]->SetXTitle( "HLT Muon #eta" );
   histos1D_[ "etaMuon_IsoTkMu24_IterTrk02" ]->SetXTitle( "HLT Muon #eta" );
   histos1D_[ "etaMuon_Mu40" ]->SetXTitle( "HLT Muon #eta" );
+  histos1D_[ "etaMuon_Mu38NoFiltersNoVtx_Photon38_CaloIdL" ]->SetXTitle( "HLT Muon #eta" );
+  histos1D_[ "etaMuon_Mu28NoFiltersNoVtxDisplaced_Photon28_CaloIdL" ]->SetXTitle( "HLT Muon #eta" );
 
   histos1D_[ "etaMuon_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL" ]->SetYTitle( "Events" );
   histos1D_[ "etaMuon_DoubleMu33NoFiltersNoVtx" ]->SetYTitle( "Events" );
@@ -666,6 +744,8 @@ HLTMeanTimerAnalyzer::beginJob()
   histos1D_[ "etaMuon_IsoMu24_IterTrk02" ]->SetYTitle( "Events" );
   histos1D_[ "etaMuon_IsoTkMu24_IterTrk02" ]->SetYTitle( "Events" );
   histos1D_[ "etaMuon_Mu40" ]->SetYTitle( "Events" );
+  histos1D_[ "etaMuon_Mu38NoFiltersNoVtx_Photon38_CaloIdL" ]->SetYTitle( "Events" );
+  histos1D_[ "etaMuon_Mu28NoFiltersNoVtxDisplaced_Photon28_CaloIdL" ]->SetYTitle( "Events" );
 
   histos1D_[ "phiMuon_Mu40" ] = fileService->make< TH1D >( "phiMuon_Mu40", "HLT Muon phi", 64,-3.2,3.2);
   histos1D_[ "phiMuon_IsoMu24_IterTrk02" ] = fileService->make< TH1D >( "phiMuon_IsoMu24_IterTrk02", "HLT Muon phi", 64,-3.2,3.2);
@@ -679,6 +759,8 @@ HLTMeanTimerAnalyzer::beginJob()
   histos1D_[ "phiMuon_DoubleMu23NoFiltersNoVtxDisplaced" ] = fileService->make< TH1D >( "phiMuon_DoubleMu23NoFiltersNoVtxDisplaced", "HLT Muon phi", 64,-3.2,3.2);
   histos1D_[ "phiMuon_L2DoubleMu28_NoVertex_2Cha_Angle2p5_Mass10" ] = fileService->make< TH1D >( "phiMuon_L2DoubleMu28_NoVertex_2Cha_Angle2p5_Mass10", "HLT Muon phi", 64,-3.2,3.2);
   histos1D_[ "phiMuon_L2Mu20_NoVertex_3Sta_NoBPTX3BX_NoHalo" ] = fileService->make< TH1D >( "phiMuon_L2Mu20_NoVertex_3Sta_NoBPTX3BX_NoHalo", "HLT Muon phi", 64,-3.2,3.2);
+  histos1D_[ "phiMuon_Mu38NoFiltersNoVtx_Photon38_CaloIdL" ] = fileService->make< TH1D >( "phiMuon_Mu38NoFiltersNoVtx_Photon38_CaloIdL", "HLT Muon phi", 64,-3.2,3.2);
+  histos1D_[ "phiMuon_Mu28NoFiltersNoVtxDisplaced_Photon28_CaloIdL" ] = fileService->make< TH1D >( "phiMuon_Mu28NoFiltersNoVtxDisplaced_Photon28_CaloIdL", "HLT Muon phi", 64,-3.2,3.2);
 
   histos1D_[ "phiMuon_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL" ]->SetXTitle( "HLT Muon #phi" );
   histos1D_[ "phiMuon_DoubleMu33NoFiltersNoVtx" ]->SetXTitle( "HLT Muon #phi" );
@@ -692,6 +774,8 @@ HLTMeanTimerAnalyzer::beginJob()
   histos1D_[ "phiMuon_IsoMu24_IterTrk02" ]->SetXTitle( "HLT Muon #phi" );
   histos1D_[ "phiMuon_IsoTkMu24_IterTrk02" ]->SetXTitle( "HLT Muon #phi" );
   histos1D_[ "phiMuon_Mu40" ]->SetXTitle( "HLT Muon #phi" );
+  histos1D_[ "phiMuon_Mu38NoFiltersNoVtx_Photon38_CaloIdL" ]->SetXTitle( "HLT Muon #phi" );
+  histos1D_[ "phiMuon_Mu28NoFiltersNoVtxDisplaced_Photon28_CaloIdL" ]->SetXTitle( "HLT Muon #phi" );
 
   histos1D_[ "phiMuon_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL" ]->SetYTitle( "Events" );
   histos1D_[ "phiMuon_DoubleMu33NoFiltersNoVtx" ]->SetYTitle( "Events" );
@@ -705,6 +789,8 @@ HLTMeanTimerAnalyzer::beginJob()
   histos1D_[ "phiMuon_IsoMu24_IterTrk02" ]->SetYTitle( "Events" );
   histos1D_[ "phiMuon_IsoTkMu24_IterTrk02" ]->SetYTitle( "Events" );
   histos1D_[ "phiMuon_Mu40" ]->SetYTitle( "Events" );
+  histos1D_[ "phiMuon_Mu38NoFiltersNoVtx_Photon38_CaloIdL" ]->SetYTitle( "Events" );
+  histos1D_[ "phiMuon_Mu28NoFiltersNoVtxDisplaced_Photon28_CaloIdL" ]->SetYTitle( "Events" );
 
   std::cout<<"ending beginJob!!!!"<<std::endl;
 }
