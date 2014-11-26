@@ -1,9 +1,9 @@
 // -*- C++ -*-
 //
-// Package:    TriggerAnalyzer/HLTMeanTimerAnalyzer
-// Class:      HLTMeanTimerAnalyzer
+// Package:    TriggerAnalyzer/HLTAnalyzer
+// Class:      HLTAnalyzer
 // 
-/**\class HLTMeanTimerAnalyzer HLTMeanTimerAnalyzer.cc TriggerAnalyzer/HLTMeanTimerAnalyzer/plugins/HLTMeanTimerAnalyzer.cc
+/**\class HLTAnalyzer HLTAnalyzer.cc TriggerAnalyzer/HLTAnalyzer/plugins/HLTAnalyzer.cc
 
  Description: [one line class summary]
 
@@ -51,10 +51,10 @@
 // class declaration
 //
 
-class HLTMeanTimerAnalyzer : public edm::EDAnalyzer {
+class HLTAnalyzer : public edm::EDAnalyzer {
 public:
-  explicit HLTMeanTimerAnalyzer(const edm::ParameterSet&);
-  ~HLTMeanTimerAnalyzer();
+  explicit HLTAnalyzer(const edm::ParameterSet&);
+  ~HLTAnalyzer();
   
   static void fillDescriptions(edm::ConfigurationDescriptions& descriptions);
   
@@ -122,7 +122,7 @@ private:
 //
 // constructors and destructor
 //
-HLTMeanTimerAnalyzer::HLTMeanTimerAnalyzer(const edm::ParameterSet& iConfig):
+HLTAnalyzer::HLTAnalyzer(const edm::ParameterSet& iConfig):
   hltResultsTag_(iConfig.getUntrackedParameter<edm::InputTag>("hltResultsTag",edm::InputTag("TriggerResults","","HLT"))),
   //hltResultsToken_(consumes<edm::TriggerResults>(hltResultsTag_)),
   hltEventTag_(iConfig.getUntrackedParameter<edm::InputTag>("hltEventTag",edm::InputTag("hltTriggerSummaryAOD","","HLT"))),
@@ -143,7 +143,7 @@ HLTMeanTimerAnalyzer::HLTMeanTimerAnalyzer(const edm::ParameterSet& iConfig):
   hltFilterTag_Mu38NoVtx_Photon38_(iConfig.getUntrackedParameter<edm::InputTag>("hltFilterTag_Mu38NoVtx_Photon38",edm::InputTag("hltMu38NoFiltersNoVtxPhoton38CaloIdLHEFilter","","HLT"))),
   hltFilterTag_Mu28NoVtxDisplaced_Photon28_(iConfig.getUntrackedParameter<edm::InputTag>("hltFilterTag_Mu38NoVtx_Photon38",edm::InputTag("hltMu28NoFiltersNoVtxDisplacedPhoton28CaloIdLHEFilter","","HLT"))),
 
-  BarrelOnly_(iConfig.getUntrackedParameter<bool>("BarrelOnly",bool("false")))
+  BarrelOnly_(iConfig.getUntrackedParameter<bool>("BarrelOnly",bool("False")))
 
 {
    //now do what ever initialization is needed
@@ -152,7 +152,7 @@ HLTMeanTimerAnalyzer::HLTMeanTimerAnalyzer(const edm::ParameterSet& iConfig):
 }
 
 
-HLTMeanTimerAnalyzer::~HLTMeanTimerAnalyzer()
+HLTAnalyzer::~HLTAnalyzer()
 {
  
    // do anything here that needs to be done at desctruction time
@@ -167,7 +167,7 @@ HLTMeanTimerAnalyzer::~HLTMeanTimerAnalyzer()
 
 // ------------ method called for each event  ------------
 void
-HLTMeanTimerAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
+HLTAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 {
    using namespace edm;
    using namespace std;
@@ -290,7 +290,7 @@ HLTMeanTimerAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& i
      cout<<"filterIndexMu28NoVtxDisplacedPhoton28 is: "<<filterIndexMu28NoVtxDisplacedPhoton28<<endl;
 
 
-     if (triggerResults->accept(triggerBit_Mu40)) {
+     if (triggerBit_Mu40 != -1 && triggerResults->accept(triggerBit_Mu40)) {
        cout<<"passed Mu40"<<endl;
        if (filterIndexL3Mu40 < trgEvent->sizeFilters()) {
 	 const trigger::Keys& keys( trgEvent->filterKeys(filterIndexL3Mu40) );
@@ -313,7 +313,7 @@ HLTMeanTimerAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& i
        cout<<endl;
      }//end of pass trigger
 
-     if (triggerResults->accept(triggerBit_IsoMu24_IterTrk02)) {
+     if (triggerBit_IsoMu24_IterTrk02 != -1 && triggerResults->accept(triggerBit_IsoMu24_IterTrk02)) {
        cout<<"passed IsoMu24"<<endl;
        if (filterIndexL3Mu24Iso < trgEvent->sizeFilters()) {
 	 const trigger::Keys& keys( trgEvent->filterKeys(filterIndexL3Mu24Iso) );
@@ -336,7 +336,7 @@ HLTMeanTimerAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& i
        cout<<endl;
      }//end of pass trigger
 
-     if (triggerResults->accept(triggerBit_IsoTkMu24_IterTrk02)) {
+     if (triggerBit_IsoTkMu24_IterTrk02 != -1 && triggerResults->accept(triggerBit_IsoTkMu24_IterTrk02)) {
        cout<<"passed IsoTkMu24"<<endl;
        if (filterIndexL3TrkMu24Iso < trgEvent->sizeFilters()) {
 	 const trigger::Keys& keys( trgEvent->filterKeys(filterIndexL3TrkMu24Iso) );
@@ -359,7 +359,7 @@ HLTMeanTimerAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& i
        cout<<endl;
      }//end of pass trigger
 
-     if (triggerResults->accept(triggerBit_Mu17_Mu8)) {
+     if (triggerBit_Mu17_Mu8 != -1 && triggerResults->accept(triggerBit_Mu17_Mu8)) {
        cout<<"passed Mu17_Mu8"<<endl;
        if (filterIndexDiMuonGlb17Glb8 < trgEvent->sizeFilters()) {
 	 const trigger::Keys& keys( trgEvent->filterKeys(filterIndexDiMuonGlb17Glb8) );
@@ -382,7 +382,7 @@ HLTMeanTimerAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& i
        cout<<endl;
      }//end of pass trigger
 
-     if (triggerResults->accept(triggerBit_Mu17_TkMu8)) {
+     if (triggerBit_Mu17_TkMu8 != -1 && triggerResults->accept(triggerBit_Mu17_TkMu8)) {
        cout<<"passed Mu17_TkMu8"<<endl;
        if (filterIndexDiMuonGlb17Trk8 < trgEvent->sizeFilters()) {
 	 const trigger::Keys& keys( trgEvent->filterKeys(filterIndexDiMuonGlb17Trk8) );
@@ -405,7 +405,7 @@ HLTMeanTimerAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& i
        cout<<endl;
      }//end of pass trigger
 
-     if (triggerResults->accept(triggerBit_Mu30_TkMu11)) {
+     if (triggerBit_Mu30_TkMu11 != -1 && triggerResults->accept(triggerBit_Mu30_TkMu11)) {
        cout<<"passed Mu30_TkMu11"<<endl;
        if (filterIndexDiMuonGlb30Trk11 < trgEvent->sizeFilters()) {
 	 const trigger::Keys& keys( trgEvent->filterKeys(filterIndexDiMuonGlb30Trk11) );
@@ -428,7 +428,7 @@ HLTMeanTimerAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& i
        cout<<endl;
      }//end of pass trigger
 
-     if (triggerResults->accept(triggerBit_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL)) {
+     if (triggerBit_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL != -1 && triggerResults->accept(triggerBit_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL)) {
        cout<<"passed Mu17_TkIso_Mu8_TkIso"<<endl;
        if (filterIndexDiMuonGlb17Glb8Iso < trgEvent->sizeFilters()) {
 	 const trigger::Keys& keys( trgEvent->filterKeys(filterIndexDiMuonGlb17Glb8Iso) );
@@ -451,7 +451,7 @@ HLTMeanTimerAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& i
        cout<<endl;
      }//end of pass trigger
 
-     if (triggerResults->accept(triggerBit_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL)) {
+     if (triggerBit_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL != -1 && triggerResults->accept(triggerBit_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL)) {
        cout<<"passed Mu17_TkIso_TkMu8_TrkIso"<<endl;
        if (filterIndexDiMuonGlb17Trk8Iso < trgEvent->sizeFilters()) {
 	 const trigger::Keys& keys( trgEvent->filterKeys(filterIndexDiMuonGlb17Trk8Iso) );
@@ -474,7 +474,7 @@ HLTMeanTimerAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& i
        cout<<endl;
      }//end of pass trigger
 
-     if (triggerResults->accept(triggerBit_DoubleMu33NoFiltersNoVtx)) {
+     if (triggerBit_DoubleMu33NoFiltersNoVtx != -1 && triggerResults->accept(triggerBit_DoubleMu33NoFiltersNoVtx)) {
        cout<<"passed triggerBit_DoubleMu33NoFiltersNoVtx"<<endl;
        if (filterIndexDiMuonL3NoFilters33 < trgEvent->sizeFilters()) {
 	 //cout<<"L3NoFilters33 is less than sizeFilters"<<endl;
@@ -498,7 +498,7 @@ HLTMeanTimerAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& i
        cout<<endl;
      }//end of pass trigger
 
-     if (triggerResults->accept(triggerBit_DoubleMu23NoFiltersNoVtxDisplaced)) {
+     if (triggerBit_DoubleMu23NoFiltersNoVtxDisplaced != -1 && triggerResults->accept(triggerBit_DoubleMu23NoFiltersNoVtxDisplaced)) {
        cout<<"passed triggerBit_DoubleMu23NoFiltersNoVtxDisplaced"<<endl;
        if (filterIndexDiMuonL3NoFilters23Displaced < trgEvent->sizeFilters()) {
 	 //cout<<"L3NoFilters33 is less than sizeFilters"<<endl;
@@ -522,7 +522,7 @@ HLTMeanTimerAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& i
        cout<<endl;
      }//end of pass trigger
 
-     if (triggerResults->accept(triggerBit_L2DoubleMu28_NoVertex_2Cha_Angle2p5_Mass10)) {
+     if (triggerBit_L2DoubleMu28_NoVertex_2Cha_Angle2p5_Mass10 != -1 && triggerResults->accept(triggerBit_L2DoubleMu28_NoVertex_2Cha_Angle2p5_Mass10)) {
        cout<<"passed L2DoubleMu28_NoVertex"<<endl;
        if (filterIndexL2DoubleMu28 < trgEvent->sizeFilters()) {
 	 const trigger::Keys& keys( trgEvent->filterKeys(filterIndexL2DoubleMu28) );
@@ -545,7 +545,7 @@ HLTMeanTimerAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& i
        cout<<endl;
      }//end of pass trigger
 
-     if (triggerResults->accept(triggerBit_L2Mu20_NoVertex_3Sta_NoBPTX3BX_NoHalo)) {
+     if (triggerBit_L2Mu20_NoVertex_3Sta_NoBPTX3BX_NoHalo != -1 && triggerResults->accept(triggerBit_L2Mu20_NoVertex_3Sta_NoBPTX3BX_NoHalo)) {
        cout<<"passed L2Mu20_NoBPTX"<<endl;
        if (filterIndexL2MuNoBptx20 < trgEvent->sizeFilters()) {
 	 const trigger::Keys& keys( trgEvent->filterKeys(filterIndexL2MuNoBptx20) );
@@ -568,7 +568,7 @@ HLTMeanTimerAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& i
        cout<<endl;
      }//end of pass trigger
 
-     if (triggerResults->accept(triggerBit_Mu38NoFiltersNoVtx_Photon38_CaloIdL)) {
+     if (triggerBit_Mu38NoFiltersNoVtx_Photon38_CaloIdL != -1 && triggerResults->accept(triggerBit_Mu38NoFiltersNoVtx_Photon38_CaloIdL)) {
        cout<<"passed Mu38NoFiltersNoVtx_Photon38_CaloIdL"<<endl;
        if (filterIndexMu38NoVtxPhoton38 < trgEvent->sizeFilters()) {
 	 const trigger::Keys& keys( trgEvent->filterKeys(filterIndexMu38NoVtxPhoton38) );
@@ -591,7 +591,7 @@ HLTMeanTimerAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& i
        cout<<endl;
      }//end of pass trigger
 
-     if (triggerResults->accept(triggerBit_Mu28NoFiltersNoVtxDisplaced_Photon28_CaloIdL)) {
+     if (triggerBit_Mu28NoFiltersNoVtxDisplaced_Photon28_CaloIdL != -1 && triggerResults->accept(triggerBit_Mu28NoFiltersNoVtxDisplaced_Photon28_CaloIdL)) {
        cout<<"passed Mu28NoFiltersNoVtxDisplaced_Photon28_CaloIdL"<<endl;
        if (filterIndexMu28NoVtxDisplacedPhoton28 < trgEvent->sizeFilters()) {
 	 const trigger::Keys& keys( trgEvent->filterKeys(filterIndexMu28NoVtxDisplacedPhoton28) );
@@ -618,7 +618,7 @@ HLTMeanTimerAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& i
 }//end of analyze()
 
 
-void HLTMeanTimerAnalyzer::triggerObjects(double& pt0, double& eta0, double& phi0, const trigger::Keys& keys,  const trigger::TriggerObjectCollection& TOC){
+void HLTAnalyzer::triggerObjects(double& pt0, double& eta0, double& phi0, const trigger::Keys& keys,  const trigger::TriggerObjectCollection& TOC){
   pt0 = 0.;
   eta0 = 0.;
   phi0 = 0.;
@@ -638,7 +638,7 @@ void HLTMeanTimerAnalyzer::triggerObjects(double& pt0, double& eta0, double& phi
 
 // ------------ method called once each job just before starting event loop  ------------
 void 
-HLTMeanTimerAnalyzer::beginJob()
+HLTAnalyzer::beginJob()
 {
   std::cout<<"beginJob!!!!"<<std::endl;
   edm::Service<TFileService> fileService;
@@ -828,14 +828,14 @@ HLTMeanTimerAnalyzer::beginJob()
 
 // ------------ method called once each job just after ending the event loop  ------------
 void 
-HLTMeanTimerAnalyzer::endJob() 
+HLTAnalyzer::endJob() 
 {
 }
 
 // ------------ method called when starting to processes a run  ------------
 /*
 void 
-HLTMeanTimerAnalyzer::beginRun(edm::Run const&, edm::EventSetup const&)
+HLTAnalyzer::beginRun(edm::Run const&, edm::EventSetup const&)
 {
 }
 */
@@ -843,7 +843,7 @@ HLTMeanTimerAnalyzer::beginRun(edm::Run const&, edm::EventSetup const&)
 // ------------ method called when ending the processing of a run  ------------
 /*
 void 
-HLTMeanTimerAnalyzer::endRun(edm::Run const&, edm::EventSetup const&)
+HLTAnalyzer::endRun(edm::Run const&, edm::EventSetup const&)
 {
 }
 */
@@ -851,7 +851,7 @@ HLTMeanTimerAnalyzer::endRun(edm::Run const&, edm::EventSetup const&)
 // ------------ method called when starting to processes a luminosity block  ------------
 /*
 void 
-HLTMeanTimerAnalyzer::beginLuminosityBlock(edm::LuminosityBlock const&, edm::EventSetup const&)
+HLTAnalyzer::beginLuminosityBlock(edm::LuminosityBlock const&, edm::EventSetup const&)
 {
 }
 */
@@ -859,14 +859,14 @@ HLTMeanTimerAnalyzer::beginLuminosityBlock(edm::LuminosityBlock const&, edm::Eve
 // ------------ method called when ending the processing of a luminosity block  ------------
 /*
 void 
-HLTMeanTimerAnalyzer::endLuminosityBlock(edm::LuminosityBlock const&, edm::EventSetup const&)
+HLTAnalyzer::endLuminosityBlock(edm::LuminosityBlock const&, edm::EventSetup const&)
 {
 }
 */
 
 // ------------ method fills 'descriptions' with the allowed parameters for the module  ------------
 void
-HLTMeanTimerAnalyzer::fillDescriptions(edm::ConfigurationDescriptions& descriptions) {
+HLTAnalyzer::fillDescriptions(edm::ConfigurationDescriptions& descriptions) {
   //The following says we do not know what parameters are allowed so do no validation
   // Please change this to state exactly what you do use, even if it is no parameters
   std::cout<<"starting fillDescriptions"<<std::endl;
@@ -877,4 +877,4 @@ HLTMeanTimerAnalyzer::fillDescriptions(edm::ConfigurationDescriptions& descripti
 }
 
 //define this as a plug-in
-DEFINE_FWK_MODULE(HLTMeanTimerAnalyzer);
+DEFINE_FWK_MODULE(HLTAnalyzer);

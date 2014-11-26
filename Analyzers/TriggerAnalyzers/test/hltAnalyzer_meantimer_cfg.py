@@ -1,7 +1,7 @@
 import FWCore.ParameterSet.Config as cms
 
 process = cms.Process("Demo")
-process.load("Analyzers.TriggerAnalyzers.meanTimerAnalyzer_cfi")
+process.load("Analyzers.TriggerAnalyzers.hltAnalyzer_cfi")
 process.load("FWCore.MessageService.MessageLogger_cfi")
 process.load('Configuration.StandardSequences.FrontierConditions_GlobalTag_cff')
 
@@ -16,17 +16,19 @@ if 'GlobalTag' in process.__dict__:
     process.GlobalTag.ReconnectEachRun = cms.untracked.bool( False )
 
 
+
 process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(-1) )
 #process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(10) )
 
+process.options   = cms.untracked.PSet( wantSummary = cms.untracked.bool(True) )
+
 process.source = cms.Source("PoolSource",
     fileNames = cms.untracked.vstring(
-
     )
 )
 
 process.TFileService = cms.Service( "TFileService",
-                                    fileName = cms.string( 'histosMeanTimerAnalyzer_QCD_30to50_womeantimer.root' )
+                                    fileName = cms.string( 'histosHltAnalyzer_meantimer.root' )
                                     )
 
 

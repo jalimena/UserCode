@@ -1,7 +1,7 @@
 import FWCore.ParameterSet.Config as cms
 
 process = cms.Process("Demo")
-process.load("Analyzers.TriggerAnalyzers.meanTimerAnalyzer_cfi")
+process.load("Analyzers.TriggerAnalyzers.hltAnalyzer_cfi")
 process.load("FWCore.MessageService.MessageLogger_cfi")
 process.load('Configuration.StandardSequences.FrontierConditions_GlobalTag_cff')
 
@@ -26,7 +26,7 @@ process.source = cms.Source("PoolSource",
 )
 
 process.TFileService = cms.Service( "TFileService",
-                                    fileName = cms.string( 'histosMeanTimerAnalyzer_mchamp500_womeantimer.root' )
+                                    fileName = cms.string( 'histosHltAnalyzer_mchamp500_womeantimer.root' )
                                     )
 
 

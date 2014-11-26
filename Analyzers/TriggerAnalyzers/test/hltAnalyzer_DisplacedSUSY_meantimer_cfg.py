@@ -1,9 +1,14 @@
 import FWCore.ParameterSet.Config as cms
 
 process = cms.Process("Demo")
-process.load("Analyzers.TriggerAnalyzers.meanTimerAnalyzer_cfi")
+process.load("Analyzers.TriggerAnalyzers.hltAnalyzer_cfi")
 process.load("FWCore.MessageService.MessageLogger_cfi")
 process.load('Configuration.StandardSequences.FrontierConditions_GlobalTag_cff')
+
+#process.Tracer = cms.Service("Tracer")
+
+process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(-1) )
+#process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(10) )
 
 if 'GlobalTag' in process.__dict__:
     from Configuration.AlCa.GlobalTag_condDBv2 import GlobalTag as customiseGlobalTag
@@ -16,17 +21,15 @@ if 'GlobalTag' in process.__dict__:
     process.GlobalTag.ReconnectEachRun = cms.untracked.bool( False )
 
 
-process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(-1) )
-#process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(10) )
-
 process.source = cms.Source("PoolSource",
     fileNames = cms.untracked.vstring(
-
+        'file:/afs/cern.ch/work/j/jalimena/CMSSW_7_2_1_patch1/src/HLTrigger/Configuration/test/outputA_DisplacedSUSY_meantimer.root'
     )
 )
 
 process.TFileService = cms.Service( "TFileService",
-                                    fileName = cms.string( 'histosMeanTimerAnalyzer_QCD_30to50_meantimer.root' )
+                                    fileName = cms.string( 'histosHltAnalyzer_DisplacedSUSY_meantimer.root' )
+                                    #fileName = cms.string( 'TEST.root' )
                                     )
 
 
