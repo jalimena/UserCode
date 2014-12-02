@@ -73,7 +73,7 @@ public:
 private:
   virtual void beginJob() ;
   virtual void analyze(const edm::Event&, const edm::EventSetup&);
-  virtual void triggerObjects(double&, double&, double&, const trigger::Keys&,  const trigger::TriggerObjectCollection&);
+  virtual void triggerObjects(double&, double&, double&, double&, double&, double&, const trigger::Keys&,  const trigger::TriggerObjectCollection&);
   virtual void endJob() ;
   
   //virtual void beginRun(edm::Run const&, edm::EventSetup const&) override;
@@ -120,6 +120,7 @@ private:
   edm::InputTag hltFilterTag_Mu38NoVtx_Photon38_;
   edm::InputTag hltFilterTag_Mu28NoVtxDisplaced_Photon28_;
   bool BarrelOnly_;
+  bool subLeading_;
 
 };
 
@@ -156,7 +157,8 @@ HLTAnalyzer::HLTAnalyzer(const edm::ParameterSet& iConfig):
   hltFilterTag_Mu38NoVtx_Photon38_(iConfig.getUntrackedParameter<edm::InputTag>("hltFilterTag_Mu38NoVtx_Photon38",edm::InputTag("hltMu38NoFiltersNoVtxPhoton38CaloIdLHEFilter","","HLT"))),
   hltFilterTag_Mu28NoVtxDisplaced_Photon28_(iConfig.getUntrackedParameter<edm::InputTag>("hltFilterTag_Mu38NoVtx_Photon38",edm::InputTag("hltMu28NoFiltersNoVtxDisplacedPhoton28CaloIdLHEFilter","","HLT"))),
 
-  BarrelOnly_(iConfig.getUntrackedParameter<bool>("BarrelOnly",bool("False")))
+  BarrelOnly_(iConfig.getUntrackedParameter<bool>("BarrelOnly",bool("False"))),
+  subLeading_(iConfig.getUntrackedParameter<bool>("subLeading",bool("False")))
 
 {
    //now do what ever initialization is needed
@@ -344,40 +346,62 @@ HLTAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 	 const trigger::Keys& keys( trgEvent->filterKeys(filterIndexL3Mu40) );
 	 cout << "Found " << keys.size() << " HLT muons from L3Mu40" << endl;
 	 
-	 double pt0;
-	 double eta0;
-	 double phi0;
-	 triggerObjects(pt0, eta0, phi0, keys, TOC);
+	 double pt_, pt0, pt1;
+	 double eta_, eta0, eta1;
+	 double phi_, phi0, phi1;
+	 triggerObjects(pt0, eta0, phi0, pt1, eta1, phi1, keys, TOC);	 
+
+	 if(subLeading_){
+	   pt_=pt1;
+	   eta_=eta1;
+	   phi_=phi1;
+	 }
+	 else{
+	   pt_=pt0;
+	   eta_=eta0;
+	   phi_=phi0;
+	 }
 	 
 	 //fill histos with leading trig obj info
 	 if( (BarrelOnly_ && TMath::Abs(eta0)<0.9) || (!BarrelOnly_)){
 	   histos1D_[ "nMuons_Mu40" ]->Fill(keys.size());
-	   histos1D_[ "ptMuon_Mu40" ]->Fill(pt0);
-	   histos1D_[ "etaMuon_Mu40" ]->Fill(eta0);
-	   histos1D_[ "phiMuon_Mu40" ]->Fill(phi0);
+	   histos1D_[ "ptMuon_Mu40" ]->Fill(pt_);
+	   histos1D_[ "etaMuon_Mu40" ]->Fill(eta_);
+	   histos1D_[ "phiMuon_Mu40" ]->Fill(phi_);
 	 }
 	 
        }//end of index< sizeFilters
        cout<<endl;
      }//end of pass trigger
-
+     
      if (triggerBit_IsoMu24_IterTrk02 != -1 && triggerResults->accept(triggerBit_IsoMu24_IterTrk02)) {
        cout<<"passed IsoMu24"<<endl;
        if (filterIndexL3Mu24Iso < trgEvent->sizeFilters()) {
 	 const trigger::Keys& keys( trgEvent->filterKeys(filterIndexL3Mu24Iso) );
 	 cout << "Found " << keys.size() << " HLT muons from L3Mu24Iso" << endl;
 	 
-	 double pt0;
-	 double eta0;
-	 double phi0;
-	 triggerObjects(pt0, eta0, phi0, keys, TOC);
+	 double pt_, pt0, pt1;
+	 double eta_, eta0, eta1;
+	 double phi_, phi0, phi1;
+	 triggerObjects(pt0, eta0, phi0, pt1, eta1, phi1, keys, TOC);
+
+         if(subLeading_){
+           pt_=pt1;
+           eta_=eta1;
+           phi_=phi1;
+         }
+         else{
+           pt_=pt0;
+           eta_=eta0;
+           phi_=phi0;
+         }
 	 
 	 //fill histos with leading trig obj info
 	 if( (BarrelOnly_ && TMath::Abs(eta0)<0.9) || (!BarrelOnly_)){
 	   histos1D_[ "nMuons_IsoMu24_IterTrk02" ]->Fill(keys.size());
-	   histos1D_[ "ptMuon_IsoMu24_IterTrk02" ]->Fill(pt0);
-	   histos1D_[ "etaMuon_IsoMu24_IterTrk02" ]->Fill(eta0);
-	   histos1D_[ "phiMuon_IsoMu24_IterTrk02" ]->Fill(phi0);
+	   histos1D_[ "ptMuon_IsoMu24_IterTrk02" ]->Fill(pt_);
+	   histos1D_[ "etaMuon_IsoMu24_IterTrk02" ]->Fill(eta_);
+	   histos1D_[ "phiMuon_IsoMu24_IterTrk02" ]->Fill(phi_);
 	 }
 	 
        }//end of index< sizeFilters
@@ -389,18 +413,29 @@ HLTAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
        if (filterIndexL3TrkMu24Iso < trgEvent->sizeFilters()) {
 	 const trigger::Keys& keys( trgEvent->filterKeys(filterIndexL3TrkMu24Iso) );
 	 cout << "Found " << keys.size() << " HLT muons from L3TrkMu24Iso" << endl;
-	 
-	 double pt0;
-	 double eta0;
-	 double phi0;
-	 triggerObjects(pt0, eta0, phi0, keys, TOC);
-	 
+
+	 double pt_, pt0, pt1;
+	 double eta_, eta0, eta1;
+	 double phi_, phi0, phi1;
+	 triggerObjects(pt0, eta0, phi0, pt1, eta1, phi1, keys, TOC);
+
+         if(subLeading_){
+           pt_=pt1;
+           eta_=eta1;
+           phi_=phi1;
+         }
+         else{
+           pt_=pt0;
+           eta_=eta0;
+           phi_=phi0;
+         }
+
 	 //fill histos with leading trig obj info
 	 if( (BarrelOnly_ && TMath::Abs(eta0)<0.9) || (!BarrelOnly_)){
 	   histos1D_[ "nMuons_IsoTkMu24_IterTrk02" ]->Fill(keys.size());
-	   histos1D_[ "ptMuon_IsoTkMu24_IterTrk02" ]->Fill(pt0);
-	   histos1D_[ "etaMuon_IsoTkMu24_IterTrk02" ]->Fill(eta0);
-	   histos1D_[ "phiMuon_IsoTkMu24_IterTrk02" ]->Fill(phi0);
+	   histos1D_[ "ptMuon_IsoTkMu24_IterTrk02" ]->Fill(pt_);
+	   histos1D_[ "etaMuon_IsoTkMu24_IterTrk02" ]->Fill(eta_);
+	   histos1D_[ "phiMuon_IsoTkMu24_IterTrk02" ]->Fill(phi_);
 	 }
 
        }//end of index< sizeFilters
@@ -413,17 +448,28 @@ HLTAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 	 const trigger::Keys& keys( trgEvent->filterKeys(filterIndexDiMuonGlb17Glb8) );
 	 cout << "Found " << keys.size() << " HLT muons from DiMuonGlb17Glb8" << endl;
 	 
-	 double pt0;
-	 double eta0;
-	 double phi0;
-	 triggerObjects(pt0, eta0, phi0, keys, TOC);
+         double pt_, pt0, pt1;
+         double eta_, eta0, eta1;
+         double phi_, phi0, phi1;
+         triggerObjects(pt0, eta0, phi0, pt1, eta1, phi1, keys, TOC);
 	 
+         if(subLeading_){
+           pt_=pt1;
+           eta_=eta1;
+           phi_=phi1;
+         }
+         else{
+           pt_=pt0;
+           eta_=eta0;
+           phi_=phi0;
+         }
+
 	 //fill histos with leading trig obj info
 	 if( (BarrelOnly_ && TMath::Abs(eta0)<0.9) || (!BarrelOnly_)){
 	   histos1D_[ "nMuons_Mu17_Mu8" ]->Fill(keys.size());
-	   histos1D_[ "ptMuon_Mu17_Mu8" ]->Fill(pt0);
-	   histos1D_[ "etaMuon_Mu17_Mu8" ]->Fill(eta0);
-	   histos1D_[ "phiMuon_Mu17_Mu8" ]->Fill(phi0);
+	   histos1D_[ "ptMuon_Mu17_Mu8" ]->Fill(pt_);
+	   histos1D_[ "etaMuon_Mu17_Mu8" ]->Fill(eta_);
+	   histos1D_[ "phiMuon_Mu17_Mu8" ]->Fill(phi_);
 	 }
 
        }//end of index< sizeFilters
@@ -436,17 +482,28 @@ HLTAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 	 const trigger::Keys& keys( trgEvent->filterKeys(filterIndexDiMuonGlb17Trk8) );
 	 cout << "Found " << keys.size() << " HLT muons from DiMuonGlb17Trk8" << endl;
 	 
-	 double pt0;
-	 double eta0;
-	 double phi0;
-	 triggerObjects(pt0, eta0, phi0, keys, TOC);
+         double pt_, pt0, pt1;
+         double eta_, eta0, eta1;
+         double phi_, phi0, phi1;
+         triggerObjects(pt0, eta0, phi0, pt1, eta1, phi1, keys, TOC);
 	 
+         if(subLeading_){
+           pt_=pt1;
+           eta_=eta1;
+           phi_=phi1;
+         }
+         else{
+           pt_=pt0;
+           eta_=eta0;
+           phi_=phi0;
+         }
+
 	 //fill histos with leading trig obj info
 	 if( (BarrelOnly_ && TMath::Abs(eta0)<0.9) || (!BarrelOnly_)){
 	   histos1D_[ "nMuons_Mu17_TkMu8" ]->Fill(keys.size());
-	   histos1D_[ "ptMuon_Mu17_TkMu8" ]->Fill(pt0);
-	   histos1D_[ "etaMuon_Mu17_TkMu8" ]->Fill(eta0);
-	   histos1D_[ "phiMuon_Mu17_TkMu8" ]->Fill(phi0);
+	   histos1D_[ "ptMuon_Mu17_TkMu8" ]->Fill(pt_);
+	   histos1D_[ "etaMuon_Mu17_TkMu8" ]->Fill(eta_);
+	   histos1D_[ "phiMuon_Mu17_TkMu8" ]->Fill(phi_);
 	 }
 
        }//end of index< sizeFilters
@@ -459,17 +516,28 @@ HLTAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 	 const trigger::Keys& keys( trgEvent->filterKeys(filterIndexDiMuonGlb30Trk11) );
 	 cout << "Found " << keys.size() << " HLT muons from DiMuonGlb30Trk11" << endl;
 	 
-	 double pt0;
-	 double eta0;
-	 double phi0;
-	 triggerObjects(pt0, eta0, phi0, keys, TOC);
+         double pt_, pt0, pt1;
+         double eta_, eta0, eta1;
+         double phi_, phi0, phi1;
+         triggerObjects(pt0, eta0, phi0, pt1, eta1, phi1, keys, TOC);
 	 
+         if(subLeading_){
+           pt_=pt1;
+           eta_=eta1;
+           phi_=phi1;
+         }
+         else{
+           pt_=pt0;
+           eta_=eta0;
+           phi_=phi0;
+         }
+
 	 //fill histos with leading trig obj info
 	 if( (BarrelOnly_ && TMath::Abs(eta0)<0.9) || (!BarrelOnly_)){
 	   histos1D_[ "nMuons_Mu30_TkMu11" ]->Fill(keys.size());
-	   histos1D_[ "ptMuon_Mu30_TkMu11" ]->Fill(pt0);
-	   histos1D_[ "etaMuon_Mu30_TkMu11" ]->Fill(eta0);
-	   histos1D_[ "phiMuon_Mu30_TkMu11" ]->Fill(phi0);
+	   histos1D_[ "ptMuon_Mu30_TkMu11" ]->Fill(pt_);
+	   histos1D_[ "etaMuon_Mu30_TkMu11" ]->Fill(eta_);
+	   histos1D_[ "phiMuon_Mu30_TkMu11" ]->Fill(phi_);
 	 }
 
        }//end of index< sizeFilters
@@ -482,17 +550,28 @@ HLTAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 	 const trigger::Keys& keys( trgEvent->filterKeys(filterIndexDiMuonGlb17Glb8Iso) );
 	 cout << "Found " << keys.size() << " HLT muons from DiMuonGlb17Glb8Iso" << endl;
 	 
-	 double pt0;
-	 double eta0;
-	 double phi0;
-	 triggerObjects(pt0, eta0, phi0, keys, TOC);
+         double pt_, pt0, pt1;
+         double eta_, eta0, eta1;
+         double phi_, phi0, phi1;
+         triggerObjects(pt0, eta0, phi0, pt1, eta1, phi1, keys, TOC);
 	 
+         if(subLeading_){
+           pt_=pt1;
+           eta_=eta1;
+           phi_=phi1;
+         }
+         else{
+           pt_=pt0;
+           eta_=eta0;
+           phi_=phi0;
+         }
+
 	 //fill histos with leading trig obj info
 	 if( (BarrelOnly_ && TMath::Abs(eta0)<0.9) || (!BarrelOnly_)){
 	   histos1D_[ "nMuons_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL" ]->Fill(keys.size());
-	   histos1D_[ "ptMuon_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL" ]->Fill(pt0);
-	   histos1D_[ "etaMuon_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL" ]->Fill(eta0);
-	   histos1D_[ "phiMuon_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL" ]->Fill(phi0);
+	   histos1D_[ "ptMuon_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL" ]->Fill(pt_);
+	   histos1D_[ "etaMuon_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL" ]->Fill(eta_);
+	   histos1D_[ "phiMuon_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL" ]->Fill(phi_);
 	 }
 
        }//end of index< sizeFilters
@@ -505,17 +584,28 @@ HLTAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 	 const trigger::Keys& keys( trgEvent->filterKeys(filterIndexDiMuonGlb17Trk8Iso) );
 	 cout << "Found " << keys.size() << " HLT muons from DiMuonGlb17Trk8Iso" << endl;
 	 
-	 double pt0;
-	 double eta0;
-	 double phi0;
-	 triggerObjects(pt0, eta0, phi0, keys, TOC);
+         double pt_, pt0, pt1;
+         double eta_, eta0, eta1;
+         double phi_, phi0, phi1;
+         triggerObjects(pt0, eta0, phi0, pt1, eta1, phi1, keys, TOC);
+
+         if(subLeading_){
+           pt_=pt1;
+           eta_=eta1;
+           phi_=phi1;
+         }
+         else{
+           pt_=pt0;
+           eta_=eta0;
+           phi_=phi0;
+         }
 	 
 	 //fill histos with leading trig obj info
 	 if( (BarrelOnly_ && TMath::Abs(eta0)<0.9) || (!BarrelOnly_)){
 	   histos1D_[ "nMuons_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL" ]->Fill(keys.size());
-	   histos1D_[ "ptMuon_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL" ]->Fill(pt0);
-	   histos1D_[ "etaMuon_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL" ]->Fill(eta0);
-	   histos1D_[ "phiMuon_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL" ]->Fill(phi0);
+	   histos1D_[ "ptMuon_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL" ]->Fill(pt_);
+	   histos1D_[ "etaMuon_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL" ]->Fill(eta_);
+	   histos1D_[ "phiMuon_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL" ]->Fill(phi_);
 	 }
 
        }//end of index< sizeFilters
@@ -529,17 +619,28 @@ HLTAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 	 const trigger::Keys& keys( trgEvent->filterKeys(filterIndexDiMuonL3NoFilters33) );
 	 cout << "Found " << keys.size() << " HLT muons from DiMuonL3NoFilters33" << endl;
 	 
-	 double pt0;
-	 double eta0;
-	 double phi0;
-	 triggerObjects(pt0, eta0, phi0, keys, TOC);
+         double pt_, pt0, pt1;
+         double eta_, eta0, eta1;
+         double phi_, phi0, phi1;
+         triggerObjects(pt0, eta0, phi0, pt1, eta1, phi1, keys, TOC);
 	 
+         if(subLeading_){
+           pt_=pt1;
+           eta_=eta1;
+           phi_=phi1;
+         }
+         else{
+           pt_=pt0;
+           eta_=eta0;
+           phi_=phi0;
+         }
+
 	 //fill histos with leading trig obj info
 	 if( (BarrelOnly_ && TMath::Abs(eta0)<0.9) || (!BarrelOnly_)){
 	   histos1D_[ "nMuons_DoubleMu33NoFiltersNoVtx" ]->Fill(keys.size());
-	   histos1D_[ "ptMuon_DoubleMu33NoFiltersNoVtx" ]->Fill(pt0);
-	   histos1D_[ "etaMuon_DoubleMu33NoFiltersNoVtx" ]->Fill(eta0);
-	   histos1D_[ "phiMuon_DoubleMu33NoFiltersNoVtx" ]->Fill(phi0);
+	   histos1D_[ "ptMuon_DoubleMu33NoFiltersNoVtx" ]->Fill(pt_);
+	   histos1D_[ "etaMuon_DoubleMu33NoFiltersNoVtx" ]->Fill(eta_);
+	   histos1D_[ "phiMuon_DoubleMu33NoFiltersNoVtx" ]->Fill(phi_);
 	 }
 
        }//end of index< sizeFilters
@@ -553,17 +654,28 @@ HLTAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 	 const trigger::Keys& keys( trgEvent->filterKeys(filterIndexDiMuonL3NoFilters23Displaced) );
 	 cout << "Found " << keys.size() << " HLT muons from DiMuonL3NoFilters23Displaced" << endl;
 	 
-	 double pt0;
-	 double eta0;
-	 double phi0;
-	 triggerObjects(pt0, eta0, phi0, keys, TOC);
+         double pt_, pt0, pt1;
+         double eta_, eta0, eta1;
+         double phi_, phi0, phi1;
+         triggerObjects(pt0, eta0, phi0, pt1, eta1, phi1, keys, TOC);
 	 
+         if(subLeading_){
+           pt_=pt1;
+           eta_=eta1;
+           phi_=phi1;
+         }
+         else{
+           pt_=pt0;
+           eta_=eta0;
+           phi_=phi0;
+         }
+
 	 //fill histos with leading trig obj info
 	 if( (BarrelOnly_ && TMath::Abs(eta0)<0.9) || (!BarrelOnly_)){
 	   histos1D_[ "nMuons_DoubleMu23NoFiltersNoVtxDisplaced" ]->Fill(keys.size());
-	   histos1D_[ "ptMuon_DoubleMu23NoFiltersNoVtxDisplaced" ]->Fill(pt0);
-	   histos1D_[ "etaMuon_DoubleMu23NoFiltersNoVtxDisplaced" ]->Fill(eta0);
-	   histos1D_[ "phiMuon_DoubleMu23NoFiltersNoVtxDisplaced" ]->Fill(phi0);
+	   histos1D_[ "ptMuon_DoubleMu23NoFiltersNoVtxDisplaced" ]->Fill(pt_);
+	   histos1D_[ "etaMuon_DoubleMu23NoFiltersNoVtxDisplaced" ]->Fill(eta_);
+	   histos1D_[ "phiMuon_DoubleMu23NoFiltersNoVtxDisplaced" ]->Fill(phi_);
 	 }
 
        }//end of index< sizeFilters
@@ -576,17 +688,30 @@ HLTAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 	 const trigger::Keys& keys( trgEvent->filterKeys(filterIndexL2DoubleMu28) );
 	 cout << "Found " << keys.size() << " HLT muons from L2DoubleMu28" << endl;
 	 
-	 double pt0;
-	 double eta0;
-	 double phi0;
-	 triggerObjects(pt0, eta0, phi0, keys, TOC);
+         double pt_, pt0, pt1;
+         double eta_, eta0, eta1;
+         double phi_, phi0, phi1;
+         triggerObjects(pt0, eta0, phi0, pt1, eta1, phi1, keys, TOC);
 	 
+         if(subLeading_){
+           pt_=pt1;
+           eta_=eta1;
+           phi_=phi1;
+         }
+         else{
+           pt_=pt0;
+           eta_=eta0;
+           phi_=phi0;
+         }
+
+	 cout<<"pt0 is: "<<pt0<<", pt1 is: "<<pt1<<endl;
+
 	 //fill histos with leading trig obj info
 	 if( (BarrelOnly_ && TMath::Abs(eta0)<0.9) || (!BarrelOnly_)){
 	   histos1D_[ "nMuons_L2DoubleMu28_NoVertex_2Cha_Angle2p5_Mass10" ]->Fill(keys.size());
-	   histos1D_[ "ptMuon_L2DoubleMu28_NoVertex_2Cha_Angle2p5_Mass10" ]->Fill(pt0);
-	   histos1D_[ "etaMuon_L2DoubleMu28_NoVertex_2Cha_Angle2p5_Mass10" ]->Fill(eta0);
-	   histos1D_[ "phiMuon_L2DoubleMu28_NoVertex_2Cha_Angle2p5_Mass10" ]->Fill(phi0);
+	   histos1D_[ "ptMuon_L2DoubleMu28_NoVertex_2Cha_Angle2p5_Mass10" ]->Fill(pt_);
+	   histos1D_[ "etaMuon_L2DoubleMu28_NoVertex_2Cha_Angle2p5_Mass10" ]->Fill(eta_);
+	   histos1D_[ "phiMuon_L2DoubleMu28_NoVertex_2Cha_Angle2p5_Mass10" ]->Fill(phi_);
 	 }
 
        }//end of index< sizeFilters
@@ -599,17 +724,28 @@ HLTAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 	 const trigger::Keys& keys( trgEvent->filterKeys(filterIndexL2MuNoBptx20) );
 	 cout << "Found " << keys.size() << " HLT muons from L2MuNoBptx20" << endl;
 	 
-	 double pt0;
-	 double eta0;
-	 double phi0;
-	 triggerObjects(pt0, eta0, phi0, keys, TOC);
+         double pt_, pt0, pt1;
+         double eta_, eta0, eta1;
+         double phi_, phi0, phi1;
+         triggerObjects(pt0, eta0, phi0, pt1, eta1, phi1, keys, TOC);
 	 
+         if(subLeading_){
+           pt_=pt1;
+           eta_=eta1;
+           phi_=phi1;
+         }
+         else{
+           pt_=pt0;
+           eta_=eta0;
+           phi_=phi0;
+         }
+
 	 //fill histos with leading trig obj info
 	 if( (BarrelOnly_ && TMath::Abs(eta0)<0.9) || (!BarrelOnly_)){
 	   histos1D_[ "nMuons_L2Mu20_NoVertex_3Sta_NoBPTX3BX_NoHalo" ]->Fill(keys.size());
-	   histos1D_[ "ptMuon_L2Mu20_NoVertex_3Sta_NoBPTX3BX_NoHalo" ]->Fill(pt0);
-	   histos1D_[ "etaMuon_L2Mu20_NoVertex_3Sta_NoBPTX3BX_NoHalo" ]->Fill(eta0);
-	   histos1D_[ "phiMuon_L2Mu20_NoVertex_3Sta_NoBPTX3BX_NoHalo" ]->Fill(phi0);
+	   histos1D_[ "ptMuon_L2Mu20_NoVertex_3Sta_NoBPTX3BX_NoHalo" ]->Fill(pt_);
+	   histos1D_[ "etaMuon_L2Mu20_NoVertex_3Sta_NoBPTX3BX_NoHalo" ]->Fill(eta_);
+	   histos1D_[ "phiMuon_L2Mu20_NoVertex_3Sta_NoBPTX3BX_NoHalo" ]->Fill(phi_);
 	 }
 
        }//end of index< sizeFilters
@@ -622,17 +758,28 @@ HLTAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 	 const trigger::Keys& keys( trgEvent->filterKeys(filterIndexMu38NoVtxPhoton38) );
 	 cout << "Found " << keys.size() << " HLT muons from Mu38NoVtxPhoton38" << endl;
 	 
-	 double pt0;
-	 double eta0;
-	 double phi0;
-	 triggerObjects(pt0, eta0, phi0, keys, TOC);
+         double pt_, pt0, pt1;
+         double eta_, eta0, eta1;
+         double phi_, phi0, phi1;
+         triggerObjects(pt0, eta0, phi0, pt1, eta1, phi1, keys, TOC);
 	 
+         if(subLeading_){
+           pt_=pt1;
+           eta_=eta1;
+           phi_=phi1;
+         }
+         else{
+           pt_=pt0;
+           eta_=eta0;
+           phi_=phi0;
+         }
+
 	 //fill histos with leading trig obj info
 	 if( (BarrelOnly_ && TMath::Abs(eta0)<0.9) || (!BarrelOnly_)){
 	   histos1D_[ "nMuons_Mu38NoFiltersNoVtx_Photon38_CaloIdL" ]->Fill(keys.size());
-	   histos1D_[ "ptMuon_Mu38NoFiltersNoVtx_Photon38_CaloIdL" ]->Fill(pt0);
-	   histos1D_[ "etaMuon_Mu38NoFiltersNoVtx_Photon38_CaloIdL" ]->Fill(eta0);
-	   histos1D_[ "phiMuon_Mu38NoFiltersNoVtx_Photon38_CaloIdL" ]->Fill(phi0);
+	   histos1D_[ "ptMuon_Mu38NoFiltersNoVtx_Photon38_CaloIdL" ]->Fill(pt_);
+	   histos1D_[ "etaMuon_Mu38NoFiltersNoVtx_Photon38_CaloIdL" ]->Fill(eta_);
+	   histos1D_[ "phiMuon_Mu38NoFiltersNoVtx_Photon38_CaloIdL" ]->Fill(phi_);
 	 }
 
        }//end of index< sizeFilters
@@ -645,17 +792,28 @@ HLTAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 	 const trigger::Keys& keys( trgEvent->filterKeys(filterIndexMu28NoVtxDisplacedPhoton28) );
 	 cout << "Found " << keys.size() << " HLT muons from Mu28NoVtxDisplacedPhoton28" << endl;
 	 
-	 double pt0;
-	 double eta0;
-	 double phi0;
-	 triggerObjects(pt0, eta0, phi0, keys, TOC);
+         double pt_, pt0, pt1;
+         double eta_, eta0, eta1;
+         double phi_, phi0, phi1;
+         triggerObjects(pt0, eta0, phi0, pt1, eta1, phi1, keys, TOC);
 	 
+         if(subLeading_){
+           pt_=pt1;
+           eta_=eta1;
+           phi_=phi1;
+         }
+         else{
+           pt_=pt0;
+           eta_=eta0;
+           phi_=phi0;
+         }
+
 	 //fill histos with leading trig obj info
 	 if( (BarrelOnly_ && TMath::Abs(eta0)<0.9) || (!BarrelOnly_)){
 	   histos1D_[ "nMuons_Mu28NoFiltersNoVtxDisplaced_Photon28_CaloIdL" ]->Fill(keys.size());
-	   histos1D_[ "ptMuon_Mu28NoFiltersNoVtxDisplaced_Photon28_CaloIdL" ]->Fill(pt0);
-	   histos1D_[ "etaMuon_Mu28NoFiltersNoVtxDisplaced_Photon28_CaloIdL" ]->Fill(eta0);
-	   histos1D_[ "phiMuon_Mu28NoFiltersNoVtxDisplaced_Photon28_CaloIdL" ]->Fill(phi0);
+	   histos1D_[ "ptMuon_Mu28NoFiltersNoVtxDisplaced_Photon28_CaloIdL" ]->Fill(pt_);
+	   histos1D_[ "etaMuon_Mu28NoFiltersNoVtxDisplaced_Photon28_CaloIdL" ]->Fill(eta_);
+	   histos1D_[ "phiMuon_Mu28NoFiltersNoVtxDisplaced_Photon28_CaloIdL" ]->Fill(phi_);
 	 }
 
        }//end of index< sizeFilters
@@ -666,10 +824,15 @@ HLTAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 }//end of analyze()
 
 
-void HLTAnalyzer::triggerObjects(double& pt0, double& eta0, double& phi0, const trigger::Keys& keys,  const trigger::TriggerObjectCollection& TOC){
+void HLTAnalyzer::triggerObjects(double& pt0, double& eta0, double& phi0, double& pt1, double& eta1, double& phi1, const trigger::Keys& keys,  const trigger::TriggerObjectCollection& TOC){
   pt0 = 0.;
   eta0 = 0.;
   phi0 = 0.;
+
+  pt1 = 0.;
+  eta1 = 0.;
+  phi1 = 0.;
+
   for ( unsigned hlto = 0; hlto < keys.size(); hlto++) {
     trigger::size_type hltf = keys[hlto];
     const trigger::TriggerObject& obj(TOC[hltf]);
@@ -680,6 +843,18 @@ void HLTAnalyzer::triggerObjects(double& pt0, double& eta0, double& phi0, const 
       phi0 = obj.phi();
     }//end of if obj.pt> pt0
   }//end of loop over keys
+
+  for ( unsigned hlto = 0; hlto < keys.size(); hlto++) {
+    trigger::size_type hltf = keys[hlto];
+    const trigger::TriggerObject& obj(TOC[hltf]);
+    //cout<<"HLT muon pt is:"<<obj.pt()<<", eta is:"<<obj.eta()<<", phi is:"<<obj.phi()<<endl;
+    if (obj.pt()> pt1 && obj.pt()<pt0){
+      pt1 = obj.pt();
+      eta1 = obj.eta();
+      phi1 = obj.phi();
+    }//end of if obj.pt> pt0
+  }//end of loop over keys
+
 }//end of triggerObjects
 
 

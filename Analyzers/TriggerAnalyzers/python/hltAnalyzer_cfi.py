@@ -18,5 +18,7 @@ demo = cms.EDAnalyzer('HLTAnalyzer',
                       hltFilterTag_L2DoubleMu28 = cms.untracked.InputTag("hltL2DoubleMu28NoVertexL2Filtered2ChaAngle2p5Mass10","","TEST"),
                       hltFilterTag_Mu38NoVtx_Photon38 = cms.untracked.InputTag("hltMu38NoFiltersNoVtxPhoton38CaloIdLHEFilter","","TEST"),
                       hltFilterTag_Mu28NoVtxDisplaced_Photon28 = cms.untracked.InputTag("hltMu28NoFiltersNoVtxDisplacedPhoton28CaloIdLHEFilter","","TEST"),
-                      BarrelOnly = cms.untracked.bool(False)
+                      BarrelOnly = cms.untracked.bool(False),
+                      subLeading = cms.untracked.bool(False)
+                      #subLeading = cms.untracked.bool(True)
                       )
