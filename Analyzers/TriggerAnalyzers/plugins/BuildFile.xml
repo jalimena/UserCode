@@ -10,8 +10,13 @@
 <use name="HLTrigger/HLTcore"/>
 
 <use name="DataFormats/L1Trigger"/>
+<use name="DataFormats/HLTReco"/>
+<use name="DataFormats/Candidate"/>
+<use name="DataFormats/Common"/>
 
 <use name="CondFormats/DataRecord"/>
 <use name="CondFormats/L1TObjects"/>
+
+<use name="PhysicsTools/UtilAlgos"/>
 
 <flags EDM_PLUGIN="1"/>

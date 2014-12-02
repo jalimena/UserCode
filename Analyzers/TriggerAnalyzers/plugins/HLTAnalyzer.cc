@@ -47,9 +47,14 @@
 #include "FWCore/Utilities/interface/InputTag.h"
 #include "HLTrigger/HLTcore/interface/HLTConfigProvider.h"
 
+//gen particles
+#include "DataFormats/HepMCCandidate/interface/GenParticle.h"
+
 //
 // class declaration
 //
+
+using namespace reco;
 
 class HLTAnalyzer : public edm::EDAnalyzer {
 public:
@@ -58,6 +63,12 @@ public:
   
   static void fillDescriptions(edm::ConfigurationDescriptions& descriptions);
   
+
+  struct genParticle_pt : public std::binary_function<reco::GenParticle, reco::GenParticle, bool> {
+    bool operator()(const reco::GenParticle& x, const reco::GenParticle& y) {
+      return ( x.pt() > y.pt() ) ;
+    }
+  };
   
 private:
   virtual void beginJob() ;
@@ -93,6 +104,7 @@ private:
   //edm::EDGetTokenT<edm::TriggerResults> hltResultsToken_;
   edm::InputTag hltEventTag_;
   //edm::EDGetTokenT<trigger::TriggerEvent> hltEventToken_;
+  edm::InputTag genParticlesTag_;
   edm::InputTag hltFilterTag_L3Mu40_;
   edm::InputTag hltFilterTag_L3Mu24Iso_;
   edm::InputTag hltFilterTag_L3TrkMu24Iso_;
@@ -127,6 +139,7 @@ HLTAnalyzer::HLTAnalyzer(const edm::ParameterSet& iConfig):
   //hltResultsToken_(consumes<edm::TriggerResults>(hltResultsTag_)),
   hltEventTag_(iConfig.getUntrackedParameter<edm::InputTag>("hltEventTag",edm::InputTag("hltTriggerSummaryAOD","","HLT"))),
   //hltEventToken_(consumes<trigger::TriggerEvent>(hltEventTag_)),
+  genParticlesTag_(iConfig.getUntrackedParameter<edm::InputTag>("genParticlesTag",edm::InputTag("genParticles"))),
 
   hltFilterTag_L3Mu40_(iConfig.getUntrackedParameter<edm::InputTag>("hltFilterTag_L3Mu40",edm::InputTag("hltL3fL1sMu16orMu25L1f0L2f16QL3Filtered40Q","","HLT"))),
   hltFilterTag_L3Mu24Iso_(iConfig.getUntrackedParameter<edm::InputTag>("hltFilterTag_L3Mu24Iso",edm::InputTag("hltL3crIsoL1sMu16L1f0L2f16QL3f24QL3crIsoRhoFiltered0p15IterTrk02","","HLT"))),
@@ -174,11 +187,46 @@ HLTAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 
    cout<<"starting analyze"<<endl;
 
+   edm::Handle<reco::GenParticleCollection> genParticles;
+   iEvent.getByLabel(genParticlesTag_, genParticles);
+
    edm::Handle<edm::TriggerResults> triggerResults;
    iEvent.getByLabel(hltResultsTag_, triggerResults);
 
    edm::Handle<trigger::TriggerEvent> trgEvent;
    iEvent.getByLabel(hltEventTag_, trgEvent);
+
+
+   //find gen muons
+   if (genParticles.isValid()) {
+     std::vector<GenParticle> genParticles_;
+     genParticles_.insert(genParticles_.end(), genParticles->begin(), genParticles->end());
+     std::sort(genParticles_.begin(), genParticles_.end(), genParticle_pt());
+
+     double genMuonPt0 = 0.;
+     double genMuonEta0 = 0.;
+     double genMuonPhi0 = 0.;
+     int nGenMuon = 0;
+
+     for(size_t i=0; i<genParticles_.size(); i++){
+       const reco::GenParticle & p = genParticles_.at(i);
+       if (TMath::Abs(p.pdgId()) == 13 && p.status()==1 && p.eta()<=2.4) {
+	 nGenMuon++;
+	 if (p.pt()> genMuonPt0){
+	   genMuonPt0 = p.pt();
+	   genMuonEta0 = p.eta();
+	   genMuonPhi0 = p.phi();
+	 }//end if gen muon pt greater than saved highest gen muon pt
+       }//end of if status 1 gen muon with eta<2.4
+     }//end of loop over gen particles
+
+     histos1D_[ "nGenMuons" ]->Fill(nGenMuon);
+     histos1D_[ "ptGenMuon" ]->Fill(genMuonPt0);
+     histos1D_[ "etaGenMuon" ]->Fill(genMuonEta0);
+     histos1D_[ "phiGenMuon" ]->Fill(genMuonPhi0);
+
+   }//end of if genParticles is valid
+
 
    //find trigger names from hltConfigProvider
    bool changedConfig = false;
@@ -642,6 +690,23 @@ HLTAnalyzer::beginJob()
 {
   std::cout<<"beginJob!!!!"<<std::endl;
   edm::Service<TFileService> fileService;
+
+  histos1D_[ "nGenMuons" ] = fileService->make< TH1D >( "nGenMuons", "Number of generator muons", 10, 0., 10);
+  histos1D_[ "nGenMuons" ]->SetXTitle( "Number of Generator Muons" );
+  histos1D_[ "nGenMuons" ]->SetYTitle( "Events" );
+
+  histos1D_[ "ptGenMuon" ] = fileService->make< TH1D >( "ptGenMuon", "Generator Muon pt", 100, 0., 1000);
+  histos1D_[ "ptGenMuon" ]->SetXTitle( "Generator Muon p_{T} [GeV]" );
+  histos1D_[ "ptGenMuon" ]->SetYTitle( "Events" );
+
+  histos1D_[ "etaGenMuon" ] = fileService->make< TH1D >( "etaGenMuon", "Generator Muon eta", 120,-6,6);
+  histos1D_[ "etaGenMuon" ]->SetXTitle( "Generator Muon #eta" );
+  histos1D_[ "etaGenMuon" ]->SetYTitle( "Events" );
+
+  histos1D_[ "phiGenMuon" ] = fileService->make< TH1D >( "phiGenMuon", "Generator Muon phi", 64,-3.2,3.2);
+  histos1D_[ "phiGenMuon" ]->SetXTitle( "Generator Muon #phi" );
+  histos1D_[ "phiGenMuon" ]->SetYTitle( "Events" );
+
 
   histos1D_[ "nMuons_Mu40" ] = fileService->make< TH1D >( "nMuons_Mu40", "Number of muons", 10, 0., 10);
   histos1D_[ "nMuons_IsoMu24_IterTrk02" ] = fileService->make< TH1D >( "nMuons_IsoMu24_IterTrk02", "Number of muons", 10, 0., 10);
