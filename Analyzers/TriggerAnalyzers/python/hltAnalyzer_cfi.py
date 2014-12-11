@@ -4,6 +4,13 @@ demo = cms.EDAnalyzer('HLTAnalyzer',
                       hltResultsTag = cms.untracked.InputTag("TriggerResults","","TEST"),
                       hltEventTag = cms.untracked.InputTag("hltTriggerSummaryAOD","","TEST"),
                       genParticlesTag = cms.untracked.InputTag("genParticles"),
+                      beamSpotTag = cms.untracked.InputTag("hltOnlineBeamSpot","","TEST"),
+                      hltL2MuonsTag = cms.untracked.InputTag("hltL2Muons"),
+                      #hltL2MuonsTag = cms.untracked.InputTag("hltL2MuonCandidatesNoVtx"),
+
+                      hltFilterTag_L1Mu6NotBptxOR = cms.untracked.InputTag("hltL1sMu6NotBptxOR","","TEST"),
+                      hltFilterTag_L1DoubleMu125 = cms.untracked.InputTag("hltL1sL1DoubleMu103p5ORDoubleMu125","","TEST"),
+
                       hltFilterTag_L3Mu40 = cms.untracked.InputTag("hltL3fL1sMu16orMu25L1f0L2f16QL3Filtered40Q","","TEST"),
                       hltFilterTag_L3Mu24Iso = cms.untracked.InputTag("hltL3crIsoL1sMu16L1f0L2f16QL3f24QL3crIsoRhoFiltered0p15IterTrk02","","TEST"),
                       hltFilterTag_L3TrkMu24Iso = cms.untracked.InputTag("hltL3fL1sMu16L1f0TkFiltered24QL3crIsoRhoFiltered0p15IterTrk02","","TEST"),
@@ -19,6 +26,8 @@ demo = cms.EDAnalyzer('HLTAnalyzer',
                       hltFilterTag_Mu38NoVtx_Photon38 = cms.untracked.InputTag("hltMu38NoFiltersNoVtxPhoton38CaloIdLHEFilter","","TEST"),
                       hltFilterTag_Mu28NoVtxDisplaced_Photon28 = cms.untracked.InputTag("hltMu28NoFiltersNoVtxDisplacedPhoton28CaloIdLHEFilter","","TEST"),
                       BarrelOnly = cms.untracked.bool(False),
-                      subLeading = cms.untracked.bool(False)
-                      #subLeading = cms.untracked.bool(True)
+                      subLeading = cms.untracked.bool(False),
+                      #subLeading = cms.untracked.bool(True),
+                      lookForMother = cms.untracked.bool(False),
+                      motherId = cms.untracked.int32(13)
                       )
