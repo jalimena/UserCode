@@ -140,6 +140,7 @@ private:
   bool BarrelOnly_;
   bool subLeading_;
   bool lookForMother_;
+  bool useMotherInLxyCalc_;
   int motherId_;
 
 };
@@ -185,6 +186,7 @@ HLTAnalyzer::HLTAnalyzer(const edm::ParameterSet& iConfig):
   BarrelOnly_(iConfig.getUntrackedParameter<bool>("BarrelOnly",bool("False"))),
   subLeading_(iConfig.getUntrackedParameter<bool>("subLeading",bool("False"))),
   lookForMother_(iConfig.getUntrackedParameter<bool>("lookForMother",bool("False"))),
+  useMotherInLxyCalc_(iConfig.getUntrackedParameter<bool>("useMotherInLxyCalc",bool("False"))),
   motherId_(iConfig.getUntrackedParameter<int>("motherId",int(13)))
 
 {
@@ -1287,7 +1289,7 @@ void HLTAnalyzer::genMuons(const edm::Event& iEvent, double& genMuonPt0, double&
     
     for(size_t i=0; i<genParticles_.size(); i++){
       const reco::GenParticle & p = genParticles_.at(i);
-      if (fabs(p.pdgId()) == 13 && p.status()==1 && p.eta()<=2.4) {
+      if (fabs(p.pdgId()) == 13 && p.status()==1) {
 	if((lookForMother_ && fabs(p.mother()->pdgId()) == motherId_) || !lookForMother_){
 	  nGenMuon++;
 	  if (p.pt()> genMuonPt0){
@@ -1299,9 +1301,14 @@ void HLTAnalyzer::genMuons(const edm::Event& iEvent, double& genMuonPt0, double&
 	      cout<<"beamSpot is not valid!!!!"<<endl;
 	      genMuonDxy0 = D0BeamSpot(p.vx(),p.vy(),p.px(),p.py(),p.pt(),0.,0.);
 	    }
-	    if(lookForMother_) genMuonLxy0 = (p.mother()->vx() - p.vx())*(p.mother()->vx() - p.vx()) + (p.mother()->vy() - p.vy())*(p.mother()->vy() - p.vy());
+	    if(useMotherInLxyCalc_) {
+	      genMuonLxy0 = (p.mother()->vx() - p.vx())*(p.mother()->vx() - p.vx()) + (p.mother()->vy() - p.vy())*(p.mother()->vy() - p.vy());
+	      cout<<"mother vertex is: "<<p.mother()->vx()<<", "<<p.mother()->vy()<<endl;
+	    }
 	    else genMuonLxy0 = p.vx()*p.vx()+p.vy()*p.vy();
-	    genMuonLxy0 = sqrt(genMuonLxy0);	  
+	    genMuonLxy0 = sqrt(genMuonLxy0);
+	    cout<<"genMuon vertex is: "<<p.vx()<<", "<<p.vy()<<endl;
+	    cout<<"genMuonLxy0 is: "<<genMuonLxy0<<endl;
 	  }//end if gen muon pt greater than saved highest gen muon pt
 	}//end of look for mother
       }//end of if status 1 gen muon with eta<2.4
@@ -1373,7 +1380,8 @@ HLTAnalyzer::beginJob()
   histos1D_[ "phiGenMuon" ]->SetXTitle( "Generator Muon #phi" );
   histos1D_[ "phiGenMuon" ]->SetYTitle( "Events" );
 
-  histos1D_[ "dxyGenMuon" ] = fileService->make< TH1D >( "dxyGenMuon", "Generator Muon dxy", 400, -200, 200);
+  //histos1D_[ "dxyGenMuon" ] = fileService->make< TH1D >( "dxyGenMuon", "Generator Muon dxy", 400, -200, 200);
+  histos1D_[ "dxyGenMuon" ] = fileService->make< TH1D >( "dxyGenMuon", "Generator Muon dxy", 500, -1000, 1000);
   histos1D_[ "dxyGenMuon" ]->SetXTitle( "Generator Muon D_{xy}" );
   histos1D_[ "dxyGenMuon" ]->SetYTitle( "Events" );
 
@@ -1812,20 +1820,20 @@ HLTAnalyzer::beginJob()
   histos1D_[ "phiGenMuon_Mu38NoFiltersNoVtx_Photon38_CaloIdL" ]->SetYTitle( "Events" );
   histos1D_[ "phiGenMuon_Mu28NoFiltersNoVtxDisplaced_Photon28_CaloIdL" ]->SetYTitle( "Events" );
 
-  histos1D_[ "dxyGenMuon_Mu40" ] = fileService->make< TH1D >( "dxyGenMuon_Mu40", "Generator Muon dxy", 400, -200, 200);
-  histos1D_[ "dxyGenMuon_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL" ] = fileService->make< TH1D >( "dxyGenMuon_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL", "Generator Muon dxy", 400, -200, 200);
-  histos1D_[ "dxyGenMuon_DoubleMu33NoFiltersNoVtx" ] = fileService->make< TH1D >( "dxyGenMuon_DoubleMu33NoFiltersNoVtx", "Generator Muon dxy", 400, -200, 200);
-  histos1D_[ "dxyGenMuon_DoubleMu23NoFiltersNoVtxDisplaced" ] = fileService->make< TH1D >( "dxyGenMuon_DoubleMu23NoFiltersNoVtxDisplaced", "Generator Muon dxy", 400, -200, 200);
-  histos1D_[ "dxyGenMuon_L2Mu20_NoVertex_3Sta_NoBPTX3BX_NoHalo" ] = fileService->make< TH1D >( "dxyGenMuon_L2Mu20_NoVertex_3Sta_NoBPTX3BX_NoHalo", "Generator Muon dxy", 400, -200, 200);
-  histos1D_[ "dxyGenMuon_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL" ] = fileService->make< TH1D >( "dxyGenMuon_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL", "Generator Muon dxy", 400, -200, 200);
-  histos1D_[ "dxyGenMuon_Mu17_TkMu8" ] = fileService->make< TH1D >( "dxyGenMuon_Mu17_TkMu8", "Generator Muon dxy", 400, -200, 200);
-  histos1D_[ "dxyGenMuon_Mu30_TkMu11" ] = fileService->make< TH1D >( "dxyGenMuon_Mu30_TkMu11", "Generator Muon dxy", 400, -200, 200);
-  histos1D_[ "dxyGenMuon_L2DoubleMu28_NoVertex_2Cha_Angle2p5_Mass10" ] = fileService->make< TH1D >( "dxyGenMuon_L2DoubleMu28_NoVertex_2Cha_Angle2p5_Mass10", "Generator Muon dxy", 400, -200, 200);
-  histos1D_[ "dxyGenMuon_Mu17_Mu8" ] = fileService->make< TH1D >( "dxyGenMuon_Mu17_Mu8", "Generator Muon dxy", 400, -200, 200);
-  histos1D_[ "dxyGenMuon_IsoMu24_IterTrk02" ] = fileService->make< TH1D >( "dxyGenMuon_IsoMu24_IterTrk02", "Generator Muon dxy", 400, -200, 200);
-  histos1D_[ "dxyGenMuon_IsoTkMu24_IterTrk02" ] = fileService->make< TH1D >( "dxyGenMuon_IsoTkMu24_IterTrk02", "Generator Muon dxy", 400, -200, 200);
-  histos1D_[ "dxyGenMuon_Mu38NoFiltersNoVtx_Photon38_CaloIdL" ] = fileService->make< TH1D >( "dxyGenMuon_Mu38NoFiltersNoVtx_Photon38_CaloIdL", "Generator Muon dxy", 400, -200, 200);
-  histos1D_[ "dxyGenMuon_Mu28NoFiltersNoVtxDisplaced_Photon28_CaloIdL" ] = fileService->make< TH1D >( "dxyGenMuon_Mu28NoFiltersNoVtxDisplaced_Photon28_CaloIdL", "Generator Muon dxy", 400, -200, 200);
+  histos1D_[ "dxyGenMuon_Mu40" ] = fileService->make< TH1D >( "dxyGenMuon_Mu40", "Generator Muon dxy", 500, -1000, 1000);
+  histos1D_[ "dxyGenMuon_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL" ] = fileService->make< TH1D >( "dxyGenMuon_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL", "Generator Muon dxy", 500, -1000, 1000);
+  histos1D_[ "dxyGenMuon_DoubleMu33NoFiltersNoVtx" ] = fileService->make< TH1D >( "dxyGenMuon_DoubleMu33NoFiltersNoVtx", "Generator Muon dxy", 500, -1000, 1000);
+  histos1D_[ "dxyGenMuon_DoubleMu23NoFiltersNoVtxDisplaced" ] = fileService->make< TH1D >( "dxyGenMuon_DoubleMu23NoFiltersNoVtxDisplaced", "Generator Muon dxy", 500, -1000, 1000);
+  histos1D_[ "dxyGenMuon_L2Mu20_NoVertex_3Sta_NoBPTX3BX_NoHalo" ] = fileService->make< TH1D >( "dxyGenMuon_L2Mu20_NoVertex_3Sta_NoBPTX3BX_NoHalo", "Generator Muon dxy", 500, -1000, 1000);
+  histos1D_[ "dxyGenMuon_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL" ] = fileService->make< TH1D >( "dxyGenMuon_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL", "Generator Muon dxy", 500, -1000, 1000);
+  histos1D_[ "dxyGenMuon_Mu17_TkMu8" ] = fileService->make< TH1D >( "dxyGenMuon_Mu17_TkMu8", "Generator Muon dxy", 500, -1000, 1000);
+  histos1D_[ "dxyGenMuon_Mu30_TkMu11" ] = fileService->make< TH1D >( "dxyGenMuon_Mu30_TkMu11", "Generator Muon dxy", 500, -1000, 1000);
+  histos1D_[ "dxyGenMuon_L2DoubleMu28_NoVertex_2Cha_Angle2p5_Mass10" ] = fileService->make< TH1D >( "dxyGenMuon_L2DoubleMu28_NoVertex_2Cha_Angle2p5_Mass10", "Generator Muon dxy", 500, -1000, 1000);
+  histos1D_[ "dxyGenMuon_Mu17_Mu8" ] = fileService->make< TH1D >( "dxyGenMuon_Mu17_Mu8", "Generator Muon dxy", 500, -1000, 1000);
+  histos1D_[ "dxyGenMuon_IsoMu24_IterTrk02" ] = fileService->make< TH1D >( "dxyGenMuon_IsoMu24_IterTrk02", "Generator Muon dxy", 500, -1000, 1000);
+  histos1D_[ "dxyGenMuon_IsoTkMu24_IterTrk02" ] = fileService->make< TH1D >( "dxyGenMuon_IsoTkMu24_IterTrk02", "Generator Muon dxy", 500, -1000, 1000);
+  histos1D_[ "dxyGenMuon_Mu38NoFiltersNoVtx_Photon38_CaloIdL" ] = fileService->make< TH1D >( "dxyGenMuon_Mu38NoFiltersNoVtx_Photon38_CaloIdL", "Generator Muon dxy", 500, -1000, 1000);
+  histos1D_[ "dxyGenMuon_Mu28NoFiltersNoVtxDisplaced_Photon28_CaloIdL" ] = fileService->make< TH1D >( "dxyGenMuon_Mu28NoFiltersNoVtxDisplaced_Photon28_CaloIdL", "Generator Muon dxy", 500, -1000, 1000);
 
   histos1D_[ "dxyGenMuon_Mu40" ]->SetXTitle( "Generator Muon D_{xy}" );
   histos1D_[ "dxyGenMuon_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL" ]->SetXTitle( "Generator Muon D_{xy}" );

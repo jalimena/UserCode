@@ -24,12 +24,15 @@ process.options   = cms.untracked.PSet( wantSummary = cms.untracked.bool(True) )
 
 process.source = cms.Source("PoolSource",
     fileNames = cms.untracked.vstring(
-        'file:/afs/cern.ch/work/j/jalimena/CMSSW_7_2_2_patch2/src/HLTrigger/Configuration/test/outputA_csmt_mchamp500.root'
-        #'file:/afs/cern.ch/work/j/jalimena/CMSSW_7_2_2_patch2/src/HLTrigger/Configuration/test/outputA_csmt_mchamp500_TEST.root'
+        'file:/afs/cern.ch/work/j/jalimena/CMSSW_7_2_2_patch2/src/HLTrigger/Configuration/test/outputA_csmt_DisplacedSUSY200_1.root',
+        'file:/afs/cern.ch/work/j/jalimena/CMSSW_7_2_2_patch2/src/HLTrigger/Configuration/test/outputA_csmt_DisplacedSUSY200_2.root',
+        'file:/afs/cern.ch/work/j/jalimena/CMSSW_7_2_2_patch2/src/HLTrigger/Configuration/test/outputA_csmt_DisplacedSUSY200_3.root',
+        'file:/afs/cern.ch/work/j/jalimena/CMSSW_7_2_2_patch2/src/HLTrigger/Configuration/test/outputA_csmt_DisplacedSUSY200_4.root',
+        'file:/afs/cern.ch/work/j/jalimena/CMSSW_7_2_2_patch2/src/HLTrigger/Configuration/test/outputA_csmt_DisplacedSUSY200_5.root'
     )
 )
 
-process.demo.hltL2MuonsTag = cms.untracked.InputTag("hltL2CosmicMuons","","TEST")
+process.demo.hltL2MuonsTag = cms.untracked.InputTag("hltL2CosmicMuons")
 process.demo.hltFilterTag_DiMuonL3NoFilters33 = cms.untracked.InputTag("hltL3fDimuonL1f0L2NVf10L3NoFiltersNoVtxCosmicSeedFiltered33","","TEST")
 process.demo.hltFilterTag_DiMuonL3NoFilters23Displaced = cms.untracked.InputTag("hltL3fDimuonL1f0L2NVf10L3NoFiltersNoVtxCosmicSeedDisplacedFiltered23","","TEST")
 process.demo.hltFilterTag_L2MuNoBptx20 = cms.untracked.InputTag("hltL2fL1sMu6NotBptxORL1f0NoVertexCosmicSeedL2Filtered20Sta3","","TEST")
@@ -37,10 +40,11 @@ process.demo.hltFilterTag_L2DoubleMu28 = cms.untracked.InputTag("hltL2DoubleMu28
 process.demo.hltFilterTag_Mu38NoVtx_Photon38 = cms.untracked.InputTag("hltMu38NoFiltersNoVtxCosmicSeedPhoton38CaloIdLHEFilter","","TEST")
 process.demo.hltFilterTag_Mu28NoVtxDisplaced_Photon28 = cms.untracked.InputTag("hltMu28NoFiltersNoVtxCosmicSeedDisplacedPhoton28CaloIdLHEFilter","","TEST")
 process.demo.BarrelOnly = cms.untracked.bool(False)
+process.demo.lookForMother = cms.untracked.bool(True)
+process.demo.motherId = cms.untracked.int32(1000006) #stop
 
 process.TFileService = cms.Service( "TFileService",
-                                    fileName = cms.string( 'histosHltAnalyzer_mchamp500_csmt.root' )
-                                    #fileName = cms.string( 'histosHltAnalyzer_mchamp500_csmt_TEST.root' )
+                                    fileName = cms.string( 'histosHltAnalyzer_DisplacedSUSY200_csmt.root' )
                                     )
 
 

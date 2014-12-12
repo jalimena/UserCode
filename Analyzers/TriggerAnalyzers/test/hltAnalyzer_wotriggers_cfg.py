@@ -32,7 +32,7 @@ process.demo.useMotherInLxyCalc = cms.untracked.bool(True)
 process.demo.motherId = cms.untracked.int32(6002113)
 
 process.TFileService = cms.Service( "TFileService",
-                                    fileName = cms.string( 'histosHltAnalyzer_wocsmt.root' )
+                                    fileName = cms.string( 'histosHltAnalyzer_wotriggers.root' )
                                     )
 
 

@@ -29,5 +29,6 @@ demo = cms.EDAnalyzer('HLTAnalyzer',
                       subLeading = cms.untracked.bool(False),
                       #subLeading = cms.untracked.bool(True),
                       lookForMother = cms.untracked.bool(False),
+                      useMotherInLxyCalc = cms.untracked.bool(False),
                       motherId = cms.untracked.int32(13)
                       )

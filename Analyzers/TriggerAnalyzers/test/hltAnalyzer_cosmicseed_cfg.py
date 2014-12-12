@@ -27,6 +27,7 @@ process.source = cms.Source("PoolSource",
     )
 )
 
+process.demo.hltL2MuonsTag = cms.untracked.InputTag("hltL2CosmicMuons")
 process.demo.hltFilterTag_DiMuonL3NoFilters33 = cms.untracked.InputTag("hltL3fDimuonL1f0L2NVf10L3NoFiltersNoVtxCosmicSeedFiltered33","","TEST")
 process.demo.hltFilterTag_DiMuonL3NoFilters23Displaced = cms.untracked.InputTag("hltL3fDimuonL1f0L2NVf10L3NoFiltersNoVtxCosmicSeedDisplacedFiltered23","","TEST")
 process.demo.hltFilterTag_L2MuNoBptx20 = cms.untracked.InputTag("hltL2fL1sMu6NotBptxORL1f0NoVertexCosmicSeedL2Filtered20Sta3","","TEST")

@@ -27,6 +27,8 @@ process.source = cms.Source("PoolSource",
     )
 )
 
+
+process.demo.hltL2MuonsTag = cms.untracked.InputTag("hltL2CosmicMuons")
 process.demo.hltFilterTag_DiMuonL3NoFilters33 = cms.untracked.InputTag("hltL3fDimuonL1f0L2NVf10L3NoFiltersNoVtxCosmicSeedFiltered33","","TEST")
 process.demo.hltFilterTag_DiMuonL3NoFilters23Displaced = cms.untracked.InputTag("hltL3fDimuonL1f0L2NVf10L3NoFiltersNoVtxCosmicSeedDisplacedFiltered23","","TEST")
 process.demo.hltFilterTag_L2MuNoBptx20 = cms.untracked.InputTag("hltL2fL1sMu6NotBptxORL1f0NoVertexCosmicSeedL2Filtered20Sta3","","TEST")
@@ -34,6 +36,10 @@ process.demo.hltFilterTag_L2DoubleMu28 = cms.untracked.InputTag("hltL2DoubleMu28
 process.demo.hltFilterTag_Mu38NoVtx_Photon38 = cms.untracked.InputTag("hltMu38NoFiltersNoVtxCosmicSeedPhoton38CaloIdLHEFilter","","TEST")
 process.demo.hltFilterTag_Mu28NoVtxDisplaced_Photon28 = cms.untracked.InputTag("hltMu28NoFiltersNoVtxCosmicSeedDisplacedPhoton28CaloIdLHEFilter","","TEST")
 process.demo.BarrelOnly = cms.untracked.bool(False)
+#for HtoLL sample!!
+process.demo.lookForMother = cms.untracked.bool(True)
+process.demo.useMotherInLxyCalc = cms.untracked.bool(True)
+process.demo.motherId = cms.untracked.int32(6002113) 
 
 process.TFileService = cms.Service( "TFileService",
                                     fileName = cms.string( 'histosHltAnalyzer_csmt.root' )

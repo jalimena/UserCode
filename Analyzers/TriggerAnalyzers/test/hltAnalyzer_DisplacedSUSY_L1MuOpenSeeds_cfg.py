@@ -23,16 +23,16 @@ process.options   = cms.untracked.PSet( wantSummary = cms.untracked.bool(True) )
 
 process.source = cms.Source("PoolSource",
     fileNames = cms.untracked.vstring(
+        'file:/afs/cern.ch/work/j/jalimena/CMSSW_7_2_2_patch2/src/HLTrigger/Configuration/test/outputA_L1MuOpenSeeds_DisplacedSUSY_1.root',
+        'file:/afs/cern.ch/work/j/jalimena/CMSSW_7_2_2_patch2/src/HLTrigger/Configuration/test/outputA_L1MuOpenSeeds_DisplacedSUSY_2.root',
+        'file:/afs/cern.ch/work/j/jalimena/CMSSW_7_2_2_patch2/src/HLTrigger/Configuration/test/outputA_L1MuOpenSeeds_DisplacedSUSY_3.root',
+        'file:/afs/cern.ch/work/j/jalimena/CMSSW_7_2_2_patch2/src/HLTrigger/Configuration/test/outputA_L1MuOpenSeeds_DisplacedSUSY_4.root',
+        'file:/afs/cern.ch/work/j/jalimena/CMSSW_7_2_2_patch2/src/HLTrigger/Configuration/test/outputA_L1MuOpenSeeds_DisplacedSUSY_5.root'
     )
 )
 
-#for HtoLL sample!!
-process.demo.lookForMother = cms.untracked.bool(True)
-process.demo.useMotherInLxyCalc = cms.untracked.bool(True)
-process.demo.motherId = cms.untracked.int32(6002113)
-
 process.TFileService = cms.Service( "TFileService",
-                                    fileName = cms.string( 'histosHltAnalyzer_wocsmt.root' )
+                                    fileName = cms.string( 'histosHltAnalyzer_DisplacedSUSY_L1MuOpenSeeds.root' )
                                     )
 
 
