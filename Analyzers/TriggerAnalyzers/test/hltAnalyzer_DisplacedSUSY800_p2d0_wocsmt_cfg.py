@@ -23,7 +23,7 @@ process.options   = cms.untracked.PSet( wantSummary = cms.untracked.bool(True) )
 
 process.source = cms.Source("PoolSource",
     fileNames = cms.untracked.vstring(
-        'file:/afs/cern.ch/work/j/jalimena/CMSSW_7_2_2_patch2/src/HLTrigger/Configuration/test/outputA_wocsmt_DisplacedSUSY200_p2d0.root',
+        'file:/afs/cern.ch/work/j/jalimena/CMSSW_7_2_2_patch2/src/HLTrigger/Configuration/test/outputA_wocsmt_DisplacedSUSY800_p2d0.root',
     )
 )
 
@@ -32,7 +32,7 @@ process.demo.motherId = cms.untracked.int32(1000006) #stop
 process.demo.genMuonPt = cms.untracked.double(10.)
 
 process.TFileService = cms.Service( "TFileService",
-                                    fileName = cms.string( 'histosHltAnalyzer_DisplacedSUSY200_p2d0_wocsmt.root' )
+                                    fileName = cms.string( 'histosHltAnalyzer_DisplacedSUSY800_p2d0_wocsmt.root' )
                                     )
 
 

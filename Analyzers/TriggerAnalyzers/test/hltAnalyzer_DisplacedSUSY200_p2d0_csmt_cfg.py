@@ -38,6 +38,7 @@ process.demo.hltFilterTag_Mu28NoVtxDisplaced_Photon28 = cms.untracked.InputTag("
 process.demo.BarrelOnly = cms.untracked.bool(False)
 process.demo.lookForMother = cms.untracked.bool(True)
 process.demo.motherId = cms.untracked.int32(1000006) #stop
+process.demo.genMuonPt = cms.untracked.double(10.)
 
 process.TFileService = cms.Service( "TFileService",
                                     fileName = cms.string( 'histosHltAnalyzer_DisplacedSUSY200_p2d0_csmt.root' )

@@ -30,5 +30,6 @@ demo = cms.EDAnalyzer('HLTAnalyzer',
                       #subLeading = cms.untracked.bool(True),
                       lookForMother = cms.untracked.bool(False),
                       useMotherInLxyCalc = cms.untracked.bool(False),
-                      motherId = cms.untracked.int32(13)
+                      motherId = cms.untracked.int32(13),
+                      genMuonPt = cms.untracked.double(0.)
                       )

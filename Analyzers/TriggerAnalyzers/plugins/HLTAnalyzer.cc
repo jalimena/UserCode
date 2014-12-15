@@ -142,6 +142,7 @@ private:
   bool lookForMother_;
   bool useMotherInLxyCalc_;
   int motherId_;
+  double genMuonPt_;
 
 };
 
@@ -187,7 +188,8 @@ HLTAnalyzer::HLTAnalyzer(const edm::ParameterSet& iConfig):
   subLeading_(iConfig.getUntrackedParameter<bool>("subLeading",bool("False"))),
   lookForMother_(iConfig.getUntrackedParameter<bool>("lookForMother",bool("False"))),
   useMotherInLxyCalc_(iConfig.getUntrackedParameter<bool>("useMotherInLxyCalc",bool("False"))),
-  motherId_(iConfig.getUntrackedParameter<int>("motherId",int(13)))
+  motherId_(iConfig.getUntrackedParameter<int>("motherId",int(13))),
+  genMuonPt_(iConfig.getUntrackedParameter<double>("genMuonPt",double(0.)))
 
 {
    //now do what ever initialization is needed
@@ -222,13 +224,16 @@ HLTAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
    double genMuonPt0, genMuonEta0, genMuonPhi0, genMuonDxy0, genMuonLxy0;
    int nGenMuon;
    genMuons(iEvent, genMuonPt0, genMuonEta0, genMuonPhi0, genMuonDxy0, genMuonLxy0, nGenMuon);
+   cout<<"genMuon pt is (2nd time): "<<genMuonPt0<<endl;
 
    histos1D_[ "nGenMuons" ]->Fill(nGenMuon);
-   histos1D_[ "ptGenMuon" ]->Fill(genMuonPt0);
-   histos1D_[ "etaGenMuon" ]->Fill(genMuonEta0);
-   histos1D_[ "phiGenMuon" ]->Fill(genMuonPhi0);
-   histos1D_[ "dxyGenMuon" ]->Fill(genMuonDxy0);
-   histos1D_[ "lxyGenMuon" ]->Fill(genMuonLxy0);
+   if(genMuonPt0!=-1.){
+     histos1D_[ "ptGenMuon" ]->Fill(genMuonPt0);
+     histos1D_[ "etaGenMuon" ]->Fill(genMuonEta0);
+     histos1D_[ "phiGenMuon" ]->Fill(genMuonPhi0);
+     histos1D_[ "dxyGenMuon" ]->Fill(genMuonDxy0);
+     histos1D_[ "lxyGenMuon" ]->Fill(genMuonLxy0);
+   }
      
 
    //find hltL2Muons, without trigger requirement
@@ -237,12 +242,13 @@ HLTAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
    hltL2Muons(iEvent, hltL2MuonPt0, hltL2MuonEta0, hltL2MuonPhi0, hltL2MuonDxy0, hltL2MuonLxy0, nHltL2Muon);
 
    histos1D_[ "nHltL2MuonTracks" ]->Fill(nHltL2Muon);
-   histos1D_[ "ptHltL2MuonTrack" ]->Fill(hltL2MuonPt0);
-   histos1D_[ "etaHltL2MuonTrack" ]->Fill(hltL2MuonEta0);
-   histos1D_[ "phiHltL2MuonTrack" ]->Fill(hltL2MuonPhi0);
-   histos1D_[ "dxyHltL2MuonTrack" ]->Fill(hltL2MuonDxy0);
-   histos1D_[ "lxyHltL2MuonTrack" ]->Fill(hltL2MuonLxy0);
-   
+   if(hltL2MuonPt0!=-1.){
+     histos1D_[ "ptHltL2MuonTrack" ]->Fill(hltL2MuonPt0);
+     histos1D_[ "etaHltL2MuonTrack" ]->Fill(hltL2MuonEta0);
+     histos1D_[ "phiHltL2MuonTrack" ]->Fill(hltL2MuonPhi0);
+     histos1D_[ "dxyHltL2MuonTrack" ]->Fill(hltL2MuonDxy0);
+     histos1D_[ "lxyHltL2MuonTrack" ]->Fill(hltL2MuonLxy0);
+   }
 
    //get trigger results
    edm::Handle<edm::TriggerResults> triggerResults;
@@ -467,23 +473,27 @@ HLTAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 	 int nGenMuon_t;
 	 genMuons(iEvent, genMuonPt0_t, genMuonEta0_t, genMuonPhi0_t, genMuonDxy0_t, genMuonLxy0_t, nGenMuon_t);	 
 	 histos1D_[ "nGenMuons_Mu40" ]->Fill(nGenMuon_t);
-	 histos1D_[ "ptGenMuon_Mu40" ]->Fill(genMuonPt0_t);
-	 histos1D_[ "etaGenMuon_Mu40" ]->Fill(genMuonEta0_t);
-	 histos1D_[ "phiGenMuon_Mu40" ]->Fill(genMuonPhi0_t);
-	 histos1D_[ "dxyGenMuon_Mu40" ]->Fill(genMuonDxy0_t);
-	 histos1D_[ "lxyGenMuon_Mu40" ]->Fill(genMuonLxy0_t);
+	 if(genMuonPt0_t!=-1.){
+	   histos1D_[ "ptGenMuon_Mu40" ]->Fill(genMuonPt0_t);
+	   histos1D_[ "etaGenMuon_Mu40" ]->Fill(genMuonEta0_t);
+	   histos1D_[ "phiGenMuon_Mu40" ]->Fill(genMuonPhi0_t);
+	   histos1D_[ "dxyGenMuon_Mu40" ]->Fill(genMuonDxy0_t);
+	   histos1D_[ "lxyGenMuon_Mu40" ]->Fill(genMuonLxy0_t);
+	 }
 	 	 
 	 //find hltL2Muons, for events passing trigger
 	 double hltL2MuonPt0_t, hltL2MuonEta0_t, hltL2MuonPhi0_t, hltL2MuonDxy0_t, hltL2MuonLxy0_t;
 	 int nHltL2Muon_t;
 	 hltL2Muons(iEvent, hltL2MuonPt0_t, hltL2MuonEta0_t, hltL2MuonPhi0_t, hltL2MuonDxy0_t, hltL2MuonLxy0_t, nHltL2Muon_t);	 
 	 histos1D_[ "nHltL2MuonTracks_Mu40" ]->Fill(nHltL2Muon_t);
-	 histos1D_[ "ptHltL2MuonTrack_Mu40" ]->Fill(hltL2MuonPt0_t);
-	 histos1D_[ "etaHltL2MuonTrack_Mu40" ]->Fill(hltL2MuonEta0_t);
-	 histos1D_[ "phiHltL2MuonTrack_Mu40" ]->Fill(hltL2MuonPhi0_t);
-	 histos1D_[ "dxyHltL2MuonTrack_Mu40" ]->Fill(hltL2MuonDxy0_t);
-	 histos1D_[ "lxyHltL2MuonTrack_Mu40" ]->Fill(hltL2MuonLxy0_t);
-	 	 
+	 if(hltL2MuonPt0_t!=-1.){
+	   histos1D_[ "ptHltL2MuonTrack_Mu40" ]->Fill(hltL2MuonPt0_t);
+	   histos1D_[ "etaHltL2MuonTrack_Mu40" ]->Fill(hltL2MuonEta0_t);
+	   histos1D_[ "phiHltL2MuonTrack_Mu40" ]->Fill(hltL2MuonPhi0_t);
+	   histos1D_[ "dxyHltL2MuonTrack_Mu40" ]->Fill(hltL2MuonDxy0_t);
+	   histos1D_[ "lxyHltL2MuonTrack_Mu40" ]->Fill(hltL2MuonLxy0_t);
+	 }	 	 
+
        }//end of index< sizeFilters
        cout<<endl;
      }//end of pass trigger
@@ -523,23 +533,27 @@ HLTAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 	 int nGenMuon_t;
 	 genMuons(iEvent, genMuonPt0_t, genMuonEta0_t, genMuonPhi0_t, genMuonDxy0_t, genMuonLxy0_t, nGenMuon_t);	 
 	 histos1D_[ "nGenMuons_IsoMu24_IterTrk02" ]->Fill(nGenMuon_t);
-	 histos1D_[ "ptGenMuon_IsoMu24_IterTrk02" ]->Fill(genMuonPt0_t);
-	 histos1D_[ "etaGenMuon_IsoMu24_IterTrk02" ]->Fill(genMuonEta0_t);
-	 histos1D_[ "phiGenMuon_IsoMu24_IterTrk02" ]->Fill(genMuonPhi0_t);
-	 histos1D_[ "dxyGenMuon_IsoMu24_IterTrk02" ]->Fill(genMuonDxy0_t);
-	 histos1D_[ "lxyGenMuon_IsoMu24_IterTrk02" ]->Fill(genMuonLxy0_t);
-	 	 
+	 if(genMuonPt0_t!=-1.){
+	   histos1D_[ "ptGenMuon_IsoMu24_IterTrk02" ]->Fill(genMuonPt0_t);
+	   histos1D_[ "etaGenMuon_IsoMu24_IterTrk02" ]->Fill(genMuonEta0_t);
+	   histos1D_[ "phiGenMuon_IsoMu24_IterTrk02" ]->Fill(genMuonPhi0_t);
+	   histos1D_[ "dxyGenMuon_IsoMu24_IterTrk02" ]->Fill(genMuonDxy0_t);
+	   histos1D_[ "lxyGenMuon_IsoMu24_IterTrk02" ]->Fill(genMuonLxy0_t);
+	 }
+
 	 //find hltL2Muons, for events passing trigger
 	 double hltL2MuonPt0_t, hltL2MuonEta0_t, hltL2MuonPhi0_t, hltL2MuonDxy0_t, hltL2MuonLxy0_t;
 	 int nHltL2Muon_t;
 	 hltL2Muons(iEvent, hltL2MuonPt0_t, hltL2MuonEta0_t, hltL2MuonPhi0_t, hltL2MuonDxy0_t, hltL2MuonLxy0_t, nHltL2Muon_t);	 
 	 histos1D_[ "nHltL2MuonTracks_IsoMu24_IterTrk02" ]->Fill(nHltL2Muon_t);
-	 histos1D_[ "ptHltL2MuonTrack_IsoMu24_IterTrk02" ]->Fill(hltL2MuonPt0_t);
-	 histos1D_[ "etaHltL2MuonTrack_IsoMu24_IterTrk02" ]->Fill(hltL2MuonEta0_t);
-	 histos1D_[ "phiHltL2MuonTrack_IsoMu24_IterTrk02" ]->Fill(hltL2MuonPhi0_t);
-	 histos1D_[ "dxyHltL2MuonTrack_IsoMu24_IterTrk02" ]->Fill(hltL2MuonDxy0_t);
-	 histos1D_[ "lxyHltL2MuonTrack_IsoMu24_IterTrk02" ]->Fill(hltL2MuonLxy0_t);
-	 
+	 if(hltL2MuonPt0_t!=-1.){
+	   histos1D_[ "ptHltL2MuonTrack_IsoMu24_IterTrk02" ]->Fill(hltL2MuonPt0_t);
+	   histos1D_[ "etaHltL2MuonTrack_IsoMu24_IterTrk02" ]->Fill(hltL2MuonEta0_t);
+	   histos1D_[ "phiHltL2MuonTrack_IsoMu24_IterTrk02" ]->Fill(hltL2MuonPhi0_t);
+	   histos1D_[ "dxyHltL2MuonTrack_IsoMu24_IterTrk02" ]->Fill(hltL2MuonDxy0_t);
+	   histos1D_[ "lxyHltL2MuonTrack_IsoMu24_IterTrk02" ]->Fill(hltL2MuonLxy0_t);
+	 }
+
        }//end of index< sizeFilters
        cout<<endl;
      }//end of pass trigger
@@ -579,22 +593,26 @@ HLTAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 	 int nGenMuon_t;
 	 genMuons(iEvent, genMuonPt0_t, genMuonEta0_t, genMuonPhi0_t, genMuonDxy0_t, genMuonLxy0_t, nGenMuon_t);	 
 	 histos1D_[ "nGenMuons_IsoTkMu24_IterTrk02" ]->Fill(nGenMuon_t);
-	 histos1D_[ "ptGenMuon_IsoTkMu24_IterTrk02" ]->Fill(genMuonPt0_t);
-	 histos1D_[ "etaGenMuon_IsoTkMu24_IterTrk02" ]->Fill(genMuonEta0_t);
-	 histos1D_[ "phiGenMuon_IsoTkMu24_IterTrk02" ]->Fill(genMuonPhi0_t);
-	 histos1D_[ "dxyGenMuon_IsoTkMu24_IterTrk02" ]->Fill(genMuonDxy0_t);
-	 histos1D_[ "lxyGenMuon_IsoTkMu24_IterTrk02" ]->Fill(genMuonLxy0_t);
-	 	 
+	 if(genMuonPt0_t!=-1.){
+	   histos1D_[ "ptGenMuon_IsoTkMu24_IterTrk02" ]->Fill(genMuonPt0_t);
+	   histos1D_[ "etaGenMuon_IsoTkMu24_IterTrk02" ]->Fill(genMuonEta0_t);
+	   histos1D_[ "phiGenMuon_IsoTkMu24_IterTrk02" ]->Fill(genMuonPhi0_t);
+	   histos1D_[ "dxyGenMuon_IsoTkMu24_IterTrk02" ]->Fill(genMuonDxy0_t);
+	   histos1D_[ "lxyGenMuon_IsoTkMu24_IterTrk02" ]->Fill(genMuonLxy0_t);
+	 }
+
 	 //find hltL2Muons, for events passing trigger
 	 double hltL2MuonPt0_t, hltL2MuonEta0_t, hltL2MuonPhi0_t, hltL2MuonDxy0_t, hltL2MuonLxy0_t;
 	 int nHltL2Muon_t;
 	 hltL2Muons(iEvent, hltL2MuonPt0_t, hltL2MuonEta0_t, hltL2MuonPhi0_t, hltL2MuonDxy0_t, hltL2MuonLxy0_t, nHltL2Muon_t);	 
 	 histos1D_[ "nHltL2MuonTracks_IsoTkMu24_IterTrk02" ]->Fill(nHltL2Muon_t);
-	 histos1D_[ "ptHltL2MuonTrack_IsoTkMu24_IterTrk02" ]->Fill(hltL2MuonPt0_t);
-	 histos1D_[ "etaHltL2MuonTrack_IsoTkMu24_IterTrk02" ]->Fill(hltL2MuonEta0_t);
-	 histos1D_[ "phiHltL2MuonTrack_IsoTkMu24_IterTrk02" ]->Fill(hltL2MuonPhi0_t);
-	 histos1D_[ "dxyHltL2MuonTrack_IsoTkMu24_IterTrk02" ]->Fill(hltL2MuonDxy0_t);
-	 histos1D_[ "lxyHltL2MuonTrack_IsoTkMu24_IterTrk02" ]->Fill(hltL2MuonLxy0_t);
+	 if(hltL2MuonPt0_t!=-1.){
+	   histos1D_[ "ptHltL2MuonTrack_IsoTkMu24_IterTrk02" ]->Fill(hltL2MuonPt0_t);
+	   histos1D_[ "etaHltL2MuonTrack_IsoTkMu24_IterTrk02" ]->Fill(hltL2MuonEta0_t);
+	   histos1D_[ "phiHltL2MuonTrack_IsoTkMu24_IterTrk02" ]->Fill(hltL2MuonPhi0_t);
+	   histos1D_[ "dxyHltL2MuonTrack_IsoTkMu24_IterTrk02" ]->Fill(hltL2MuonDxy0_t);
+	   histos1D_[ "lxyHltL2MuonTrack_IsoTkMu24_IterTrk02" ]->Fill(hltL2MuonLxy0_t);
+	 }
 
        }//end of index< sizeFilters
        cout<<endl;
@@ -635,22 +653,26 @@ HLTAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 	 int nGenMuon_t;
 	 genMuons(iEvent, genMuonPt0_t, genMuonEta0_t, genMuonPhi0_t, genMuonDxy0_t, genMuonLxy0_t, nGenMuon_t);	 
 	 histos1D_[ "nGenMuons_Mu17_Mu8" ]->Fill(nGenMuon_t);
-	 histos1D_[ "ptGenMuon_Mu17_Mu8" ]->Fill(genMuonPt0_t);
-	 histos1D_[ "etaGenMuon_Mu17_Mu8" ]->Fill(genMuonEta0_t);
-	 histos1D_[ "phiGenMuon_Mu17_Mu8" ]->Fill(genMuonPhi0_t);
-	 histos1D_[ "dxyGenMuon_Mu17_Mu8" ]->Fill(genMuonDxy0_t);
-	 histos1D_[ "lxyGenMuon_Mu17_Mu8" ]->Fill(genMuonLxy0_t);
-	 	 
+	 if(genMuonPt0_t!=-1.){
+	   histos1D_[ "ptGenMuon_Mu17_Mu8" ]->Fill(genMuonPt0_t);
+	   histos1D_[ "etaGenMuon_Mu17_Mu8" ]->Fill(genMuonEta0_t);
+	   histos1D_[ "phiGenMuon_Mu17_Mu8" ]->Fill(genMuonPhi0_t);
+	   histos1D_[ "dxyGenMuon_Mu17_Mu8" ]->Fill(genMuonDxy0_t);
+	   histos1D_[ "lxyGenMuon_Mu17_Mu8" ]->Fill(genMuonLxy0_t);
+	 }	 	 
+
 	 //find hltL2Muons, for events passing trigger
 	 double hltL2MuonPt0_t, hltL2MuonEta0_t, hltL2MuonPhi0_t, hltL2MuonDxy0_t, hltL2MuonLxy0_t;
 	 int nHltL2Muon_t;
 	 hltL2Muons(iEvent, hltL2MuonPt0_t, hltL2MuonEta0_t, hltL2MuonPhi0_t, hltL2MuonDxy0_t, hltL2MuonLxy0_t, nHltL2Muon_t);	 
 	 histos1D_[ "nHltL2MuonTracks_Mu17_Mu8" ]->Fill(nHltL2Muon_t);
-	 histos1D_[ "ptHltL2MuonTrack_Mu17_Mu8" ]->Fill(hltL2MuonPt0_t);
-	 histos1D_[ "etaHltL2MuonTrack_Mu17_Mu8" ]->Fill(hltL2MuonEta0_t);
-	 histos1D_[ "phiHltL2MuonTrack_Mu17_Mu8" ]->Fill(hltL2MuonPhi0_t);
-	 histos1D_[ "dxyHltL2MuonTrack_Mu17_Mu8" ]->Fill(hltL2MuonDxy0_t);
-	 histos1D_[ "lxyHltL2MuonTrack_Mu17_Mu8" ]->Fill(hltL2MuonLxy0_t);
+	 if(hltL2MuonPt0_t!=-1.){
+	   histos1D_[ "ptHltL2MuonTrack_Mu17_Mu8" ]->Fill(hltL2MuonPt0_t);
+	   histos1D_[ "etaHltL2MuonTrack_Mu17_Mu8" ]->Fill(hltL2MuonEta0_t);
+	   histos1D_[ "phiHltL2MuonTrack_Mu17_Mu8" ]->Fill(hltL2MuonPhi0_t);
+	   histos1D_[ "dxyHltL2MuonTrack_Mu17_Mu8" ]->Fill(hltL2MuonDxy0_t);
+	   histos1D_[ "lxyHltL2MuonTrack_Mu17_Mu8" ]->Fill(hltL2MuonLxy0_t);
+	 }
 
        }//end of index< sizeFilters
        cout<<endl;
@@ -691,22 +713,26 @@ HLTAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 	 int nGenMuon_t;
 	 genMuons(iEvent, genMuonPt0_t, genMuonEta0_t, genMuonPhi0_t, genMuonDxy0_t, genMuonLxy0_t, nGenMuon_t);	 
 	 histos1D_[ "nGenMuons_Mu17_TkMu8" ]->Fill(nGenMuon_t);
-	 histos1D_[ "ptGenMuon_Mu17_TkMu8" ]->Fill(genMuonPt0_t);
-	 histos1D_[ "etaGenMuon_Mu17_TkMu8" ]->Fill(genMuonEta0_t);
-	 histos1D_[ "phiGenMuon_Mu17_TkMu8" ]->Fill(genMuonPhi0_t);
-	 histos1D_[ "dxyGenMuon_Mu17_TkMu8" ]->Fill(genMuonDxy0_t);
-	 histos1D_[ "lxyGenMuon_Mu17_TkMu8" ]->Fill(genMuonLxy0_t);
-	 	 
+	 if(genMuonPt0_t!=-1.){
+	   histos1D_[ "ptGenMuon_Mu17_TkMu8" ]->Fill(genMuonPt0_t);
+	   histos1D_[ "etaGenMuon_Mu17_TkMu8" ]->Fill(genMuonEta0_t);
+	   histos1D_[ "phiGenMuon_Mu17_TkMu8" ]->Fill(genMuonPhi0_t);
+	   histos1D_[ "dxyGenMuon_Mu17_TkMu8" ]->Fill(genMuonDxy0_t);
+	   histos1D_[ "lxyGenMuon_Mu17_TkMu8" ]->Fill(genMuonLxy0_t);
+	 }	 	 
+
 	 //find hltL2Muons, for events passing trigger
 	 double hltL2MuonPt0_t, hltL2MuonEta0_t, hltL2MuonPhi0_t, hltL2MuonDxy0_t, hltL2MuonLxy0_t;
 	 int nHltL2Muon_t;
 	 hltL2Muons(iEvent, hltL2MuonPt0_t, hltL2MuonEta0_t, hltL2MuonPhi0_t, hltL2MuonDxy0_t, hltL2MuonLxy0_t, nHltL2Muon_t);	 
 	 histos1D_[ "nHltL2MuonTracks_Mu17_TkMu8" ]->Fill(nHltL2Muon_t);
-	 histos1D_[ "ptHltL2MuonTrack_Mu17_TkMu8" ]->Fill(hltL2MuonPt0_t);
-	 histos1D_[ "etaHltL2MuonTrack_Mu17_TkMu8" ]->Fill(hltL2MuonEta0_t);
-	 histos1D_[ "phiHltL2MuonTrack_Mu17_TkMu8" ]->Fill(hltL2MuonPhi0_t);
-	 histos1D_[ "dxyHltL2MuonTrack_Mu17_TkMu8" ]->Fill(hltL2MuonDxy0_t);
-	 histos1D_[ "lxyHltL2MuonTrack_Mu17_TkMu8" ]->Fill(hltL2MuonLxy0_t);
+	 if(hltL2MuonPt0_t!=-1.){
+	   histos1D_[ "ptHltL2MuonTrack_Mu17_TkMu8" ]->Fill(hltL2MuonPt0_t);
+	   histos1D_[ "etaHltL2MuonTrack_Mu17_TkMu8" ]->Fill(hltL2MuonEta0_t);
+	   histos1D_[ "phiHltL2MuonTrack_Mu17_TkMu8" ]->Fill(hltL2MuonPhi0_t);
+	   histos1D_[ "dxyHltL2MuonTrack_Mu17_TkMu8" ]->Fill(hltL2MuonDxy0_t);
+	   histos1D_[ "lxyHltL2MuonTrack_Mu17_TkMu8" ]->Fill(hltL2MuonLxy0_t);
+	 }
 
        }//end of index< sizeFilters
        cout<<endl;
@@ -747,22 +773,26 @@ HLTAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 	 int nGenMuon_t;
 	 genMuons(iEvent, genMuonPt0_t, genMuonEta0_t, genMuonPhi0_t, genMuonDxy0_t, genMuonLxy0_t, nGenMuon_t);	 
 	 histos1D_[ "nGenMuons_Mu30_TkMu11" ]->Fill(nGenMuon_t);
-	 histos1D_[ "ptGenMuon_Mu30_TkMu11" ]->Fill(genMuonPt0_t);
-	 histos1D_[ "etaGenMuon_Mu30_TkMu11" ]->Fill(genMuonEta0_t);
-	 histos1D_[ "phiGenMuon_Mu30_TkMu11" ]->Fill(genMuonPhi0_t);
-	 histos1D_[ "dxyGenMuon_Mu30_TkMu11" ]->Fill(genMuonDxy0_t);
-	 histos1D_[ "lxyGenMuon_Mu30_TkMu11" ]->Fill(genMuonLxy0_t);
-	 	 
+	 if(genMuonPt0_t!=-1.){
+	   histos1D_[ "ptGenMuon_Mu30_TkMu11" ]->Fill(genMuonPt0_t);
+	   histos1D_[ "etaGenMuon_Mu30_TkMu11" ]->Fill(genMuonEta0_t);
+	   histos1D_[ "phiGenMuon_Mu30_TkMu11" ]->Fill(genMuonPhi0_t);
+	   histos1D_[ "dxyGenMuon_Mu30_TkMu11" ]->Fill(genMuonDxy0_t);
+	   histos1D_[ "lxyGenMuon_Mu30_TkMu11" ]->Fill(genMuonLxy0_t);
+	 }
+
 	 //find hltL2Muons, for events passing trigger
 	 double hltL2MuonPt0_t, hltL2MuonEta0_t, hltL2MuonPhi0_t, hltL2MuonDxy0_t, hltL2MuonLxy0_t;
 	 int nHltL2Muon_t;
 	 hltL2Muons(iEvent, hltL2MuonPt0_t, hltL2MuonEta0_t, hltL2MuonPhi0_t, hltL2MuonDxy0_t, hltL2MuonLxy0_t, nHltL2Muon_t);	 
 	 histos1D_[ "nHltL2MuonTracks_Mu30_TkMu11" ]->Fill(nHltL2Muon_t);
-	 histos1D_[ "ptHltL2MuonTrack_Mu30_TkMu11" ]->Fill(hltL2MuonPt0_t);
-	 histos1D_[ "etaHltL2MuonTrack_Mu30_TkMu11" ]->Fill(hltL2MuonEta0_t);
-	 histos1D_[ "phiHltL2MuonTrack_Mu30_TkMu11" ]->Fill(hltL2MuonPhi0_t);
-	 histos1D_[ "dxyHltL2MuonTrack_Mu30_TkMu11" ]->Fill(hltL2MuonDxy0_t);
-	 histos1D_[ "lxyHltL2MuonTrack_Mu30_TkMu11" ]->Fill(hltL2MuonLxy0_t);
+	 if(hltL2MuonPt0_t!=-1.){
+	   histos1D_[ "ptHltL2MuonTrack_Mu30_TkMu11" ]->Fill(hltL2MuonPt0_t);
+	   histos1D_[ "etaHltL2MuonTrack_Mu30_TkMu11" ]->Fill(hltL2MuonEta0_t);
+	   histos1D_[ "phiHltL2MuonTrack_Mu30_TkMu11" ]->Fill(hltL2MuonPhi0_t);
+	   histos1D_[ "dxyHltL2MuonTrack_Mu30_TkMu11" ]->Fill(hltL2MuonDxy0_t);
+	   histos1D_[ "lxyHltL2MuonTrack_Mu30_TkMu11" ]->Fill(hltL2MuonLxy0_t);
+	 }
 
        }//end of index< sizeFilters
        cout<<endl;
@@ -803,22 +833,26 @@ HLTAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 	 int nGenMuon_t;
 	 genMuons(iEvent, genMuonPt0_t, genMuonEta0_t, genMuonPhi0_t, genMuonDxy0_t, genMuonLxy0_t, nGenMuon_t);	 
 	 histos1D_[ "nGenMuons_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL" ]->Fill(nGenMuon_t);
-	 histos1D_[ "ptGenMuon_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL" ]->Fill(genMuonPt0_t);
-	 histos1D_[ "etaGenMuon_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL" ]->Fill(genMuonEta0_t);
-	 histos1D_[ "phiGenMuon_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL" ]->Fill(genMuonPhi0_t);
-	 histos1D_[ "dxyGenMuon_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL" ]->Fill(genMuonDxy0_t);
-	 histos1D_[ "lxyGenMuon_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL" ]->Fill(genMuonLxy0_t);
-	 	 
+	 if(genMuonPt0_t!=-1.){
+	   histos1D_[ "ptGenMuon_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL" ]->Fill(genMuonPt0_t);
+	   histos1D_[ "etaGenMuon_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL" ]->Fill(genMuonEta0_t);
+	   histos1D_[ "phiGenMuon_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL" ]->Fill(genMuonPhi0_t);
+	   histos1D_[ "dxyGenMuon_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL" ]->Fill(genMuonDxy0_t);
+	   histos1D_[ "lxyGenMuon_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL" ]->Fill(genMuonLxy0_t);
+	 }
+
 	 //find hltL2Muons, for events passing trigger
 	 double hltL2MuonPt0_t, hltL2MuonEta0_t, hltL2MuonPhi0_t, hltL2MuonDxy0_t, hltL2MuonLxy0_t;
 	 int nHltL2Muon_t;
 	 hltL2Muons(iEvent, hltL2MuonPt0_t, hltL2MuonEta0_t, hltL2MuonPhi0_t, hltL2MuonDxy0_t, hltL2MuonLxy0_t, nHltL2Muon_t);	 
 	 histos1D_[ "nHltL2MuonTracks_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL" ]->Fill(nHltL2Muon_t);
-	 histos1D_[ "ptHltL2MuonTrack_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL" ]->Fill(hltL2MuonPt0_t);
-	 histos1D_[ "etaHltL2MuonTrack_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL" ]->Fill(hltL2MuonEta0_t);
-	 histos1D_[ "phiHltL2MuonTrack_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL" ]->Fill(hltL2MuonPhi0_t);
-	 histos1D_[ "dxyHltL2MuonTrack_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL" ]->Fill(hltL2MuonDxy0_t);
-	 histos1D_[ "lxyHltL2MuonTrack_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL" ]->Fill(hltL2MuonLxy0_t);
+	 if(hltL2MuonPt0_t!=-1.){
+	   histos1D_[ "ptHltL2MuonTrack_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL" ]->Fill(hltL2MuonPt0_t);
+	   histos1D_[ "etaHltL2MuonTrack_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL" ]->Fill(hltL2MuonEta0_t);
+	   histos1D_[ "phiHltL2MuonTrack_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL" ]->Fill(hltL2MuonPhi0_t);
+	   histos1D_[ "dxyHltL2MuonTrack_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL" ]->Fill(hltL2MuonDxy0_t);
+	   histos1D_[ "lxyHltL2MuonTrack_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL" ]->Fill(hltL2MuonLxy0_t);
+	 }
 
        }//end of index< sizeFilters
        cout<<endl;
@@ -859,22 +893,26 @@ HLTAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 	 int nGenMuon_t;
 	 genMuons(iEvent, genMuonPt0_t, genMuonEta0_t, genMuonPhi0_t, genMuonDxy0_t, genMuonLxy0_t, nGenMuon_t);	 
 	 histos1D_[ "nGenMuons_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL" ]->Fill(nGenMuon_t);
-	 histos1D_[ "ptGenMuon_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL" ]->Fill(genMuonPt0_t);
-	 histos1D_[ "etaGenMuon_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL" ]->Fill(genMuonEta0_t);
-	 histos1D_[ "phiGenMuon_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL" ]->Fill(genMuonPhi0_t);
-	 histos1D_[ "dxyGenMuon_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL" ]->Fill(genMuonDxy0_t);
-	 histos1D_[ "lxyGenMuon_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL" ]->Fill(genMuonLxy0_t);
-	 	 
+	 if(genMuonPt0_t!=-1.){
+	   histos1D_[ "ptGenMuon_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL" ]->Fill(genMuonPt0_t);
+	   histos1D_[ "etaGenMuon_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL" ]->Fill(genMuonEta0_t);
+	   histos1D_[ "phiGenMuon_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL" ]->Fill(genMuonPhi0_t);
+	   histos1D_[ "dxyGenMuon_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL" ]->Fill(genMuonDxy0_t);
+	   histos1D_[ "lxyGenMuon_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL" ]->Fill(genMuonLxy0_t);
+	 }	 	 
+
 	 //find hltL2Muons, for events passing trigger
 	 double hltL2MuonPt0_t, hltL2MuonEta0_t, hltL2MuonPhi0_t, hltL2MuonDxy0_t, hltL2MuonLxy0_t;
 	 int nHltL2Muon_t;
 	 hltL2Muons(iEvent, hltL2MuonPt0_t, hltL2MuonEta0_t, hltL2MuonPhi0_t, hltL2MuonDxy0_t, hltL2MuonLxy0_t, nHltL2Muon_t);	 
 	 histos1D_[ "nHltL2MuonTracks_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL" ]->Fill(nHltL2Muon_t);
-	 histos1D_[ "ptHltL2MuonTrack_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL" ]->Fill(hltL2MuonPt0_t);
-	 histos1D_[ "etaHltL2MuonTrack_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL" ]->Fill(hltL2MuonEta0_t);
-	 histos1D_[ "phiHltL2MuonTrack_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL" ]->Fill(hltL2MuonPhi0_t);
-	 histos1D_[ "dxyHltL2MuonTrack_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL" ]->Fill(hltL2MuonDxy0_t);
-	 histos1D_[ "lxyHltL2MuonTrack_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL" ]->Fill(hltL2MuonLxy0_t);
+	 if(hltL2MuonPt0_t!=-1.){
+	   histos1D_[ "ptHltL2MuonTrack_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL" ]->Fill(hltL2MuonPt0_t);
+	   histos1D_[ "etaHltL2MuonTrack_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL" ]->Fill(hltL2MuonEta0_t);
+	   histos1D_[ "phiHltL2MuonTrack_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL" ]->Fill(hltL2MuonPhi0_t);
+	   histos1D_[ "dxyHltL2MuonTrack_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL" ]->Fill(hltL2MuonDxy0_t);
+	   histos1D_[ "lxyHltL2MuonTrack_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL" ]->Fill(hltL2MuonLxy0_t);
+	 }
 
        }//end of index< sizeFilters
        cout<<endl;
@@ -916,22 +954,26 @@ HLTAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 	 int nGenMuon_t;
 	 genMuons(iEvent, genMuonPt0_t, genMuonEta0_t, genMuonPhi0_t, genMuonDxy0_t, genMuonLxy0_t, nGenMuon_t);	 
 	 histos1D_[ "nGenMuons_DoubleMu33NoFiltersNoVtx" ]->Fill(nGenMuon_t);
-	 histos1D_[ "ptGenMuon_DoubleMu33NoFiltersNoVtx" ]->Fill(genMuonPt0_t);
-	 histos1D_[ "etaGenMuon_DoubleMu33NoFiltersNoVtx" ]->Fill(genMuonEta0_t);
-	 histos1D_[ "phiGenMuon_DoubleMu33NoFiltersNoVtx" ]->Fill(genMuonPhi0_t);
-	 histos1D_[ "dxyGenMuon_DoubleMu33NoFiltersNoVtx" ]->Fill(genMuonDxy0_t);
-	 histos1D_[ "lxyGenMuon_DoubleMu33NoFiltersNoVtx" ]->Fill(genMuonLxy0_t);
-	 	 
+	 if(genMuonPt0_t!=-1.){
+	   histos1D_[ "ptGenMuon_DoubleMu33NoFiltersNoVtx" ]->Fill(genMuonPt0_t);
+	   histos1D_[ "etaGenMuon_DoubleMu33NoFiltersNoVtx" ]->Fill(genMuonEta0_t);
+	   histos1D_[ "phiGenMuon_DoubleMu33NoFiltersNoVtx" ]->Fill(genMuonPhi0_t);
+	   histos1D_[ "dxyGenMuon_DoubleMu33NoFiltersNoVtx" ]->Fill(genMuonDxy0_t);
+	   histos1D_[ "lxyGenMuon_DoubleMu33NoFiltersNoVtx" ]->Fill(genMuonLxy0_t);
+	 }	 	 
+
 	 //find hltL2Muons, for events passing trigger
 	 double hltL2MuonPt0_t, hltL2MuonEta0_t, hltL2MuonPhi0_t, hltL2MuonDxy0_t, hltL2MuonLxy0_t;
 	 int nHltL2Muon_t;
 	 hltL2Muons(iEvent, hltL2MuonPt0_t, hltL2MuonEta0_t, hltL2MuonPhi0_t, hltL2MuonDxy0_t, hltL2MuonLxy0_t, nHltL2Muon_t);	 
 	 histos1D_[ "nHltL2MuonTracks_DoubleMu33NoFiltersNoVtx" ]->Fill(nHltL2Muon_t);
-	 histos1D_[ "ptHltL2MuonTrack_DoubleMu33NoFiltersNoVtx" ]->Fill(hltL2MuonPt0_t);
-	 histos1D_[ "etaHltL2MuonTrack_DoubleMu33NoFiltersNoVtx" ]->Fill(hltL2MuonEta0_t);
-	 histos1D_[ "phiHltL2MuonTrack_DoubleMu33NoFiltersNoVtx" ]->Fill(hltL2MuonPhi0_t);
-	 histos1D_[ "dxyHltL2MuonTrack_DoubleMu33NoFiltersNoVtx" ]->Fill(hltL2MuonDxy0_t);
-	 histos1D_[ "lxyHltL2MuonTrack_DoubleMu33NoFiltersNoVtx" ]->Fill(hltL2MuonLxy0_t);
+	 if(hltL2MuonPt0_t!=-1.){
+	   histos1D_[ "ptHltL2MuonTrack_DoubleMu33NoFiltersNoVtx" ]->Fill(hltL2MuonPt0_t);
+	   histos1D_[ "etaHltL2MuonTrack_DoubleMu33NoFiltersNoVtx" ]->Fill(hltL2MuonEta0_t);
+	   histos1D_[ "phiHltL2MuonTrack_DoubleMu33NoFiltersNoVtx" ]->Fill(hltL2MuonPhi0_t);
+	   histos1D_[ "dxyHltL2MuonTrack_DoubleMu33NoFiltersNoVtx" ]->Fill(hltL2MuonDxy0_t);
+	   histos1D_[ "lxyHltL2MuonTrack_DoubleMu33NoFiltersNoVtx" ]->Fill(hltL2MuonLxy0_t);
+	 }
 
        }//end of index< sizeFilters
        cout<<endl;
@@ -973,22 +1015,26 @@ HLTAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 	 int nGenMuon_t;
 	 genMuons(iEvent, genMuonPt0_t, genMuonEta0_t, genMuonPhi0_t, genMuonDxy0_t, genMuonLxy0_t, nGenMuon_t);	 
 	 histos1D_[ "nGenMuons_DoubleMu23NoFiltersNoVtxDisplaced" ]->Fill(nGenMuon_t);
-	 histos1D_[ "ptGenMuon_DoubleMu23NoFiltersNoVtxDisplaced" ]->Fill(genMuonPt0_t);
-	 histos1D_[ "etaGenMuon_DoubleMu23NoFiltersNoVtxDisplaced" ]->Fill(genMuonEta0_t);
-	 histos1D_[ "phiGenMuon_DoubleMu23NoFiltersNoVtxDisplaced" ]->Fill(genMuonPhi0_t);
-	 histos1D_[ "dxyGenMuon_DoubleMu23NoFiltersNoVtxDisplaced" ]->Fill(genMuonDxy0_t);
-	 histos1D_[ "lxyGenMuon_DoubleMu23NoFiltersNoVtxDisplaced" ]->Fill(genMuonLxy0_t);
-	 	 
+	 if(genMuonPt0_t!=-1.){
+	   histos1D_[ "ptGenMuon_DoubleMu23NoFiltersNoVtxDisplaced" ]->Fill(genMuonPt0_t);
+	   histos1D_[ "etaGenMuon_DoubleMu23NoFiltersNoVtxDisplaced" ]->Fill(genMuonEta0_t);
+	   histos1D_[ "phiGenMuon_DoubleMu23NoFiltersNoVtxDisplaced" ]->Fill(genMuonPhi0_t);
+	   histos1D_[ "dxyGenMuon_DoubleMu23NoFiltersNoVtxDisplaced" ]->Fill(genMuonDxy0_t);
+	   histos1D_[ "lxyGenMuon_DoubleMu23NoFiltersNoVtxDisplaced" ]->Fill(genMuonLxy0_t);
+	 }	 	 
+
 	 //find hltL2Muons, for events passing trigger
 	 double hltL2MuonPt0_t, hltL2MuonEta0_t, hltL2MuonPhi0_t, hltL2MuonDxy0_t, hltL2MuonLxy0_t;
 	 int nHltL2Muon_t;
 	 hltL2Muons(iEvent, hltL2MuonPt0_t, hltL2MuonEta0_t, hltL2MuonPhi0_t, hltL2MuonDxy0_t, hltL2MuonLxy0_t, nHltL2Muon_t);	 
 	 histos1D_[ "nHltL2MuonTracks_DoubleMu23NoFiltersNoVtxDisplaced" ]->Fill(nHltL2Muon_t);
-	 histos1D_[ "ptHltL2MuonTrack_DoubleMu23NoFiltersNoVtxDisplaced" ]->Fill(hltL2MuonPt0_t);
-	 histos1D_[ "etaHltL2MuonTrack_DoubleMu23NoFiltersNoVtxDisplaced" ]->Fill(hltL2MuonEta0_t);
-	 histos1D_[ "phiHltL2MuonTrack_DoubleMu23NoFiltersNoVtxDisplaced" ]->Fill(hltL2MuonPhi0_t);
-	 histos1D_[ "dxyHltL2MuonTrack_DoubleMu23NoFiltersNoVtxDisplaced" ]->Fill(hltL2MuonDxy0_t);
-	 histos1D_[ "lxyHltL2MuonTrack_DoubleMu23NoFiltersNoVtxDisplaced" ]->Fill(hltL2MuonLxy0_t);
+	 if(hltL2MuonPt0_t!=-1.){
+	   histos1D_[ "ptHltL2MuonTrack_DoubleMu23NoFiltersNoVtxDisplaced" ]->Fill(hltL2MuonPt0_t);
+	   histos1D_[ "etaHltL2MuonTrack_DoubleMu23NoFiltersNoVtxDisplaced" ]->Fill(hltL2MuonEta0_t);
+	   histos1D_[ "phiHltL2MuonTrack_DoubleMu23NoFiltersNoVtxDisplaced" ]->Fill(hltL2MuonPhi0_t);
+	   histos1D_[ "dxyHltL2MuonTrack_DoubleMu23NoFiltersNoVtxDisplaced" ]->Fill(hltL2MuonDxy0_t);
+	   histos1D_[ "lxyHltL2MuonTrack_DoubleMu23NoFiltersNoVtxDisplaced" ]->Fill(hltL2MuonLxy0_t);
+	 }
 
        }//end of index< sizeFilters
        cout<<endl;
@@ -1031,22 +1077,26 @@ HLTAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 	 int nGenMuon_t;
 	 genMuons(iEvent, genMuonPt0_t, genMuonEta0_t, genMuonPhi0_t, genMuonDxy0_t, genMuonLxy0_t, nGenMuon_t);	 
 	 histos1D_[ "nGenMuons_L2DoubleMu28_NoVertex_2Cha_Angle2p5_Mass10" ]->Fill(nGenMuon_t);
-	 histos1D_[ "ptGenMuon_L2DoubleMu28_NoVertex_2Cha_Angle2p5_Mass10" ]->Fill(genMuonPt0_t);
-	 histos1D_[ "etaGenMuon_L2DoubleMu28_NoVertex_2Cha_Angle2p5_Mass10" ]->Fill(genMuonEta0_t);
-	 histos1D_[ "phiGenMuon_L2DoubleMu28_NoVertex_2Cha_Angle2p5_Mass10" ]->Fill(genMuonPhi0_t);
-	 histos1D_[ "dxyGenMuon_L2DoubleMu28_NoVertex_2Cha_Angle2p5_Mass10" ]->Fill(genMuonDxy0_t);
-	 histos1D_[ "lxyGenMuon_L2DoubleMu28_NoVertex_2Cha_Angle2p5_Mass10" ]->Fill(genMuonLxy0_t);
-	 	 
+	 if(genMuonPt0_t!=-1.){
+	   histos1D_[ "ptGenMuon_L2DoubleMu28_NoVertex_2Cha_Angle2p5_Mass10" ]->Fill(genMuonPt0_t);
+	   histos1D_[ "etaGenMuon_L2DoubleMu28_NoVertex_2Cha_Angle2p5_Mass10" ]->Fill(genMuonEta0_t);
+	   histos1D_[ "phiGenMuon_L2DoubleMu28_NoVertex_2Cha_Angle2p5_Mass10" ]->Fill(genMuonPhi0_t);
+	   histos1D_[ "dxyGenMuon_L2DoubleMu28_NoVertex_2Cha_Angle2p5_Mass10" ]->Fill(genMuonDxy0_t);
+	   histos1D_[ "lxyGenMuon_L2DoubleMu28_NoVertex_2Cha_Angle2p5_Mass10" ]->Fill(genMuonLxy0_t);
+	 }
+
 	 //find hltL2Muons, for events passing trigger
 	 double hltL2MuonPt0_t, hltL2MuonEta0_t, hltL2MuonPhi0_t, hltL2MuonDxy0_t, hltL2MuonLxy0_t;
 	 int nHltL2Muon_t;
 	 hltL2Muons(iEvent, hltL2MuonPt0_t, hltL2MuonEta0_t, hltL2MuonPhi0_t, hltL2MuonDxy0_t, hltL2MuonLxy0_t, nHltL2Muon_t);	 
 	 histos1D_[ "nHltL2MuonTracks_L2DoubleMu28_NoVertex_2Cha_Angle2p5_Mass10" ]->Fill(nHltL2Muon_t);
-	 histos1D_[ "ptHltL2MuonTrack_L2DoubleMu28_NoVertex_2Cha_Angle2p5_Mass10" ]->Fill(hltL2MuonPt0_t);
-	 histos1D_[ "etaHltL2MuonTrack_L2DoubleMu28_NoVertex_2Cha_Angle2p5_Mass10" ]->Fill(hltL2MuonEta0_t);
-	 histos1D_[ "phiHltL2MuonTrack_L2DoubleMu28_NoVertex_2Cha_Angle2p5_Mass10" ]->Fill(hltL2MuonPhi0_t);
-	 histos1D_[ "dxyHltL2MuonTrack_L2DoubleMu28_NoVertex_2Cha_Angle2p5_Mass10" ]->Fill(hltL2MuonDxy0_t);
-	 histos1D_[ "lxyHltL2MuonTrack_L2DoubleMu28_NoVertex_2Cha_Angle2p5_Mass10" ]->Fill(hltL2MuonLxy0_t);
+	 if(hltL2MuonPt0_t!=-1.){
+	   histos1D_[ "ptHltL2MuonTrack_L2DoubleMu28_NoVertex_2Cha_Angle2p5_Mass10" ]->Fill(hltL2MuonPt0_t);
+	   histos1D_[ "etaHltL2MuonTrack_L2DoubleMu28_NoVertex_2Cha_Angle2p5_Mass10" ]->Fill(hltL2MuonEta0_t);
+	   histos1D_[ "phiHltL2MuonTrack_L2DoubleMu28_NoVertex_2Cha_Angle2p5_Mass10" ]->Fill(hltL2MuonPhi0_t);
+	   histos1D_[ "dxyHltL2MuonTrack_L2DoubleMu28_NoVertex_2Cha_Angle2p5_Mass10" ]->Fill(hltL2MuonDxy0_t);
+	   histos1D_[ "lxyHltL2MuonTrack_L2DoubleMu28_NoVertex_2Cha_Angle2p5_Mass10" ]->Fill(hltL2MuonLxy0_t);
+	 }
 
        }//end of index< sizeFilters
        cout<<endl;
@@ -1087,22 +1137,26 @@ HLTAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 	 int nGenMuon_t;
 	 genMuons(iEvent, genMuonPt0_t, genMuonEta0_t, genMuonPhi0_t, genMuonDxy0_t, genMuonLxy0_t, nGenMuon_t);	 
 	 histos1D_[ "nGenMuons_L2Mu20_NoVertex_3Sta_NoBPTX3BX_NoHalo" ]->Fill(nGenMuon_t);
-	 histos1D_[ "ptGenMuon_L2Mu20_NoVertex_3Sta_NoBPTX3BX_NoHalo" ]->Fill(genMuonPt0_t);
-	 histos1D_[ "etaGenMuon_L2Mu20_NoVertex_3Sta_NoBPTX3BX_NoHalo" ]->Fill(genMuonEta0_t);
-	 histos1D_[ "phiGenMuon_L2Mu20_NoVertex_3Sta_NoBPTX3BX_NoHalo" ]->Fill(genMuonPhi0_t);
-	 histos1D_[ "dxyGenMuon_L2Mu20_NoVertex_3Sta_NoBPTX3BX_NoHalo" ]->Fill(genMuonDxy0_t);
-	 histos1D_[ "lxyGenMuon_L2Mu20_NoVertex_3Sta_NoBPTX3BX_NoHalo" ]->Fill(genMuonLxy0_t);
-	 	 
+	 if(genMuonPt0_t!=-1.){
+	   histos1D_[ "ptGenMuon_L2Mu20_NoVertex_3Sta_NoBPTX3BX_NoHalo" ]->Fill(genMuonPt0_t);
+	   histos1D_[ "etaGenMuon_L2Mu20_NoVertex_3Sta_NoBPTX3BX_NoHalo" ]->Fill(genMuonEta0_t);
+	   histos1D_[ "phiGenMuon_L2Mu20_NoVertex_3Sta_NoBPTX3BX_NoHalo" ]->Fill(genMuonPhi0_t);
+	   histos1D_[ "dxyGenMuon_L2Mu20_NoVertex_3Sta_NoBPTX3BX_NoHalo" ]->Fill(genMuonDxy0_t);
+	   histos1D_[ "lxyGenMuon_L2Mu20_NoVertex_3Sta_NoBPTX3BX_NoHalo" ]->Fill(genMuonLxy0_t);
+	 }
+
 	 //find hltL2Muons, for events passing trigger
 	 double hltL2MuonPt0_t, hltL2MuonEta0_t, hltL2MuonPhi0_t, hltL2MuonDxy0_t, hltL2MuonLxy0_t;
 	 int nHltL2Muon_t;
 	 hltL2Muons(iEvent, hltL2MuonPt0_t, hltL2MuonEta0_t, hltL2MuonPhi0_t, hltL2MuonDxy0_t, hltL2MuonLxy0_t, nHltL2Muon_t);	 
 	 histos1D_[ "nHltL2MuonTracks_L2Mu20_NoVertex_3Sta_NoBPTX3BX_NoHalo" ]->Fill(nHltL2Muon_t);
-	 histos1D_[ "ptHltL2MuonTrack_L2Mu20_NoVertex_3Sta_NoBPTX3BX_NoHalo" ]->Fill(hltL2MuonPt0_t);
-	 histos1D_[ "etaHltL2MuonTrack_L2Mu20_NoVertex_3Sta_NoBPTX3BX_NoHalo" ]->Fill(hltL2MuonEta0_t);
-	 histos1D_[ "phiHltL2MuonTrack_L2Mu20_NoVertex_3Sta_NoBPTX3BX_NoHalo" ]->Fill(hltL2MuonPhi0_t);
-	 histos1D_[ "dxyHltL2MuonTrack_L2Mu20_NoVertex_3Sta_NoBPTX3BX_NoHalo" ]->Fill(hltL2MuonDxy0_t);
-	 histos1D_[ "lxyHltL2MuonTrack_L2Mu20_NoVertex_3Sta_NoBPTX3BX_NoHalo" ]->Fill(hltL2MuonLxy0_t);
+	 if(hltL2MuonPt0_t!=-1.){
+	   histos1D_[ "ptHltL2MuonTrack_L2Mu20_NoVertex_3Sta_NoBPTX3BX_NoHalo" ]->Fill(hltL2MuonPt0_t);
+	   histos1D_[ "etaHltL2MuonTrack_L2Mu20_NoVertex_3Sta_NoBPTX3BX_NoHalo" ]->Fill(hltL2MuonEta0_t);
+	   histos1D_[ "phiHltL2MuonTrack_L2Mu20_NoVertex_3Sta_NoBPTX3BX_NoHalo" ]->Fill(hltL2MuonPhi0_t);
+	   histos1D_[ "dxyHltL2MuonTrack_L2Mu20_NoVertex_3Sta_NoBPTX3BX_NoHalo" ]->Fill(hltL2MuonDxy0_t);
+	   histos1D_[ "lxyHltL2MuonTrack_L2Mu20_NoVertex_3Sta_NoBPTX3BX_NoHalo" ]->Fill(hltL2MuonLxy0_t);
+	 }
 
        }//end of index< sizeFilters
        cout<<endl;
@@ -1143,22 +1197,26 @@ HLTAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 	 int nGenMuon_t;
 	 genMuons(iEvent, genMuonPt0_t, genMuonEta0_t, genMuonPhi0_t, genMuonDxy0_t, genMuonLxy0_t, nGenMuon_t);	 
 	 histos1D_[ "nGenMuons_Mu38NoFiltersNoVtx_Photon38_CaloIdL" ]->Fill(nGenMuon_t);
-	 histos1D_[ "ptGenMuon_Mu38NoFiltersNoVtx_Photon38_CaloIdL" ]->Fill(genMuonPt0_t);
-	 histos1D_[ "etaGenMuon_Mu38NoFiltersNoVtx_Photon38_CaloIdL" ]->Fill(genMuonEta0_t);
-	 histos1D_[ "phiGenMuon_Mu38NoFiltersNoVtx_Photon38_CaloIdL" ]->Fill(genMuonPhi0_t);
-	 histos1D_[ "dxyGenMuon_Mu38NoFiltersNoVtx_Photon38_CaloIdL" ]->Fill(genMuonDxy0_t);
-	 histos1D_[ "lxyGenMuon_Mu38NoFiltersNoVtx_Photon38_CaloIdL" ]->Fill(genMuonLxy0_t);
-	 	 
+	 if(genMuonPt0_t!=-1.){
+	   histos1D_[ "ptGenMuon_Mu38NoFiltersNoVtx_Photon38_CaloIdL" ]->Fill(genMuonPt0_t);
+	   histos1D_[ "etaGenMuon_Mu38NoFiltersNoVtx_Photon38_CaloIdL" ]->Fill(genMuonEta0_t);
+	   histos1D_[ "phiGenMuon_Mu38NoFiltersNoVtx_Photon38_CaloIdL" ]->Fill(genMuonPhi0_t);
+	   histos1D_[ "dxyGenMuon_Mu38NoFiltersNoVtx_Photon38_CaloIdL" ]->Fill(genMuonDxy0_t);
+	   histos1D_[ "lxyGenMuon_Mu38NoFiltersNoVtx_Photon38_CaloIdL" ]->Fill(genMuonLxy0_t);
+	 }
+
 	 //find hltL2Muons, for events passing trigger
 	 double hltL2MuonPt0_t, hltL2MuonEta0_t, hltL2MuonPhi0_t, hltL2MuonDxy0_t, hltL2MuonLxy0_t;
 	 int nHltL2Muon_t;
 	 hltL2Muons(iEvent, hltL2MuonPt0_t, hltL2MuonEta0_t, hltL2MuonPhi0_t, hltL2MuonDxy0_t, hltL2MuonLxy0_t, nHltL2Muon_t);	 
 	 histos1D_[ "nHltL2MuonTracks_Mu38NoFiltersNoVtx_Photon38_CaloIdL" ]->Fill(nHltL2Muon_t);
-	 histos1D_[ "ptHltL2MuonTrack_Mu38NoFiltersNoVtx_Photon38_CaloIdL" ]->Fill(hltL2MuonPt0_t);
-	 histos1D_[ "etaHltL2MuonTrack_Mu38NoFiltersNoVtx_Photon38_CaloIdL" ]->Fill(hltL2MuonEta0_t);
-	 histos1D_[ "phiHltL2MuonTrack_Mu38NoFiltersNoVtx_Photon38_CaloIdL" ]->Fill(hltL2MuonPhi0_t);
-	 histos1D_[ "dxyHltL2MuonTrack_Mu38NoFiltersNoVtx_Photon38_CaloIdL" ]->Fill(hltL2MuonDxy0_t);
-	 histos1D_[ "lxyHltL2MuonTrack_Mu38NoFiltersNoVtx_Photon38_CaloIdL" ]->Fill(hltL2MuonLxy0_t);
+	 if(hltL2MuonPt0_t!=-1.){
+	   histos1D_[ "ptHltL2MuonTrack_Mu38NoFiltersNoVtx_Photon38_CaloIdL" ]->Fill(hltL2MuonPt0_t);
+	   histos1D_[ "etaHltL2MuonTrack_Mu38NoFiltersNoVtx_Photon38_CaloIdL" ]->Fill(hltL2MuonEta0_t);
+	   histos1D_[ "phiHltL2MuonTrack_Mu38NoFiltersNoVtx_Photon38_CaloIdL" ]->Fill(hltL2MuonPhi0_t);
+	   histos1D_[ "dxyHltL2MuonTrack_Mu38NoFiltersNoVtx_Photon38_CaloIdL" ]->Fill(hltL2MuonDxy0_t);
+	   histos1D_[ "lxyHltL2MuonTrack_Mu38NoFiltersNoVtx_Photon38_CaloIdL" ]->Fill(hltL2MuonLxy0_t);
+	 }
 
        }//end of index< sizeFilters
        cout<<endl;
@@ -1199,22 +1257,26 @@ HLTAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 	 int nGenMuon_t;
 	 genMuons(iEvent, genMuonPt0_t, genMuonEta0_t, genMuonPhi0_t, genMuonDxy0_t, genMuonLxy0_t, nGenMuon_t);	 
 	 histos1D_[ "nGenMuons_Mu28NoFiltersNoVtxDisplaced_Photon28_CaloIdL" ]->Fill(nGenMuon_t);
-	 histos1D_[ "ptGenMuon_Mu28NoFiltersNoVtxDisplaced_Photon28_CaloIdL" ]->Fill(genMuonPt0_t);
-	 histos1D_[ "etaGenMuon_Mu28NoFiltersNoVtxDisplaced_Photon28_CaloIdL" ]->Fill(genMuonEta0_t);
-	 histos1D_[ "phiGenMuon_Mu28NoFiltersNoVtxDisplaced_Photon28_CaloIdL" ]->Fill(genMuonPhi0_t);
-	 histos1D_[ "dxyGenMuon_Mu28NoFiltersNoVtxDisplaced_Photon28_CaloIdL" ]->Fill(genMuonDxy0_t);
-	 histos1D_[ "lxyGenMuon_Mu28NoFiltersNoVtxDisplaced_Photon28_CaloIdL" ]->Fill(genMuonLxy0_t);
-	 	 
+	 if(genMuonPt0_t!=-1.){
+	   histos1D_[ "ptGenMuon_Mu28NoFiltersNoVtxDisplaced_Photon28_CaloIdL" ]->Fill(genMuonPt0_t);
+	   histos1D_[ "etaGenMuon_Mu28NoFiltersNoVtxDisplaced_Photon28_CaloIdL" ]->Fill(genMuonEta0_t);
+	   histos1D_[ "phiGenMuon_Mu28NoFiltersNoVtxDisplaced_Photon28_CaloIdL" ]->Fill(genMuonPhi0_t);
+	   histos1D_[ "dxyGenMuon_Mu28NoFiltersNoVtxDisplaced_Photon28_CaloIdL" ]->Fill(genMuonDxy0_t);
+	   histos1D_[ "lxyGenMuon_Mu28NoFiltersNoVtxDisplaced_Photon28_CaloIdL" ]->Fill(genMuonLxy0_t);
+	 }
+
 	 //find hltL2Muons, for events passing trigger
 	 double hltL2MuonPt0_t, hltL2MuonEta0_t, hltL2MuonPhi0_t, hltL2MuonDxy0_t, hltL2MuonLxy0_t;
 	 int nHltL2Muon_t;
 	 hltL2Muons(iEvent, hltL2MuonPt0_t, hltL2MuonEta0_t, hltL2MuonPhi0_t, hltL2MuonDxy0_t, hltL2MuonLxy0_t, nHltL2Muon_t);	 
 	 histos1D_[ "nHltL2MuonTracks_Mu28NoFiltersNoVtxDisplaced_Photon28_CaloIdL" ]->Fill(nHltL2Muon_t);
-	 histos1D_[ "ptHltL2MuonTrack_Mu28NoFiltersNoVtxDisplaced_Photon28_CaloIdL" ]->Fill(hltL2MuonPt0_t);
-	 histos1D_[ "etaHltL2MuonTrack_Mu28NoFiltersNoVtxDisplaced_Photon28_CaloIdL" ]->Fill(hltL2MuonEta0_t);
-	 histos1D_[ "phiHltL2MuonTrack_Mu28NoFiltersNoVtxDisplaced_Photon28_CaloIdL" ]->Fill(hltL2MuonPhi0_t);
-	 histos1D_[ "dxyHltL2MuonTrack_Mu28NoFiltersNoVtxDisplaced_Photon28_CaloIdL" ]->Fill(hltL2MuonDxy0_t);
-	 histos1D_[ "lxyHltL2MuonTrack_Mu28NoFiltersNoVtxDisplaced_Photon28_CaloIdL" ]->Fill(hltL2MuonLxy0_t);
+	 if(hltL2MuonPt0_t!=-1.){
+	   histos1D_[ "ptHltL2MuonTrack_Mu28NoFiltersNoVtxDisplaced_Photon28_CaloIdL" ]->Fill(hltL2MuonPt0_t);
+	   histos1D_[ "etaHltL2MuonTrack_Mu28NoFiltersNoVtxDisplaced_Photon28_CaloIdL" ]->Fill(hltL2MuonEta0_t);
+	   histos1D_[ "phiHltL2MuonTrack_Mu28NoFiltersNoVtxDisplaced_Photon28_CaloIdL" ]->Fill(hltL2MuonPhi0_t);
+	   histos1D_[ "dxyHltL2MuonTrack_Mu28NoFiltersNoVtxDisplaced_Photon28_CaloIdL" ]->Fill(hltL2MuonDxy0_t);
+	   histos1D_[ "lxyHltL2MuonTrack_Mu28NoFiltersNoVtxDisplaced_Photon28_CaloIdL" ]->Fill(hltL2MuonLxy0_t);
+	 }
 
        }//end of index< sizeFilters
        cout<<endl;
@@ -1239,11 +1301,11 @@ void HLTAnalyzer::hltL2Muons(const edm::Event& iEvent, double& hltL2MuonPt0, dou
     hltL2Muons_.insert(hltL2Muons_.end(), hltL2Muons->begin(), hltL2Muons->end());
     std::sort(hltL2Muons_.begin(), hltL2Muons_.end(), track_pt());
     
-    hltL2MuonPt0 = 0.;
-    hltL2MuonEta0 = 0.;
-    hltL2MuonPhi0 = 0.;
-    hltL2MuonDxy0 = 0.;
-    hltL2MuonLxy0 = 0.;
+    hltL2MuonPt0 = -1.;
+    hltL2MuonEta0 = -1.;
+    hltL2MuonPhi0 = -1.;
+    hltL2MuonDxy0 = -1.;
+    hltL2MuonLxy0 = -1.;
     nHltL2Muon = 0;
     
     //for(size_t i=0; i<hltL2Muons_.size(); i++){
@@ -1280,22 +1342,23 @@ void HLTAnalyzer::genMuons(const edm::Event& iEvent, double& genMuonPt0, double&
     genParticles_.insert(genParticles_.end(), genParticles->begin(), genParticles->end());
     std::sort(genParticles_.begin(), genParticles_.end(), genParticle_pt());
     
-    genMuonPt0 = 0.;
-    genMuonEta0 = 0.;
-    genMuonPhi0 = 0.;
-    genMuonDxy0 = 0.;
-    genMuonLxy0 = 0.;
+    genMuonPt0 = -1.;
+    genMuonEta0 = -1.;
+    genMuonPhi0 = -1.;
+    genMuonDxy0 = -1.;
+    genMuonLxy0 = -1.;
     nGenMuon = 0;
     
     for(size_t i=0; i<genParticles_.size(); i++){
       const reco::GenParticle & p = genParticles_.at(i);
-      if (fabs(p.pdgId()) == 13 && p.status()==1) {
+      if (fabs(p.pdgId()) == 13 && p.status()==1 && p.pt()>genMuonPt_) {
 	if((lookForMother_ && fabs(p.mother()->pdgId()) == motherId_) || !lookForMother_){
 	  nGenMuon++;
 	  if (p.pt()> genMuonPt0){
 	    genMuonPt0 = p.pt();
 	    genMuonEta0 = p.eta();
 	    genMuonPhi0 = p.phi();
+	    cout<<"genMuon pt is (1st time): "<<p.pt()<<endl;
 	    if (BeamSpot.isValid()) genMuonDxy0 = D0BeamSpot(p.vx(),p.vy(),p.px(),p.py(),p.pt(),BeamSpot->x0(),BeamSpot->y0());
 	    else{
 	      cout<<"beamSpot is not valid!!!!"<<endl;
@@ -1318,13 +1381,13 @@ void HLTAnalyzer::genMuons(const edm::Event& iEvent, double& genMuonPt0, double&
 
 
 void HLTAnalyzer::triggerObjects(double& pt0, double& eta0, double& phi0, double& pt1, double& eta1, double& phi1, const trigger::Keys& keys,  const trigger::TriggerObjectCollection& TOC){
-  pt0 = 0.;
-  eta0 = 0.;
-  phi0 = 0.;
+  pt0 = -1.;
+  eta0 = -1.;
+  phi0 = -1.;
 
-  pt1 = 0.;
-  eta1 = 0.;
-  phi1 = 0.;
+  pt1 = -1.;
+  eta1 = -1.;
+  phi1 = -1.;
 
   for ( unsigned hlto = 0; hlto < keys.size(); hlto++) {
     trigger::size_type hltf = keys[hlto];
