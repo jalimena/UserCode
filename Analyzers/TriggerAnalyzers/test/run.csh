@@ -33,6 +33,10 @@ cmsRun hltAnalyzer_DisplacedSUSY200_p2d0_csmt_cfg.py > & out_DisplacedSUSY200_p2
 cmsRun hltAnalyzer_DisplacedSUSY200_p2d0_wocsmt_cfg.py > & out_DisplacedSUSY200_p2d0_wocsmt &
 cmsRun hltAnalyzer_DisplacedSUSY200_p2d0_wotriggers_cfg.py > & out_DisplacedSUSY200_p2d0_wotriggers &
 
+cmsRun hltAnalyzer_DisplacedSUSY800_p2d0_csmt_cfg.py > & out_DisplacedSUSY800_p2d0_csmt &
+cmsRun hltAnalyzer_DisplacedSUSY800_p2d0_wocsmt_cfg.py > & out_DisplacedSUSY800_p2d0_wocsmt &
+cmsRun hltAnalyzer_DisplacedSUSY800_p2d0_wotriggers_cfg.py > & out_DisplacedSUSY800_p2d0_wotriggers &
+
 #cmsRun hltAnalyzer_HTo2LongLivedTo4L_csmt_cfg.py > & out_HTo2LongLivedTo4L_csmt &
 #cmsRun hltAnalyzer_HTo2LongLivedTo4L_wocsmt_cfg.py > & out_HTo2LongLivedTo4L_wocsmt &
 
