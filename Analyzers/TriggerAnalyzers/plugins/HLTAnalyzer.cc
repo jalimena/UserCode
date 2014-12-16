@@ -1444,11 +1444,11 @@ HLTAnalyzer::beginJob()
   histos1D_[ "phiGenMuon" ]->SetYTitle( "Events" );
 
   //histos1D_[ "dxyGenMuon" ] = fileService->make< TH1D >( "dxyGenMuon", "Generator Muon dxy", 400, -200, 200);
-  histos1D_[ "dxyGenMuon" ] = fileService->make< TH1D >( "dxyGenMuon", "Generator Muon dxy", 500, -1000, 1000);
+  histos1D_[ "dxyGenMuon" ] = fileService->make< TH1D >( "dxyGenMuon", "Generator Muon dxy", 2000, -1000, 1000);
   histos1D_[ "dxyGenMuon" ]->SetXTitle( "Generator Muon D_{xy}" );
   histos1D_[ "dxyGenMuon" ]->SetYTitle( "Events" );
 
-  histos1D_[ "lxyGenMuon" ] = fileService->make< TH1D >( "lxyGenMuon", "Generator Muon lxy", 100, 0, 1000);
+  histos1D_[ "lxyGenMuon" ] = fileService->make< TH1D >( "lxyGenMuon", "Generator Muon lxy", 500, 0, 1000);
   histos1D_[ "lxyGenMuon" ]->SetXTitle( "Generator Muon L_{xy}" );
   histos1D_[ "lxyGenMuon" ]->SetYTitle( "Events" );
 
@@ -1469,11 +1469,11 @@ HLTAnalyzer::beginJob()
   histos1D_[ "phiHltL2MuonTrack" ]->SetXTitle( "HLT L2 Muon #phi" );
   histos1D_[ "phiHltL2MuonTrack" ]->SetYTitle( "Events" );
 
-  histos1D_[ "dxyHltL2MuonTrack" ] = fileService->make< TH1D >( "dxyHltL2MuonTrack", "HLT L2 Muon dxy", 500, -1000, 1000);
+  histos1D_[ "dxyHltL2MuonTrack" ] = fileService->make< TH1D >( "dxyHltL2MuonTrack", "HLT L2 Muon dxy", 2000, -1000, 1000);
   histos1D_[ "dxyHltL2MuonTrack" ]->SetXTitle( "HLT L2 Muon D_{xy}" );
   histos1D_[ "dxyHltL2MuonTrack" ]->SetYTitle( "Events" );
 
-  histos1D_[ "lxyHltL2MuonTrack" ] = fileService->make< TH1D >( "lxyHltL2MuonTrack", "HLT L2 Muon lxy", 100, 0, 1000);
+  histos1D_[ "lxyHltL2MuonTrack" ] = fileService->make< TH1D >( "lxyHltL2MuonTrack", "HLT L2 Muon lxy", 500, 0, 1000);
   histos1D_[ "lxyHltL2MuonTrack" ]->SetXTitle( "HLT L2 Muon L_{xy}" );
   histos1D_[ "lxyHltL2MuonTrack" ]->SetYTitle( "Events" );
 
@@ -1883,20 +1883,20 @@ HLTAnalyzer::beginJob()
   histos1D_[ "phiGenMuon_Mu38NoFiltersNoVtx_Photon38_CaloIdL" ]->SetYTitle( "Events" );
   histos1D_[ "phiGenMuon_Mu28NoFiltersNoVtxDisplaced_Photon28_CaloIdL" ]->SetYTitle( "Events" );
 
-  histos1D_[ "dxyGenMuon_Mu40" ] = fileService->make< TH1D >( "dxyGenMuon_Mu40", "Generator Muon dxy", 500, -1000, 1000);
-  histos1D_[ "dxyGenMuon_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL" ] = fileService->make< TH1D >( "dxyGenMuon_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL", "Generator Muon dxy", 500, -1000, 1000);
-  histos1D_[ "dxyGenMuon_DoubleMu33NoFiltersNoVtx" ] = fileService->make< TH1D >( "dxyGenMuon_DoubleMu33NoFiltersNoVtx", "Generator Muon dxy", 500, -1000, 1000);
-  histos1D_[ "dxyGenMuon_DoubleMu23NoFiltersNoVtxDisplaced" ] = fileService->make< TH1D >( "dxyGenMuon_DoubleMu23NoFiltersNoVtxDisplaced", "Generator Muon dxy", 500, -1000, 1000);
-  histos1D_[ "dxyGenMuon_L2Mu20_NoVertex_3Sta_NoBPTX3BX_NoHalo" ] = fileService->make< TH1D >( "dxyGenMuon_L2Mu20_NoVertex_3Sta_NoBPTX3BX_NoHalo", "Generator Muon dxy", 500, -1000, 1000);
-  histos1D_[ "dxyGenMuon_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL" ] = fileService->make< TH1D >( "dxyGenMuon_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL", "Generator Muon dxy", 500, -1000, 1000);
-  histos1D_[ "dxyGenMuon_Mu17_TkMu8" ] = fileService->make< TH1D >( "dxyGenMuon_Mu17_TkMu8", "Generator Muon dxy", 500, -1000, 1000);
-  histos1D_[ "dxyGenMuon_Mu30_TkMu11" ] = fileService->make< TH1D >( "dxyGenMuon_Mu30_TkMu11", "Generator Muon dxy", 500, -1000, 1000);
-  histos1D_[ "dxyGenMuon_L2DoubleMu28_NoVertex_2Cha_Angle2p5_Mass10" ] = fileService->make< TH1D >( "dxyGenMuon_L2DoubleMu28_NoVertex_2Cha_Angle2p5_Mass10", "Generator Muon dxy", 500, -1000, 1000);
-  histos1D_[ "dxyGenMuon_Mu17_Mu8" ] = fileService->make< TH1D >( "dxyGenMuon_Mu17_Mu8", "Generator Muon dxy", 500, -1000, 1000);
-  histos1D_[ "dxyGenMuon_IsoMu24_IterTrk02" ] = fileService->make< TH1D >( "dxyGenMuon_IsoMu24_IterTrk02", "Generator Muon dxy", 500, -1000, 1000);
-  histos1D_[ "dxyGenMuon_IsoTkMu24_IterTrk02" ] = fileService->make< TH1D >( "dxyGenMuon_IsoTkMu24_IterTrk02", "Generator Muon dxy", 500, -1000, 1000);
-  histos1D_[ "dxyGenMuon_Mu38NoFiltersNoVtx_Photon38_CaloIdL" ] = fileService->make< TH1D >( "dxyGenMuon_Mu38NoFiltersNoVtx_Photon38_CaloIdL", "Generator Muon dxy", 500, -1000, 1000);
-  histos1D_[ "dxyGenMuon_Mu28NoFiltersNoVtxDisplaced_Photon28_CaloIdL" ] = fileService->make< TH1D >( "dxyGenMuon_Mu28NoFiltersNoVtxDisplaced_Photon28_CaloIdL", "Generator Muon dxy", 500, -1000, 1000);
+  histos1D_[ "dxyGenMuon_Mu40" ] = fileService->make< TH1D >( "dxyGenMuon_Mu40", "Generator Muon dxy", 2000, -1000, 1000);
+  histos1D_[ "dxyGenMuon_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL" ] = fileService->make< TH1D >( "dxyGenMuon_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL", "Generator Muon dxy", 2000, -1000, 1000);
+  histos1D_[ "dxyGenMuon_DoubleMu33NoFiltersNoVtx" ] = fileService->make< TH1D >( "dxyGenMuon_DoubleMu33NoFiltersNoVtx", "Generator Muon dxy", 2000, -1000, 1000);
+  histos1D_[ "dxyGenMuon_DoubleMu23NoFiltersNoVtxDisplaced" ] = fileService->make< TH1D >( "dxyGenMuon_DoubleMu23NoFiltersNoVtxDisplaced", "Generator Muon dxy", 2000, -1000, 1000);
+  histos1D_[ "dxyGenMuon_L2Mu20_NoVertex_3Sta_NoBPTX3BX_NoHalo" ] = fileService->make< TH1D >( "dxyGenMuon_L2Mu20_NoVertex_3Sta_NoBPTX3BX_NoHalo", "Generator Muon dxy", 2000, -1000, 1000);
+  histos1D_[ "dxyGenMuon_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL" ] = fileService->make< TH1D >( "dxyGenMuon_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL", "Generator Muon dxy", 2000, -1000, 1000);
+  histos1D_[ "dxyGenMuon_Mu17_TkMu8" ] = fileService->make< TH1D >( "dxyGenMuon_Mu17_TkMu8", "Generator Muon dxy", 2000, -1000, 1000);
+  histos1D_[ "dxyGenMuon_Mu30_TkMu11" ] = fileService->make< TH1D >( "dxyGenMuon_Mu30_TkMu11", "Generator Muon dxy", 2000, -1000, 1000);
+  histos1D_[ "dxyGenMuon_L2DoubleMu28_NoVertex_2Cha_Angle2p5_Mass10" ] = fileService->make< TH1D >( "dxyGenMuon_L2DoubleMu28_NoVertex_2Cha_Angle2p5_Mass10", "Generator Muon dxy", 2000, -1000, 1000);
+  histos1D_[ "dxyGenMuon_Mu17_Mu8" ] = fileService->make< TH1D >( "dxyGenMuon_Mu17_Mu8", "Generator Muon dxy", 2000, -1000, 1000);
+  histos1D_[ "dxyGenMuon_IsoMu24_IterTrk02" ] = fileService->make< TH1D >( "dxyGenMuon_IsoMu24_IterTrk02", "Generator Muon dxy", 2000, -1000, 1000);
+  histos1D_[ "dxyGenMuon_IsoTkMu24_IterTrk02" ] = fileService->make< TH1D >( "dxyGenMuon_IsoTkMu24_IterTrk02", "Generator Muon dxy", 2000, -1000, 1000);
+  histos1D_[ "dxyGenMuon_Mu38NoFiltersNoVtx_Photon38_CaloIdL" ] = fileService->make< TH1D >( "dxyGenMuon_Mu38NoFiltersNoVtx_Photon38_CaloIdL", "Generator Muon dxy", 2000, -1000, 1000);
+  histos1D_[ "dxyGenMuon_Mu28NoFiltersNoVtxDisplaced_Photon28_CaloIdL" ] = fileService->make< TH1D >( "dxyGenMuon_Mu28NoFiltersNoVtxDisplaced_Photon28_CaloIdL", "Generator Muon dxy", 2000, -1000, 1000);
 
   histos1D_[ "dxyGenMuon_Mu40" ]->SetXTitle( "Generator Muon D_{xy}" );
   histos1D_[ "dxyGenMuon_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL" ]->SetXTitle( "Generator Muon D_{xy}" );
@@ -1928,20 +1928,20 @@ HLTAnalyzer::beginJob()
   histos1D_[ "dxyGenMuon_Mu38NoFiltersNoVtx_Photon38_CaloIdL" ]->SetYTitle( "Events" );
   histos1D_[ "dxyGenMuon_Mu28NoFiltersNoVtxDisplaced_Photon28_CaloIdL" ]->SetYTitle( "Events" );
 
-  histos1D_[ "lxyGenMuon_Mu40" ] = fileService->make< TH1D >( "lxyGenMuon_Mu40", "Generator Muon lxy", 100, 0, 1000);
-  histos1D_[ "lxyGenMuon_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL" ] = fileService->make< TH1D >( "lxyGenMuon_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL", "Generator Muon lxy", 100, 0, 1000);
-  histos1D_[ "lxyGenMuon_DoubleMu33NoFiltersNoVtx" ] = fileService->make< TH1D >( "lxyGenMuon_DoubleMu33NoFiltersNoVtx", "Generator Muon lxy", 100, 0, 1000);
-  histos1D_[ "lxyGenMuon_DoubleMu23NoFiltersNoVtxDisplaced" ] = fileService->make< TH1D >( "lxyGenMuon_DoubleMu23NoFiltersNoVtxDisplaced", "Generator Muon lxy", 100, 0, 1000);
-  histos1D_[ "lxyGenMuon_L2Mu20_NoVertex_3Sta_NoBPTX3BX_NoHalo" ] = fileService->make< TH1D >( "lxyGenMuon_L2Mu20_NoVertex_3Sta_NoBPTX3BX_NoHalo", "Generator Muon lxy", 100, 0, 1000);
-  histos1D_[ "lxyGenMuon_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL" ] = fileService->make< TH1D >( "lxyGenMuon_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL", "Generator Muon lxy", 100, 0, 1000);
-  histos1D_[ "lxyGenMuon_Mu17_TkMu8" ] = fileService->make< TH1D >( "lxyGenMuon_Mu17_TkMu8", "Generator Muon lxy", 100, 0, 1000);
-  histos1D_[ "lxyGenMuon_Mu30_TkMu11" ] = fileService->make< TH1D >( "lxyGenMuon_Mu30_TkMu11", "Generator Muon lxy", 100, 0, 1000);
-  histos1D_[ "lxyGenMuon_L2DoubleMu28_NoVertex_2Cha_Angle2p5_Mass10" ] = fileService->make< TH1D >( "lxyGenMuon_L2DoubleMu28_NoVertex_2Cha_Angle2p5_Mass10", "Generator Muon lxy", 100, 0, 1000);
-  histos1D_[ "lxyGenMuon_Mu17_Mu8" ] = fileService->make< TH1D >( "lxyGenMuon_Mu17_Mu8", "Generator Muon lxy", 100, 0, 1000);
-  histos1D_[ "lxyGenMuon_IsoMu24_IterTrk02" ] = fileService->make< TH1D >( "lxyGenMuon_IsoMu24_IterTrk02", "Generator Muon lxy", 100, 0, 1000);
-  histos1D_[ "lxyGenMuon_IsoTkMu24_IterTrk02" ] = fileService->make< TH1D >( "lxyGenMuon_IsoTkMu24_IterTrk02", "Generator Muon lxy", 100, 0, 1000);
-  histos1D_[ "lxyGenMuon_Mu38NoFiltersNoVtx_Photon38_CaloIdL" ] = fileService->make< TH1D >( "lxyGenMuon_Mu38NoFiltersNoVtx_Photon38_CaloIdL", "Generator Muon lxy", 100, 0, 1000);
-  histos1D_[ "lxyGenMuon_Mu28NoFiltersNoVtxDisplaced_Photon28_CaloIdL" ] = fileService->make< TH1D >( "lxyGenMuon_Mu28NoFiltersNoVtxDisplaced_Photon28_CaloIdL", "Generator Muon lxy", 100, 0, 1000);
+  histos1D_[ "lxyGenMuon_Mu40" ] = fileService->make< TH1D >( "lxyGenMuon_Mu40", "Generator Muon lxy", 500, 0, 1000);
+  histos1D_[ "lxyGenMuon_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL" ] = fileService->make< TH1D >( "lxyGenMuon_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL", "Generator Muon lxy", 500, 0, 1000);
+  histos1D_[ "lxyGenMuon_DoubleMu33NoFiltersNoVtx" ] = fileService->make< TH1D >( "lxyGenMuon_DoubleMu33NoFiltersNoVtx", "Generator Muon lxy", 500, 0, 1000);
+  histos1D_[ "lxyGenMuon_DoubleMu23NoFiltersNoVtxDisplaced" ] = fileService->make< TH1D >( "lxyGenMuon_DoubleMu23NoFiltersNoVtxDisplaced", "Generator Muon lxy", 500, 0, 1000);
+  histos1D_[ "lxyGenMuon_L2Mu20_NoVertex_3Sta_NoBPTX3BX_NoHalo" ] = fileService->make< TH1D >( "lxyGenMuon_L2Mu20_NoVertex_3Sta_NoBPTX3BX_NoHalo", "Generator Muon lxy", 500, 0, 1000);
+  histos1D_[ "lxyGenMuon_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL" ] = fileService->make< TH1D >( "lxyGenMuon_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL", "Generator Muon lxy", 500, 0, 1000);
+  histos1D_[ "lxyGenMuon_Mu17_TkMu8" ] = fileService->make< TH1D >( "lxyGenMuon_Mu17_TkMu8", "Generator Muon lxy", 500, 0, 1000);
+  histos1D_[ "lxyGenMuon_Mu30_TkMu11" ] = fileService->make< TH1D >( "lxyGenMuon_Mu30_TkMu11", "Generator Muon lxy", 500, 0, 1000);
+  histos1D_[ "lxyGenMuon_L2DoubleMu28_NoVertex_2Cha_Angle2p5_Mass10" ] = fileService->make< TH1D >( "lxyGenMuon_L2DoubleMu28_NoVertex_2Cha_Angle2p5_Mass10", "Generator Muon lxy", 500, 0, 1000);
+  histos1D_[ "lxyGenMuon_Mu17_Mu8" ] = fileService->make< TH1D >( "lxyGenMuon_Mu17_Mu8", "Generator Muon lxy", 500, 0, 1000);
+  histos1D_[ "lxyGenMuon_IsoMu24_IterTrk02" ] = fileService->make< TH1D >( "lxyGenMuon_IsoMu24_IterTrk02", "Generator Muon lxy", 500, 0, 1000);
+  histos1D_[ "lxyGenMuon_IsoTkMu24_IterTrk02" ] = fileService->make< TH1D >( "lxyGenMuon_IsoTkMu24_IterTrk02", "Generator Muon lxy", 500, 0, 1000);
+  histos1D_[ "lxyGenMuon_Mu38NoFiltersNoVtx_Photon38_CaloIdL" ] = fileService->make< TH1D >( "lxyGenMuon_Mu38NoFiltersNoVtx_Photon38_CaloIdL", "Generator Muon lxy", 500, 0, 1000);
+  histos1D_[ "lxyGenMuon_Mu28NoFiltersNoVtxDisplaced_Photon28_CaloIdL" ] = fileService->make< TH1D >( "lxyGenMuon_Mu28NoFiltersNoVtxDisplaced_Photon28_CaloIdL", "Generator Muon lxy", 500, 0, 1000);
 
   histos1D_[ "lxyGenMuon_Mu40" ]->SetXTitle( "Generator Muon L_{xy}" );
   histos1D_[ "lxyGenMuon_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL" ]->SetXTitle( "Generator Muon L_{xy}" );
@@ -2162,20 +2162,20 @@ HLTAnalyzer::beginJob()
 
   std::cout<<"beginJob8"<<std::endl;
 
-  histos1D_[ "dxyHltL2MuonTrack_Mu40" ] = fileService->make< TH1D >( "dxyHltL2MuonTrack_Mu40", "HLT L2 Muon dxy", 500, -1000, 1000);
-  histos1D_[ "dxyHltL2MuonTrack_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL" ] = fileService->make< TH1D >( "dxyHltL2MuonTrack_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL", "HLT L2 Muon dxy", 500, -1000, 1000);
-  histos1D_[ "dxyHltL2MuonTrack_DoubleMu33NoFiltersNoVtx" ] = fileService->make< TH1D >( "dxyHltL2MuonTrack_DoubleMu33NoFiltersNoVtx", "HLT L2 Muon dxy", 500, -1000, 1000);
-  histos1D_[ "dxyHltL2MuonTrack_DoubleMu23NoFiltersNoVtxDisplaced" ] = fileService->make< TH1D >( "dxyHltL2MuonTrack_DoubleMu23NoFiltersNoVtxDisplaced", "HLT L2 Muon dxy", 500, -1000, 1000);
-  histos1D_[ "dxyHltL2MuonTrack_L2Mu20_NoVertex_3Sta_NoBPTX3BX_NoHalo" ] = fileService->make< TH1D >( "dxyHltL2MuonTrack_L2Mu20_NoVertex_3Sta_NoBPTX3BX_NoHalo", "HLT L2 Muon dxy", 500, -1000, 1000);
-  histos1D_[ "dxyHltL2MuonTrack_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL" ] = fileService->make< TH1D >( "dxyHltL2MuonTrack_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL", "HLT L2 Muon dxy", 500, -1000, 1000);
-  histos1D_[ "dxyHltL2MuonTrack_Mu17_TkMu8" ] = fileService->make< TH1D >( "dxyHltL2MuonTrack_Mu17_TkMu8", "HLT L2 Muon dxy", 500, -1000, 1000);
-  histos1D_[ "dxyHltL2MuonTrack_Mu30_TkMu11" ] = fileService->make< TH1D >( "dxyHltL2MuonTrack_Mu30_TkMu11", "HLT L2 Muon dxy", 500, -1000, 1000);
-  histos1D_[ "dxyHltL2MuonTrack_L2DoubleMu28_NoVertex_2Cha_Angle2p5_Mass10" ] = fileService->make< TH1D >( "dxyHltL2MuonTrack_L2DoubleMu28_NoVertex_2Cha_Angle2p5_Mass10", "HLT L2 Muon dxy", 500, -1000, 1000);
-  histos1D_[ "dxyHltL2MuonTrack_Mu17_Mu8" ] = fileService->make< TH1D >( "dxyHltL2MuonTrack_Mu17_Mu8", "HLT L2 Muon dxy", 500, -1000, 1000);
-  histos1D_[ "dxyHltL2MuonTrack_IsoMu24_IterTrk02" ] = fileService->make< TH1D >( "dxyHltL2MuonTrack_IsoMu24_IterTrk02", "HLT L2 Muon dxy", 500, -1000, 1000);
-  histos1D_[ "dxyHltL2MuonTrack_IsoTkMu24_IterTrk02" ] = fileService->make< TH1D >( "dxyHltL2MuonTrack_IsoTkMu24_IterTrk02", "HLT L2 Muon dxy", 500, -1000, 1000);
-  histos1D_[ "dxyHltL2MuonTrack_Mu38NoFiltersNoVtx_Photon38_CaloIdL" ] = fileService->make< TH1D >( "dxyHltL2MuonTrack_Mu38NoFiltersNoVtx_Photon38_CaloIdL", "HLT L2 Muon dxy", 500, -1000, 1000);
-  histos1D_[ "dxyHltL2MuonTrack_Mu28NoFiltersNoVtxDisplaced_Photon28_CaloIdL" ] = fileService->make< TH1D >( "dxyHltL2MuonTrack_Mu28NoFiltersNoVtxDisplaced_Photon28_CaloIdL", "HLT L2 Muon dxy", 500, -1000, 1000);
+  histos1D_[ "dxyHltL2MuonTrack_Mu40" ] = fileService->make< TH1D >( "dxyHltL2MuonTrack_Mu40", "HLT L2 Muon dxy", 2000, -1000, 1000);
+  histos1D_[ "dxyHltL2MuonTrack_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL" ] = fileService->make< TH1D >( "dxyHltL2MuonTrack_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL", "HLT L2 Muon dxy", 2000, -1000, 1000);
+  histos1D_[ "dxyHltL2MuonTrack_DoubleMu33NoFiltersNoVtx" ] = fileService->make< TH1D >( "dxyHltL2MuonTrack_DoubleMu33NoFiltersNoVtx", "HLT L2 Muon dxy", 2000, -1000, 1000);
+  histos1D_[ "dxyHltL2MuonTrack_DoubleMu23NoFiltersNoVtxDisplaced" ] = fileService->make< TH1D >( "dxyHltL2MuonTrack_DoubleMu23NoFiltersNoVtxDisplaced", "HLT L2 Muon dxy", 2000, -1000, 1000);
+  histos1D_[ "dxyHltL2MuonTrack_L2Mu20_NoVertex_3Sta_NoBPTX3BX_NoHalo" ] = fileService->make< TH1D >( "dxyHltL2MuonTrack_L2Mu20_NoVertex_3Sta_NoBPTX3BX_NoHalo", "HLT L2 Muon dxy", 2000, -1000, 1000);
+  histos1D_[ "dxyHltL2MuonTrack_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL" ] = fileService->make< TH1D >( "dxyHltL2MuonTrack_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL", "HLT L2 Muon dxy", 2000, -1000, 1000);
+  histos1D_[ "dxyHltL2MuonTrack_Mu17_TkMu8" ] = fileService->make< TH1D >( "dxyHltL2MuonTrack_Mu17_TkMu8", "HLT L2 Muon dxy", 2000, -1000, 1000);
+  histos1D_[ "dxyHltL2MuonTrack_Mu30_TkMu11" ] = fileService->make< TH1D >( "dxyHltL2MuonTrack_Mu30_TkMu11", "HLT L2 Muon dxy", 2000, -1000, 1000);
+  histos1D_[ "dxyHltL2MuonTrack_L2DoubleMu28_NoVertex_2Cha_Angle2p5_Mass10" ] = fileService->make< TH1D >( "dxyHltL2MuonTrack_L2DoubleMu28_NoVertex_2Cha_Angle2p5_Mass10", "HLT L2 Muon dxy", 2000, -1000, 1000);
+  histos1D_[ "dxyHltL2MuonTrack_Mu17_Mu8" ] = fileService->make< TH1D >( "dxyHltL2MuonTrack_Mu17_Mu8", "HLT L2 Muon dxy", 2000, -1000, 1000);
+  histos1D_[ "dxyHltL2MuonTrack_IsoMu24_IterTrk02" ] = fileService->make< TH1D >( "dxyHltL2MuonTrack_IsoMu24_IterTrk02", "HLT L2 Muon dxy", 2000, -1000, 1000);
+  histos1D_[ "dxyHltL2MuonTrack_IsoTkMu24_IterTrk02" ] = fileService->make< TH1D >( "dxyHltL2MuonTrack_IsoTkMu24_IterTrk02", "HLT L2 Muon dxy", 2000, -1000, 1000);
+  histos1D_[ "dxyHltL2MuonTrack_Mu38NoFiltersNoVtx_Photon38_CaloIdL" ] = fileService->make< TH1D >( "dxyHltL2MuonTrack_Mu38NoFiltersNoVtx_Photon38_CaloIdL", "HLT L2 Muon dxy", 2000, -1000, 1000);
+  histos1D_[ "dxyHltL2MuonTrack_Mu28NoFiltersNoVtxDisplaced_Photon28_CaloIdL" ] = fileService->make< TH1D >( "dxyHltL2MuonTrack_Mu28NoFiltersNoVtxDisplaced_Photon28_CaloIdL", "HLT L2 Muon dxy", 2000, -1000, 1000);
 
   histos1D_[ "dxyHltL2MuonTrack_Mu40" ]->SetXTitle( "HLT L2 Muon D_{xy}" );
   histos1D_[ "dxyHltL2MuonTrack_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL" ]->SetXTitle( "HLT L2 Muon D_{xy}" );
@@ -2209,20 +2209,20 @@ HLTAnalyzer::beginJob()
 
   std::cout<<"beginJob9"<<std::endl;
 
-  histos1D_[ "lxyHltL2MuonTrack_Mu40" ] = fileService->make< TH1D >( "lxyHltL2MuonTrack_Mu40", "HLT L2 Muon lxy", 100, 0, 1000);
-  histos1D_[ "lxyHltL2MuonTrack_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL" ] = fileService->make< TH1D >( "lxyHltL2MuonTrack_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL", "HLT L2 Muon lxy", 100, 0, 1000);
-  histos1D_[ "lxyHltL2MuonTrack_DoubleMu33NoFiltersNoVtx" ] = fileService->make< TH1D >( "lxyHltL2MuonTrack_DoubleMu33NoFiltersNoVtx", "HLT L2 Muon lxy", 100, 0, 1000);
-  histos1D_[ "lxyHltL2MuonTrack_DoubleMu23NoFiltersNoVtxDisplaced" ] = fileService->make< TH1D >( "lxyHltL2MuonTrack_DoubleMu23NoFiltersNoVtxDisplaced", "HLT L2 Muon lxy", 100, 0, 1000);
-  histos1D_[ "lxyHltL2MuonTrack_L2Mu20_NoVertex_3Sta_NoBPTX3BX_NoHalo" ] = fileService->make< TH1D >( "lxyHltL2MuonTrack_L2Mu20_NoVertex_3Sta_NoBPTX3BX_NoHalo", "HLT L2 Muon lxy", 100, 0, 1000);
-  histos1D_[ "lxyHltL2MuonTrack_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL" ] = fileService->make< TH1D >( "lxyHltL2MuonTrack_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL", "HLT L2 Muon lxy", 100, 0, 1000);
-  histos1D_[ "lxyHltL2MuonTrack_Mu17_TkMu8" ] = fileService->make< TH1D >( "lxyHltL2MuonTrack_Mu17_TkMu8", "HLT L2 Muon lxy", 100, 0, 1000);
-  histos1D_[ "lxyHltL2MuonTrack_Mu30_TkMu11" ] = fileService->make< TH1D >( "lxyHltL2MuonTrack_Mu30_TkMu11", "HLT L2 Muon lxy", 100, 0, 1000);
-  histos1D_[ "lxyHltL2MuonTrack_L2DoubleMu28_NoVertex_2Cha_Angle2p5_Mass10" ] = fileService->make< TH1D >( "lxyHltL2MuonTrack_L2DoubleMu28_NoVertex_2Cha_Angle2p5_Mass10", "HLT L2 Muon lxy", 100, 0, 1000);
-  histos1D_[ "lxyHltL2MuonTrack_Mu17_Mu8" ] = fileService->make< TH1D >( "lxyHltL2MuonTrack_Mu17_Mu8", "HLT L2 Muon lxy", 100, 0, 1000);
-  histos1D_[ "lxyHltL2MuonTrack_IsoMu24_IterTrk02" ] = fileService->make< TH1D >( "lxyHltL2MuonTrack_IsoMu24_IterTrk02", "HLT L2 Muon lxy", 100, 0, 1000);
-  histos1D_[ "lxyHltL2MuonTrack_IsoTkMu24_IterTrk02" ] = fileService->make< TH1D >( "lxyHltL2MuonTrack_IsoTkMu24_IterTrk02", "HLT L2 Muon lxy", 100, 0, 1000);
-  histos1D_[ "lxyHltL2MuonTrack_Mu38NoFiltersNoVtx_Photon38_CaloIdL" ] = fileService->make< TH1D >( "lxyHltL2MuonTrack_Mu38NoFiltersNoVtx_Photon38_CaloIdL", "HLT L2 Muon lxy", 100, 0, 1000);
-  histos1D_[ "lxyHltL2MuonTrack_Mu28NoFiltersNoVtxDisplaced_Photon28_CaloIdL" ] = fileService->make< TH1D >( "lxyHltL2MuonTrack_Mu28NoFiltersNoVtxDisplaced_Photon28_CaloIdL", "HLT L2 Muon lxy", 100, 0, 1000);
+  histos1D_[ "lxyHltL2MuonTrack_Mu40" ] = fileService->make< TH1D >( "lxyHltL2MuonTrack_Mu40", "HLT L2 Muon lxy", 500, 0, 1000);
+  histos1D_[ "lxyHltL2MuonTrack_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL" ] = fileService->make< TH1D >( "lxyHltL2MuonTrack_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL", "HLT L2 Muon lxy", 500, 0, 1000);
+  histos1D_[ "lxyHltL2MuonTrack_DoubleMu33NoFiltersNoVtx" ] = fileService->make< TH1D >( "lxyHltL2MuonTrack_DoubleMu33NoFiltersNoVtx", "HLT L2 Muon lxy", 500, 0, 1000);
+  histos1D_[ "lxyHltL2MuonTrack_DoubleMu23NoFiltersNoVtxDisplaced" ] = fileService->make< TH1D >( "lxyHltL2MuonTrack_DoubleMu23NoFiltersNoVtxDisplaced", "HLT L2 Muon lxy", 500, 0, 1000);
+  histos1D_[ "lxyHltL2MuonTrack_L2Mu20_NoVertex_3Sta_NoBPTX3BX_NoHalo" ] = fileService->make< TH1D >( "lxyHltL2MuonTrack_L2Mu20_NoVertex_3Sta_NoBPTX3BX_NoHalo", "HLT L2 Muon lxy", 500, 0, 1000);
+  histos1D_[ "lxyHltL2MuonTrack_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL" ] = fileService->make< TH1D >( "lxyHltL2MuonTrack_Mu17_TrkIsoVVL_TkMu8_TrkIsoVVL", "HLT L2 Muon lxy", 500, 0, 1000);
+  histos1D_[ "lxyHltL2MuonTrack_Mu17_TkMu8" ] = fileService->make< TH1D >( "lxyHltL2MuonTrack_Mu17_TkMu8", "HLT L2 Muon lxy", 500, 0, 1000);
+  histos1D_[ "lxyHltL2MuonTrack_Mu30_TkMu11" ] = fileService->make< TH1D >( "lxyHltL2MuonTrack_Mu30_TkMu11", "HLT L2 Muon lxy", 500, 0, 1000);
+  histos1D_[ "lxyHltL2MuonTrack_L2DoubleMu28_NoVertex_2Cha_Angle2p5_Mass10" ] = fileService->make< TH1D >( "lxyHltL2MuonTrack_L2DoubleMu28_NoVertex_2Cha_Angle2p5_Mass10", "HLT L2 Muon lxy", 500, 0, 1000);
+  histos1D_[ "lxyHltL2MuonTrack_Mu17_Mu8" ] = fileService->make< TH1D >( "lxyHltL2MuonTrack_Mu17_Mu8", "HLT L2 Muon lxy", 500, 0, 1000);
+  histos1D_[ "lxyHltL2MuonTrack_IsoMu24_IterTrk02" ] = fileService->make< TH1D >( "lxyHltL2MuonTrack_IsoMu24_IterTrk02", "HLT L2 Muon lxy", 500, 0, 1000);
+  histos1D_[ "lxyHltL2MuonTrack_IsoTkMu24_IterTrk02" ] = fileService->make< TH1D >( "lxyHltL2MuonTrack_IsoTkMu24_IterTrk02", "HLT L2 Muon lxy", 500, 0, 1000);
+  histos1D_[ "lxyHltL2MuonTrack_Mu38NoFiltersNoVtx_Photon38_CaloIdL" ] = fileService->make< TH1D >( "lxyHltL2MuonTrack_Mu38NoFiltersNoVtx_Photon38_CaloIdL", "HLT L2 Muon lxy", 500, 0, 1000);
+  histos1D_[ "lxyHltL2MuonTrack_Mu28NoFiltersNoVtxDisplaced_Photon28_CaloIdL" ] = fileService->make< TH1D >( "lxyHltL2MuonTrack_Mu28NoFiltersNoVtxDisplaced_Photon28_CaloIdL", "HLT L2 Muon lxy", 500, 0, 1000);
 
   histos1D_[ "lxyHltL2MuonTrack_Mu40" ]->SetXTitle( "HLT L2 Muon L_{xy}" );
   histos1D_[ "lxyHltL2MuonTrack_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL" ]->SetXTitle( "HLT L2 Muon L_{xy}" );
