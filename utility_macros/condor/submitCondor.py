@@ -1,7 +1,7 @@
 import os
 
 # Number of events per job
-maxEvents = 1000
+maxEvents = 1
 
 # Initial random seeds. They will be increased by 1 for each successive job.
 genSeed = 1
@@ -28,8 +28,7 @@ for index in range(2):
 
     scriptFileName = "runJob_"+str(index)
     scriptFile = open(scriptFileName, "w")
-    scriptFile.write("""
-#!/bin/tcsh
+    scriptFile.write("""#!/bin/tcsh
 setenv VO_CMS_SW_DIR /sharesoft/osg/app/cmssoft/cms/
 setenv OSG_APP /sharesoft/osg/app/
 setenv SCRAM_ARCH slc6_amd64_gcc481
