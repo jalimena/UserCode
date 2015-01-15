@@ -1,7 +1,6 @@
 #!/bin/tcsh
 source hosts.csh
 
-#foreach x (mchamp100 mchamp200 mchamp300 mchamp400 mchamp500 mchamp600 mchamp700 mchamp800 mchamp900 mchamp1000)
-foreach x (mchamp500_720pre6_PRESTA72V4)
+foreach x (mchamp100_723patch1 mchamp200_723patch1 mchamp300_723patch1 mchamp400_723patch1 mchamp500_723patch1 mchamp600_723patch1 mchamp700_723patch1 mchamp800_723patch1 mchamp900_723patch1 mchamp1000_723patch1)
     source $p"ListHaddStage.csh" $x > & "out_"$x &
 end

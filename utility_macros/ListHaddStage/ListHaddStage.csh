@@ -34,7 +34,7 @@ if ($host_ == 'cmsl') then #(cms)LPC is host
     #/opt/gLite-3.2.11-1/d-cache/srm/bin/srmcp "file://localhost/${PWD}/stoppedHSCPMuonTree.root" "srm://cmssrm.fnal.gov:8443/resilient/alimena/Ntuples/"$dataset"/stoppedHSCPMuonTree.root" > & srmcp.out
 endif
 if ($host_ == 'brux') then #brux6 is host
-    lcg-cp -b -v -D srmv2 stoppedHSCPMuonTree.root srm://srm.hep.brown.edu:8443/srm/v2/server'?'SFN=/mnt/hadoop/store/user/jalimena/Ntuples/$dataset/stoppedHSCPMuonTree.root > & lcg-cp.out
+    lcg-cp -b -v -D srmv2 file:./stoppedHSCPMuonTree.root srm://srm.hep.brown.edu:8443/srm/v2/server'?'SFN=/mnt/hadoop/store/user/jalimena/Ntuples/$dataset/stoppedHSCPMuonTree.root > & lcg-cp.out
 endif
 if ($host_ == 'lxpl') then #lxplus is host
     cmsStage stoppedHSCPMuonTree.root /store/user/jalimena/Ntuples/$dataset > & stage.out
