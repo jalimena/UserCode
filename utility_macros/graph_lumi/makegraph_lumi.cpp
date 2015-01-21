@@ -7,7 +7,8 @@
   gROOT->Reset();
   gROOT->SetStyle("Plain");
   gROOT->ForceStyle(); //forces it to use the style set above, rather than the style the rootfile was made with
-  gROOT->LoadMacro("/afs/cern.ch/user/j/jalimena/scratch0/plots/macros/style.cpp");
+  //gROOT->LoadMacro("/afs/cern.ch/user/j/jalimena/scratch0/plots/macros/style.cpp");
+  gROOT->LoadMacro("~/plots/macros/style.cpp");
   global_style();
   int color_plot=1;   // 1/0 for color/black&white plots
   //gStyle->SetOptStat(10); //print only entries in histogram
