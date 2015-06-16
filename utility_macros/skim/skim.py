@@ -28,13 +28,14 @@ process.source = cms.Source("PoolSource",
                                                                "/store/data/Run2012D/NoBPTX/RECO/22Jan2013-v1/30000/FAAF99D8-E389-E211-9FAF-003048D4776A.root"
                                                                ),
                             eventsToProcess = cms.untracked.VEventRange( #'198230:476058077-198230:476058077', # good cosmics with 2 legs, good timing
-    #'198230:491183654-198230:491183654',#lower cosmic only
-    #'198230:491580268-198230:491580268' #upper good cosmic
-    ),
-                            lumisToProcess = cms.untracked.VLuminosityBlockRange('207454:139-207454:165',
-                                                                                                '207454:730-207454:800',
-                                                                                                '207454:1820-207454:1880',
-                                                                                                )
+        #'198230:491183654-198230:491183654',#lower cosmic only
+        #'198230:491580268-198230:491580268' #upper good cosmic
+        '1:187737-1:187737'
+    )#,
+                            #lumisToProcess = cms.untracked.VLuminosityBlockRange('207454:139-207454:165',
+                                                                                                #'207454:730-207454:800',
+                                                                                                #'207454:1820-207454:1880',
+                                                                                                #)
                             )
 
 # HLT bit filter                                                                                                                                                                                                               
@@ -54,10 +55,12 @@ process.hltHighLevel.HLTPaths = cms.vstring(
     "HLT_L2Mu30_NoVertex_2Cha_NoBPTX3BX_NoHalo_v*",
 )
 
-process.p = cms.Path(process.hltHighLevel)
+#process.p = cms.Path(process.hltHighLevel)
 
 process.out = cms.OutputModule( "PoolOutputModule",
-                                fileName = cms.untracked.string( "skim.root" ),
+                                #fileName = cms.untracked.string( "skim.root" ),
+                                fileName = cms.untracked.string( "skim_187737_particle0.root" ),
+                                #fileName = cms.untracked.string( "skim_187737_particle1.root" ),
                                 outputCommands = cms.untracked.vstring( 'keep *' )
                                 )
 
