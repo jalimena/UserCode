@@ -120,3 +120,8 @@ from Configuration.DataProcessing.Utils import addMonitoring
 process = addMonitoring(process)
 
 # End of customisation functions
+
+#!!!!!!!!!!!!!!!Need to edit!!!!!!!!!!!!!!!!!!!!!!!!
+#https://github.com/cms-sw/cmssw/blob/CMSSW_7_1_X/GeneratorInterface/Pythia8Interface/plugins/Py8PtGun.cc#L82 
+#in 71X to make the additional particle back-to-back, rather than same direction
+#fixed by at least 76X
