@@ -38,6 +38,7 @@
 #include "TClass.h"
 #include "TFile.h"
 #include "TF1.h"
+#include "TGraphAsymmErrors.h"
 #include "TROOT.h"
 
 // HLT
@@ -50,6 +51,9 @@
 
 //tracks
 #include "DataFormats/JetReco/interface/CaloJet.h"
+
+//deltaR
+#include "DataFormats/Math/interface/deltaR.h"
 
 //
 // class declaration
@@ -74,7 +78,7 @@ private:
   virtual void beginJob() ;
   virtual void analyze(const edm::Event&, const edm::EventSetup&);
   virtual void hltCaloJets(const edm::Event&, double&, double&, double&, double&, int&);
-  virtual void triggerObjects(double&, double&, double&, double&, double&, double&, const trigger::Keys&,  const trigger::TriggerObjectCollection&);
+  virtual void triggerObjects(double&, double&, double&, double&, const trigger::Keys&,  const trigger::TriggerObjectCollection&, double&, double&);
   virtual void endJob() ;
   
   //virtual void beginRun(edm::Run const&, edm::EventSetup const&) override;
@@ -83,8 +87,9 @@ private:
   //virtual void endLuminosityBlock(edm::LuminosityBlock const&, edm::EventSetup const&) override;
   
   // ----------member data ---------------------------
+  edm::Service<TFileService> fileService;
   std::map< std::string, TH1D* > histos1D_;
-
+  
   HLTConfigProvider hltConfig;
   //int triggerBit_Mu40;
 
@@ -201,38 +206,59 @@ L1TurnOnVsHLTObjectAnalyzer::analyze(const edm::Event& iEvent, const edm::EventS
        double hltCaloJetEt0, hltCaloJetEta0, hltCaloJetPhi0, hltCaloJetLxy0;
        int nHltCaloJet;
        hltCaloJets(iEvent, hltCaloJetEt0, hltCaloJetEta0, hltCaloJetPhi0, hltCaloJetLxy0, nHltCaloJet);
-       
-       histos1D_[ "nHltCaloJets" ]->Fill(nHltCaloJet);
-       if(hltCaloJetEt0!=-1.){
-	 histos1D_[ "etHltCaloJet" ]->Fill(hltCaloJetEt0);
-	 histos1D_[ "etaHltCaloJet" ]->Fill(hltCaloJetEta0);
-	 histos1D_[ "phiHltCaloJet" ]->Fill(hltCaloJetPhi0);
-	 histos1D_[ "lxyHltCaloJet" ]->Fill(hltCaloJetLxy0);
-       }
-       
-       if (filterIndexL1SingleJetC36NotBptxOR3BX < trgEvent->sizeFilters()) {
-	 const trigger::Keys& keys( trgEvent->filterKeys(filterIndexL1SingleJetC36NotBptxOR3BX) );
-	 cout << "Found " << keys.size() << " L1 jets from L1SingleJetC36NotBptxOR3BX" << endl;
-	 
-	 double et0, et1;
-	 double eta0, eta1;
-	 double phi0, phi1;
-	 triggerObjects(et0, eta0, phi0, et1, eta1, phi1, keys, TOC);	 
-	 
+ 
+       double E;
+       double et;
+       double eta;
+       double phi;
+       triggerObjects(E, et, eta, phi, keys, TOC, hltCaloJetEta0, hltCaloJetPhi0);	 
+
+       if(E>20){
+	 std::cout<<"trigger jet et is:"<<et<<", eta is:"<<eta<<", phi is:"<<phi<<std::endl;
+	 std::cout<<"calo jet et is: "<<hltCaloJetEt0<<", eta is: "<<hltCaloJetEta0<<", phi is: "<<hltCaloJetPhi0<<std::endl;
+
 	 //fill histos with leading trig obj info
-	 histos1D_[ "nTriggerJets_L1SingleJetC36NotBptxOR3BX" ]->Fill(keys.size());
-	 histos1D_[ "etTriggerJet_L1SingleJetC36NotBptxOR3BX" ]->Fill(et0);
-	 histos1D_[ "etaTriggerJet_L1SingleJetC36NotBptxOR3BX" ]->Fill(eta0);
-	 histos1D_[ "phiTriggerJet_L1SingleJetC36NotBptxOR3BX" ]->Fill(phi0);
-	 
+	 histos1D_[ "nTriggerJets_L1SingleJetC20NotBptxOR3BX" ]->Fill(keys.size());
+	 histos1D_[ "eTriggerJet_L1SingleJetC20NotBptxOR3BX" ]->Fill(E);
+	 histos1D_[ "etTriggerJet_L1SingleJetC20NotBptxOR3BX" ]->Fill(et);
+	 histos1D_[ "etaTriggerJet_L1SingleJetC20NotBptxOR3BX" ]->Fill(eta);
+	 histos1D_[ "phiTriggerJet_L1SingleJetC20NotBptxOR3BX" ]->Fill(phi);
+       
+	 histos1D_[ "nHltCaloJets" ]->Fill(nHltCaloJet);
 	 if(hltCaloJetEt0!=-1.){
-	   histos1D_[ "etHltCaloJet_L1SingleJetC36NotBptxOR3BX" ]->Fill(hltCaloJetEt0);
-	   histos1D_[ "etaHltCaloJet_L1SingleJetC36NotBptxOR3BX" ]->Fill(hltCaloJetEta0);
-	   histos1D_[ "phiHltCaloJet_L1SingleJetC36NotBptxOR3BX" ]->Fill(hltCaloJetPhi0);
-	   histos1D_[ "lxyHltCaloJet_L1SingleJetC36NotBptxOR3BX" ]->Fill(hltCaloJetLxy0);
+	   histos1D_[ "etHltCaloJet" ]->Fill(hltCaloJetEt0);
+	   histos1D_[ "etaHltCaloJet" ]->Fill(hltCaloJetEta0);
+	   histos1D_[ "phiHltCaloJet" ]->Fill(hltCaloJetPhi0);
+	   histos1D_[ "lxyHltCaloJet" ]->Fill(hltCaloJetLxy0);
 	 }
-	 
-       }//end of index< sizeFilters
+       
+	 if (filterIndexL1SingleJetC36NotBptxOR3BX < trgEvent->sizeFilters()) {
+	   const trigger::Keys& keys( trgEvent->filterKeys(filterIndexL1SingleJetC36NotBptxOR3BX) );
+	   cout << "Found " << keys.size() << " L1 jets from L1SingleJetC36NotBptxOR3BX" << endl;
+	   
+	   triggerObjects(E, et, eta, phi, keys, TOC, hltCaloJetEta0, hltCaloJetPhi0);	 
+	   
+	   if(E>36){
+	     std::cout<<"trigger jet et is:"<<et<<", eta is:"<<eta<<", phi is:"<<phi<<std::endl;
+	     std::cout<<"calo jet et is: "<<hltCaloJetEt0<<", eta is: "<<hltCaloJetEta0<<", phi is: "<<hltCaloJetPhi0<<std::endl;
+
+	     //fill histos with leading trig obj info
+	     histos1D_[ "nTriggerJets_L1SingleJetC36NotBptxOR3BX" ]->Fill(keys.size());
+	     histos1D_[ "eTriggerJet_L1SingleJetC36NotBptxOR3BX" ]->Fill(E);
+	     histos1D_[ "etTriggerJet_L1SingleJetC36NotBptxOR3BX" ]->Fill(et);
+	     histos1D_[ "etaTriggerJet_L1SingleJetC36NotBptxOR3BX" ]->Fill(eta);
+	     histos1D_[ "phiTriggerJet_L1SingleJetC36NotBptxOR3BX" ]->Fill(phi);
+	     
+	     if(hltCaloJetEt0!=-1.){
+	       histos1D_[ "etHltCaloJet_L1SingleJetC36NotBptxOR3BX" ]->Fill(hltCaloJetEt0);
+	       histos1D_[ "etaHltCaloJet_L1SingleJetC36NotBptxOR3BX" ]->Fill(hltCaloJetEta0);
+	       histos1D_[ "phiHltCaloJet_L1SingleJetC36NotBptxOR3BX" ]->Fill(hltCaloJetPhi0);
+	       histos1D_[ "lxyHltCaloJet_L1SingleJetC36NotBptxOR3BX" ]->Fill(hltCaloJetLxy0);
+	     }
+	   }//end of if E>36
+	   
+	 }//end of index< sizeFilters
+       }//end of if E>20
      }//end of if pass L1 20
      cout<<endl;	
        
@@ -314,35 +340,24 @@ void L1TurnOnVsHLTObjectAnalyzer::hltCaloJets(const edm::Event& iEvent, double& 
 }//end of hltCaloJets
 
 
-void L1TurnOnVsHLTObjectAnalyzer::triggerObjects(double& et0, double& eta0, double& phi0, double& et1, double& eta1, double& phi1, const trigger::Keys& keys,  const trigger::TriggerObjectCollection& TOC){
-  et0 = -1.;
-  eta0 = -1.;
-  phi0 = -1.;
-
-  et1 = -1.;
-  eta1 = -1.;
-  phi1 = -1.;
+void L1TurnOnVsHLTObjectAnalyzer::triggerObjects(double& E, double& et, double& eta, double& phi, const trigger::Keys& keys,  const trigger::TriggerObjectCollection& TOC, double& hltCaloJetEta0, double& hltCaloJetPhi0){
+  E= -1.;
+  et = -1.;
+  eta = -1.;
+  phi = -1.;
 
   for ( unsigned hlto = 0; hlto < keys.size(); hlto++) {
     trigger::size_type hltf = keys[hlto];
     const trigger::TriggerObject& obj(TOC[hltf]);
-    //cout<<"HLT jet et is:"<<obj.et()<<", eta is:"<<obj.eta()<<", phi is:"<<obj.phi()<<endl;
-    if (obj.et()> et0){
-      et0 = obj.et();
-      eta0 = obj.eta();
-      phi0 = obj.phi();
-    }//end of if obj.et> et0
-  }//end of loop over keys
-
-  for ( unsigned hlto = 0; hlto < keys.size(); hlto++) {
-    trigger::size_type hltf = keys[hlto];
-    const trigger::TriggerObject& obj(TOC[hltf]);
-    //cout<<"HLT jet et is:"<<obj.et()<<", eta is:"<<obj.eta()<<", phi is:"<<obj.phi()<<endl;
-    if (obj.et()> et1 && obj.et()<et0){
-      et1 = obj.et();
-      eta1 = obj.eta();
-      phi1 = obj.phi();
-    }//end of if obj.et> et0
+    double dR=deltaR(hltCaloJetEta0,hltCaloJetPhi0,obj.eta(),obj.phi());
+    
+    if (dR < 0.2){
+      std::cout<<"dR < 0.5"<<std::endl;
+      E = obj.energy();
+      et = obj.et();
+      eta = obj.eta();
+      phi = obj.phi();
+    }//end of if obj.et> et
   }//end of loop over keys
 
 }//end of triggerObjects
@@ -354,14 +369,13 @@ void
 L1TurnOnVsHLTObjectAnalyzer::beginJob()
 {
   std::cout<<"beginJob!!!!"<<std::endl;
-  edm::Service<TFileService> fileService;
 
   histos1D_[ "nHltCaloJets" ] = fileService->make< TH1D >( "nHltCaloJets", "Number of HLT Calorimeter Jets", 10, 0., 10);
   histos1D_[ "nHltCaloJets" ]->SetXTitle( "Number of HLT Calorimeter Jets" );
   histos1D_[ "nHltCaloJets" ]->SetYTitle( "Events" );
 
-  histos1D_[ "etHltCaloJet" ] = fileService->make< TH1D >( "etHltCaloJet", "HLT Calorimeter Jet et", 100, 0., 1000);
-  histos1D_[ "etHltCaloJet" ]->SetXTitle( "HLT Calorimeter Jet p_{T} [GeV]" );
+  histos1D_[ "etHltCaloJet" ] = fileService->make< TH1D >( "etHltCaloJet", "HLT Calorimeter Jet et", 500, 0., 1000);
+  histos1D_[ "etHltCaloJet" ]->SetXTitle( "HLT Calorimeter Jet E_{T} [GeV]" );
   histos1D_[ "etHltCaloJet" ]->SetYTitle( "Events" );
 
   histos1D_[ "etaHltCaloJet" ] = fileService->make< TH1D >( "etaHltCaloJet", "HLT Calorimeter Jet eta", 120,-6,6);
@@ -377,13 +391,38 @@ L1TurnOnVsHLTObjectAnalyzer::beginJob()
   histos1D_[ "lxyHltCaloJet" ]->SetYTitle( "Events" );
 
 
+  histos1D_[ "nTriggerJets_L1SingleJetC20NotBptxOR3BX" ] = fileService->make< TH1D >( "nTriggerJets_L1SingleJetC20NotBptxOR3BX", "Number of L1 jets", 10, 0., 10);
+  histos1D_[ "nTriggerJets_L1SingleJetC20NotBptxOR3BX" ]->SetXTitle( "Number of L1 Jets" );
+  histos1D_[ "nTriggerJets_L1SingleJetC20NotBptxOR3BX" ]->SetYTitle( "Events" );
+
+  histos1D_[ "eTriggerJet_L1SingleJetC20NotBptxOR3BX" ] = fileService->make< TH1D >( "eTriggerJet_L1SingleJetC20NotBptxOR3BX", "L1 Jet E", 500, 0., 500);
+  histos1D_[ "eTriggerJet_L1SingleJetC20NotBptxOR3BX" ]->SetXTitle( "L1 Jet E [GeV]" );
+  histos1D_[ "eTriggerJet_L1SingleJetC20NotBptxOR3BX" ]->SetYTitle( "Events" );
+
+  histos1D_[ "etTriggerJet_L1SingleJetC20NotBptxOR3BX" ] = fileService->make< TH1D >( "etTriggerJet_L1SingleJetC20NotBptxOR3BX", "L1 Jet Et", 500, 0., 500);
+  histos1D_[ "etTriggerJet_L1SingleJetC20NotBptxOR3BX" ]->SetXTitle( "L1 Jet E_{T} [GeV]" );
+  histos1D_[ "etTriggerJet_L1SingleJetC20NotBptxOR3BX" ]->SetYTitle( "Events" );
+
+  histos1D_[ "etaTriggerJet_L1SingleJetC20NotBptxOR3BX" ] = fileService->make< TH1D >( "etaTriggerJet_L1SingleJetC20NotBptxOR3BX", "L1 Jet eta", 120,-6,6);
+  histos1D_[ "etaTriggerJet_L1SingleJetC20NotBptxOR3BX" ]->SetXTitle( "L1 Jet #eta" );
+  histos1D_[ "etaTriggerJet_L1SingleJetC20NotBptxOR3BX" ]->SetYTitle( "Events" );
+
+  histos1D_[ "phiTriggerJet_L1SingleJetC20NotBptxOR3BX" ] = fileService->make< TH1D >( "phiTriggerJet_L1SingleJetC20NotBptxOR3BX", "L1 Jet phi", 64,-3.2,3.2);
+  histos1D_[ "phiTriggerJet_L1SingleJetC20NotBptxOR3BX" ]->SetXTitle( "L1 Jet #phi" );
+  histos1D_[ "phiTriggerJet_L1SingleJetC20NotBptxOR3BX" ]->SetYTitle( "Events" );
+
+
 
   histos1D_[ "nTriggerJets_L1SingleJetC36NotBptxOR3BX" ] = fileService->make< TH1D >( "nTriggerJets_L1SingleJetC36NotBptxOR3BX", "Number of L1 jets", 10, 0., 10);
   histos1D_[ "nTriggerJets_L1SingleJetC36NotBptxOR3BX" ]->SetXTitle( "Number of L1 Jets" );
   histos1D_[ "nTriggerJets_L1SingleJetC36NotBptxOR3BX" ]->SetYTitle( "Events" );
 
-  histos1D_[ "etTriggerJet_L1SingleJetC36NotBptxOR3BX" ] = fileService->make< TH1D >( "etTriggerJet_L1SingleJetC36NotBptxOR3BX", "L1 Jet et", 500, 0., 500);
-  histos1D_[ "etTriggerJet_L1SingleJetC36NotBptxOR3BX" ]->SetXTitle( "L1 Jet p_{T} [GeV]" );
+  histos1D_[ "eTriggerJet_L1SingleJetC36NotBptxOR3BX" ] = fileService->make< TH1D >( "eTriggerJet_L1SingleJetC36NotBptxOR3BX", "L1 Jet E", 500, 0., 500);
+  histos1D_[ "eTriggerJet_L1SingleJetC36NotBptxOR3BX" ]->SetXTitle( "L1 Jet E [GeV]" );
+  histos1D_[ "eTriggerJet_L1SingleJetC36NotBptxOR3BX" ]->SetYTitle( "Events" );
+
+  histos1D_[ "etTriggerJet_L1SingleJetC36NotBptxOR3BX" ] = fileService->make< TH1D >( "etTriggerJet_L1SingleJetC36NotBptxOR3BX", "L1 Jet Et", 500, 0., 500);
+  histos1D_[ "etTriggerJet_L1SingleJetC36NotBptxOR3BX" ]->SetXTitle( "L1 Jet E_{T} [GeV]" );
   histos1D_[ "etTriggerJet_L1SingleJetC36NotBptxOR3BX" ]->SetYTitle( "Events" );
 
   histos1D_[ "etaTriggerJet_L1SingleJetC36NotBptxOR3BX" ] = fileService->make< TH1D >( "etaTriggerJet_L1SingleJetC36NotBptxOR3BX", "L1 Jet eta", 120,-6,6);
@@ -398,8 +437,8 @@ L1TurnOnVsHLTObjectAnalyzer::beginJob()
   histos1D_[ "nHltCaloJets_L1SingleJetC36NotBptxOR3BX" ]->SetXTitle( "Number of HLT Calorimeter Jets" );
   histos1D_[ "nHltCaloJets_L1SingleJetC36NotBptxOR3BX" ]->SetYTitle( "Events" );
 
-  histos1D_[ "etHltCaloJet_L1SingleJetC36NotBptxOR3BX" ] = fileService->make< TH1D >( "etHltCaloJet_L1SingleJetC36NotBptxOR3BX", "HLT Calorimeter Jet et", 100, 0., 1000);
-  histos1D_[ "etHltCaloJet_L1SingleJetC36NotBptxOR3BX" ]->SetXTitle( "HLT Calorimeter Jet p_{T} [GeV]" );
+  histos1D_[ "etHltCaloJet_L1SingleJetC36NotBptxOR3BX" ] = fileService->make< TH1D >( "etHltCaloJet_L1SingleJetC36NotBptxOR3BX", "HLT Calorimeter Jet et", 500, 0., 1000);
+  histos1D_[ "etHltCaloJet_L1SingleJetC36NotBptxOR3BX" ]->SetXTitle( "HLT Calorimeter Jet E_{T} [GeV]" );
   histos1D_[ "etHltCaloJet_L1SingleJetC36NotBptxOR3BX" ]->SetYTitle( "Events" );
 
   histos1D_[ "etaHltCaloJet_L1SingleJetC36NotBptxOR3BX" ] = fileService->make< TH1D >( "etaHltCaloJet_L1SingleJetC36NotBptxOR3BX", "HLT Calorimeter Jet eta", 120,-6,6);
