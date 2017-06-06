@@ -19,8 +19,8 @@
   setTDRStyle();
   //tdrGrid(false, tdrStyle);
 
-  writeExtraText = true;
-  extraText  = "Preliminary Simulation"; 
+  bool writeExtraText = true;
+  TString extraText  = "Preliminary Simulation"; 
   //lumi_8TeV = "";
   int iPeriod = 2; // 1=7TeV, 2=8TeV, 3=7+8TeV, 7=7+8+13TeV
   //int iPos=0;
@@ -131,7 +131,7 @@
   Leg1->AddEntry(graph_gluino_stoppingEfficiency,"gluinos","p");
   //Leg1->AddEntry(graph_stop_stoppingEfficiency,"stops","p");
   Leg1->SetBorderSize(0);
-  Leg1->SetTextSize(0.04);
+  Leg1->SetTextSize(0.05);
   Leg1->SetFillColor(0);
 
 
