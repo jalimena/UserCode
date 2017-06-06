@@ -23,7 +23,7 @@
   writeExtraText = true;
   extraText  = "Preliminary";                                                                                                                                                                
   //lumi_8TeV = "8, 13 TeV";
-  lumi_8TeV = "13 TeV";
+  TString lumi_8TeV = "13 TeV";
   //lumi_8TeV = "";
   int iPeriod = 2; // 1=7TeV, 2=8TeV, 3=7+8TeV, 7=7+8+13TeV
   //int iPos=0;
@@ -47,7 +47,7 @@
   h1->GetXaxis()->SetNdivisions(505);
   //h2_style(h1,3,1,1,1001,50,-1111.,-1111.,510,510,20,1,1.4,0);
 
-  Int_t n_data2016_25ns = 13;
+  const Int_t n_data2016_25ns = 13;
   Float_t bunches_data2016_25ns[n_data2016_25ns] = {49,   74,  301, 589, 877, 1165, 1453, 1740, 1812, 2028, 2064, 2161, 2208}; //number of colliding bunches
   //Float_t rate_data2016_25ns[n_data2016_25ns]    = {21.5, 21, 19.5,  18, 17,    15,   13, 11.2, 10.8,  9.3,  8.9,  8.3,  8.0}; //2016 25 ns, 10e33 V1.0 rate of HLT_L2Mu35_NoVertex_3Sta_NoBPTX3BX (Hz), use 3.8T runs only
   Float_t rate_data2016_25ns[n_data2016_25ns]    = {18.8, 18.4, 17,  16, 14.8, 13.2, 11.2,  10,  9.5,  8.3,  7.8,  7.0,  6.8}; //2016 25 ns, 10e33 V1.0 rate of HLT_L2Mu40_NoVertex_3Sta_NoBPTX3BX (Hz), use 3.8T runs only
@@ -67,7 +67,7 @@
 
 
 
-  Int_t n_data2015_25ns = 12;
+  const Int_t n_data2015_25ns = 12;
   Float_t bunches_data2015_25ns[n_data2015_25ns] = {1,26,303,446,589,1021,1165,1289,1453,1596,1813,2232}; //number of colliding bunches
   Float_t rate_data2015_25ns[n_data2015_25ns] = {24.5,24,22.5,21.5,20,17.5,16,15,14,13,11.5,8}; //2015 25 ns, 1.4e33 V3.3 rate of HLT_L2Mu35_NoVertex_3Sta_NoBPTX3BX_NoHalo (Hz), use 3.8T runs only
   Float_t bunches_data2015_25ns_error[n_data2015_25ns] = {0,0,0,0,0,00,0,0,0,0,0};
@@ -83,7 +83,7 @@
 
 
 
-  Int_t n_data2015_50ns = 3;
+  const Int_t n_data2015_50ns = 3;
   Float_t bunches_data2015_50ns[n_data2015_50ns] = {110,254,414}; //number of colliding bunches
   Float_t rate_data2015_50ns[n_data2015_50ns] = {23,20.5,18}; //2015 50 ns, 5e33 V1.0 rate of HLT_L2Mu35_NoVertex_3Sta_NoBPTX3BX_NoHalo (Hz), use 3.8T runs only
   Float_t bunches_data2015_50ns_error[n_data2015_50ns] = {0,0,0};
@@ -99,7 +99,7 @@
 
 
 
-  Int_t n_data = 4;
+  const Int_t n_data = 4;
   Float_t bunches_data[n_data] = {1368,807,471,72}; //number of colliding bunches
   //Float_t bunches_data[n_data] = {.20,.49,.71,.94}; //livetime fraction
   //Float_t rate_data[n_data] = {.20,.49,.71,.94}; //livetime fraction
@@ -120,7 +120,7 @@
   //graph_data->Fit("fit1","R");
 
 
-  Int_t n_data_noChaCut = 1;
+  const Int_t n_data_noChaCut = 1;
   Float_t bunches_data_noChaCut[n_data_noChaCut] = {1377}; //number of colliding bunches
   Float_t rate_data_noChaCut[n_data_noChaCut] = {7.4}; //7e33 V3 rate of HLT_L2Mu20_NoVertex_NoBPTX3BX_NoHalo (Hz)
   Float_t bunches_data_noChaCut_error[n_data] = {0};
@@ -133,7 +133,7 @@
 
 
 
-  Int_t n_predicted = 1;
+  const Int_t n_predicted = 1;
   Float_t bunches_predicted[n_predicted] = {1377}; //number of colliding bunches
   Float_t rate_predicted[n_predicted] = {3.6}; //PREDICTED 7e33 V3 rate of HLT_L2Mu20_NoVertex_2Cha_NoBPTX3BX_NoHalo (Hz)
   Float_t bunches_predicted_error[n_data] = {0};
@@ -150,7 +150,7 @@
 
 
 
-  Int_t n_instLumi = 7;
+  const Int_t n_instLumi = 7;
   Float_t bunches_instLumi[n_instLumi] = {4,28,72,249,618,1051,1331}; //number of colliding bunches
   Float_t instLumi[n_instLumi] = {8,90,300,1000,2600,4500,6000}; //initial instantaneous luminosity of the fill *10^30 cm^-2 s^-1 (HF)
   Float_t instLumiScaled[n_instLumi]; //instantaneous luminosity scaled to be on same graph
@@ -225,8 +225,8 @@
   //r_axis->Draw();
   Leg1->Draw();
   CMS_lumi( canvas, iPeriod, iPos );
-  //if(save_plots) canvas->SaveAs("../plots/nbunches_rate.eps");
-  if(save_plots) canvas->SaveAs("../plots/StoppedHSCPMuon/L2Mu40RateVsNCollidingBunches_2016.pdf");
+  //if(save_plots) canvas->SaveAs("../../plots/nbunches_rate.eps");
+  if(save_plots) canvas->SaveAs("../../plots/L2Mu40RateVsNCollidingBunches_2016.pdf");
 
 
 
@@ -240,7 +240,7 @@
   h2->GetYaxis()->SetTitleOffset(0.8);
   h2->GetXaxis()->SetNdivisions(505);
 
-  Int_t n_data2016_25ns_L1 = 13;
+  const Int_t n_data2016_25ns_L1 = 13;
   Float_t bunches_data2016_25ns_L1[n_data2016_25ns_L1] = {   49,    74,   301,   589,   877,  1165,  1453,  1740,  1812,  2028,  2064,  2161,  2208}; //number of colliding bunches
   Float_t rate_data2016_25ns_L1[n_data2016_25ns_L1]    = {0.193, 0.210, 0.280, 0.250, 0.250, 0.300, 0.400, 0.550, 0.450, 0.500, 0.500, 0.460, 0.400}; //2016 25 ns, collisions2016_TSC/v42, l1_hlt_collisions2016/v88, L1Menu_TSGv5, rate of L1_SingleMuOpen_NotBptxOR_3BX (kHz), use 3.8T runs only
   Float_t bunches_data2016_25ns_L1_error[n_data2016_25ns_L1] = {0,0,0, 0,0,0, 0,0,0, 0,0,0, 0};
@@ -267,6 +267,6 @@
   //r_axis->Draw();
   Leg2->Draw();
   CMS_lumi( c2, iPeriod, iPos );
-  if(save_plots) c2->SaveAs("../plots/StoppedHSCPMuon/delayedMuons_L1RateVsNCollidingBunches.pdf");
+  if(save_plots) c2->SaveAs("../../plots/delayedMuons_L1RateVsNCollidingBunches.pdf");
 
 }
