@@ -210,8 +210,8 @@
   //Leg1->AddEntry(graph_data2015_50ns,"2015 Trigger, 50 ns","p");
   //Leg1->AddEntry(graph_data2015_25ns,"2015 Trigger, 25 ns","p");
   //Leg1->AddEntry(graph_data2016_25ns,"2016 Trigger, 25 ns","p");
-  Leg1->AddEntry(graph_data2016_25ns,"L2Mu40 2016 Rate","p");
-  Leg1->AddEntry(graph_data2017_25ns,"L2Mu40 2017 Rate","p");
+  Leg1->AddEntry(graph_data2016_25ns,"L2Mu40, 2016","p");
+  Leg1->AddEntry(graph_data2017_25ns,"L2Mu40, 2017","p");
   Leg1->SetBorderSize(0);
   //Leg1->SetTextSize(0.03);
   Leg1->SetTextSize(0.04);

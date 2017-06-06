@@ -175,8 +175,8 @@
   //Leg1->AddEntry(graph_data,"2012 Trigger, 50 ns","p");
   //Leg1->AddEntry(graph_data2015_50ns,"2015 Trigger, 50 ns","p");
   //Leg1->AddEntry(graph_data2015_25ns_end,"2015 Trigger, 25 ns","p");
-  Leg1->AddEntry(graph_data2016_25ns,"2016 Trigger, 25 ns","p");
-  Leg1->AddEntry(graph_data2017_25ns,"2017 Trigger, 25 ns","p");
+  Leg1->AddEntry(graph_data2016_25ns,"JetE50, 2016","p");
+  Leg1->AddEntry(graph_data2017_25ns,"JetE60, 2017","p");
   Leg1->SetBorderSize(0);
   //Leg1->SetTextSize(0.03);
   Leg1->SetTextSize(0.04);
@@ -195,7 +195,7 @@
   //r_axis->Draw();
   Leg1->Draw();
   CMS_lumi( canvas, iPeriod, iPos );
-  if(save_plots) canvas->SaveAs("../../plots/stoppedParticles_HltRateVsNCollidingBunches_2016_2017.pdf");
+  if(save_plots) canvas->SaveAs("../../plots/JetEXX_HltRateVsNCollidingBunches_2016_2017.pdf");
 
 
 
