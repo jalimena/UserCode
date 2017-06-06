@@ -46,7 +46,23 @@
   h1->GetXaxis()->SetNdivisions(505);
   //h2_style(h1,3,1,1,1001,50,-1111.,-1111.,510,510,20,1,1.4,0);
 
-  Int_t n_data2016_25ns = 13;
+  const Int_t n_data2017_25ns = 1;
+  Float_t bunches_data2017_25ns[n_data2017_25ns] = {589}; //number of colliding bunches
+  Float_t rate_data2017_25ns[n_data2017_25ns]    = {0.9}; //2017 25 ns, /cdaq/physics/Run2017/2e34/v1.0.0/HLT/V6 rate of HLT_UncorrectedJetE60_NoBPTX3BX (Hz), use 3.8T runs only
+  Float_t bunches_data2017_25ns_error[n_data2017_25ns] = {0};
+  Float_t rate_data2017_25ns_error[n_data2017_25ns] = {0.4}; //determined from width of rate plot in WBM
+
+  TGraphErrors* graph_data2017_25ns = new TGraphErrors(n_data2017_25ns, bunches_data2017_25ns, rate_data2017_25ns, bunches_data2017_25ns_error, rate_data2017_25ns_error);
+  //gr_style(graph_data2017_25ns,1,1,1,1001,50,-1111,-1111,510,510,22,3,1.3,1);
+  graph_data2017_25ns->SetMarkerStyle(21);
+  graph_data2017_25ns->SetMarkerColor(2);
+  graph_data2017_25ns->SetMarkerSize(1.6);
+  graph_data2017_25ns->SetTitle(";Number of Colliding Bunches;HLT Rate [Hz]");
+  graph_data2017_25ns->GetYaxis()->SetRangeUser(0,20);
+
+
+
+  const Int_t n_data2016_25ns = 13;
   Float_t bunches_data2016_25ns[n_data2016_25ns] = { 49,  74, 301, 589, 877, 1165, 1453, 1740, 1812, 2028, 2064, 2161, 2208}; //number of colliding bunches
   Float_t rate_data2016_25ns[n_data2016_25ns]    = {4.5, 4.4, 3.0, 2.0, 1.2,  1.5,  1.3,  1.2,  1.1,  0.9,  1.1,  0.9,  0.9}; //2016 25 ns, 10e33 V1.0 rate of HLT_JetE50_NoBPTX3BX (Hz), use 3.8T runs only
   Float_t bunches_data2016_25ns_error[n_data2016_25ns] = {0,0,0, 0,0,0, 0,0,0, 0,0,0, 0};
@@ -54,15 +70,14 @@
 
   TGraphErrors* graph_data2016_25ns = new TGraphErrors(n_data2016_25ns, bunches_data2016_25ns, rate_data2016_25ns, bunches_data2016_25ns_error, rate_data2016_25ns_error);
   //gr_style(graph_data2016_25ns,1,1,1,1001,50,-1111,-1111,510,510,22,3,1.3,1);
-  graph_data2016_25ns->SetMarkerStyle(23);
-  graph_data2016_25ns->SetMarkerColor(6);
+  graph_data2016_25ns->SetMarkerStyle(20);
+  graph_data2016_25ns->SetMarkerColor(1);
   graph_data2016_25ns->SetMarkerSize(1.6);
   graph_data2016_25ns->SetTitle(";Number of Colliding Bunches;HLT Rate [Hz]");
   graph_data2016_25ns->GetYaxis()->SetRangeUser(0,20);
 
 
-
-  Int_t n_data2015_25ns_end = 8;
+  const Int_t n_data2015_25ns_end = 8;
   Float_t bunches_data2015_25ns_end[n_data2015_25ns_end] = {589,881,1165, 1309,1453, 1596,1813,2232}; //number of colliding bunches
   Float_t rate_data2015_25ns_end[n_data2015_25ns_end] = {0.95,1.2,1.2, 1.5,1.4, 1.6,1.7,1.7}; //2015 25 ns, 1.4e33 V3.3 rate of L1_SingleJetC32_NotBptxOR (kHz), use 3.8T runs only
   Float_t bunches_data2015_25ns_end_error[n_data2015_25ns_end] = {0,0,0, 0,0, 0,0,0};
@@ -79,7 +94,7 @@
 
 
 
-  Int_t n_data2015_50ns = 3;
+  const Int_t n_data2015_50ns = 3;
   Float_t bunches_data2015_50ns[n_data2015_50ns] = {110,254,414}; //number of colliding bunches
   Float_t rate_data2015_50ns[n_data2015_50ns] = {}; //2015 50 ns, 5e33 V1.0 rate of HLT_L2Mu35_NoVertex_3Sta_NoBPTX3BX_NoHalo (Hz), use 3.8T runs only
   Float_t bunches_data2015_50ns_error[n_data2015_50ns] = {0,0,0};
@@ -95,7 +110,7 @@
 
 
 
-  Int_t n_data = 4;
+  const Int_t n_data = 4;
   Float_t bunches_data[n_data] = {1368,807,471,72}; //number of colliding bunches
   //Float_t bunches_data[n_data] = {.20,.49,.71,.94}; //livetime fraction
   //Float_t rate_data[n_data] = {.20,.49,.71,.94}; //livetime fraction
@@ -121,7 +136,7 @@
 
 
 
-  Int_t n_instLumi = 7;
+  const Int_t n_instLumi = 7;
   Float_t bunches_instLumi[n_instLumi] = {4,28,72,249,618,1051,1331}; //number of colliding bunches
   Float_t instLumi[n_instLumi] = {8,90,300,1000,2600,4500,6000}; //initial instantaneous luminosity of the fill *10^30 cm^-2 s^-1 (HF)
   Float_t instLumiScaled[n_instLumi]; //instantaneous luminosity scaled to be on same graph
@@ -154,13 +169,14 @@
   r_axis->SetTitleOffset(1.5);
   //r_axis->SetLabelOffset(0.01);
 
-  Leg1 = new TLegend(0.50,0.75,0.80,0.85);
+  Leg1 = new TLegend(0.50,0.75,0.80,0.90);
   //Leg1 = new TLegend(0.18,0.75,0.43,0.85);
   //Leg1->AddEntry(graph_instLumi,"Instantaneous Luminosity","p");
   //Leg1->AddEntry(graph_data,"2012 Trigger, 50 ns","p");
   //Leg1->AddEntry(graph_data2015_50ns,"2015 Trigger, 50 ns","p");
   //Leg1->AddEntry(graph_data2015_25ns_end,"2015 Trigger, 25 ns","p");
   Leg1->AddEntry(graph_data2016_25ns,"2016 Trigger, 25 ns","p");
+  Leg1->AddEntry(graph_data2017_25ns,"2017 Trigger, 25 ns","p");
   Leg1->SetBorderSize(0);
   //Leg1->SetTextSize(0.03);
   Leg1->SetTextSize(0.04);
@@ -174,11 +190,12 @@
   //graph_data2015_50ns->Draw("Psame");
   //graph_data2015_25ns_end->Draw("Psame");
   graph_data2016_25ns->Draw("Psame");
+  graph_data2017_25ns->Draw("Psame");
   //graph_instLumi->Draw("Psame");
   //r_axis->Draw();
   Leg1->Draw();
   CMS_lumi( canvas, iPeriod, iPos );
-  if(save_plots) canvas->SaveAs("../plots/StoppedHSCPMuon/stoppedParticles_HltRateVsNCollidingBunches.pdf");
+  if(save_plots) canvas->SaveAs("../../plots/stoppedParticles_HltRateVsNCollidingBunches_2016_2017.pdf");
 
 
 
@@ -194,7 +211,7 @@
   h2->GetYaxis()->SetTitleOffset(0.8);
   h2->GetXaxis()->SetNdivisions(505);
 
-  Int_t n_data2016_25ns_L1 = 13;
+  const Int_t n_data2016_25ns_L1 = 13;
   Float_t bunches_data2016_25ns_L1[n_data2016_25ns_L1] = {   49,    74, 301, 589, 877, 1165, 1453, 1740, 1812, 2028, 2064, 2161, 2208}; //number of colliding bunches
   Float_t rate_data2016_25ns_L1[n_data2016_25ns_L1]    = {0.361, 0.419, 1.0, 1.7, 1.8,  2.5,  3.0,  3.6, 4.0,   1.8,  2.8,  2.6,  2.6}; //2016 25 ns, collisions2016_TSC/v42, l1_hlt_collisions2016/v88, L1Menu_TSGv5, rate of L1_SingleJetC32_NotBptxOR_3BX (kHz), use 3.8T runs only
   Float_t bunches_data2016_25ns_L1_error[n_data2016_25ns_L1] = {0,0,0, 0,0,0, 0,0,0, 0,0,0, 0};
@@ -221,5 +238,5 @@
   //r_axis->Draw();
   Leg2->Draw();
   CMS_lumi( c2, iPeriod, iPos );
-  if(save_plots) c2->SaveAs("../plots/StoppedHSCPMuon/stoppedParticles_L1RateVsNCollidingBunches.pdf");
+  if(save_plots) c2->SaveAs("../../plots/stoppedParticles_L1RateVsNCollidingBunches.pdf");
 }

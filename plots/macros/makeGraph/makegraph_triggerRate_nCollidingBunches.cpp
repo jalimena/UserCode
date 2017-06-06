@@ -47,6 +47,21 @@
   h1->GetXaxis()->SetNdivisions(505);
   //h2_style(h1,3,1,1,1001,50,-1111.,-1111.,510,510,20,1,1.4,0);
 
+  const Int_t n_data2017_25ns = 1;
+  Float_t bunches_data2017_25ns[n_data2017_25ns] = {589}; //number of colliding bunches
+  Float_t rate_data2017_25ns[n_data2017_25ns]    = {16.0}; //2017 25 ns, /cdaq/physics/Run2017/2e34/v1.0.0/HLT/V6 rate of HLT_L2Mu40_NoVertex_3Sta_NoBPTX3BX (Hz), use 3.8T runs only
+  Float_t bunches_data2017_25ns_error[n_data2017_25ns] = {0};
+  Float_t rate_data2017_25ns_error[n_data2017_25ns] = {1}; //determined from width of rate plot in WBM, L2Mu40
+
+  TGraphErrors* graph_data2017_25ns = new TGraphErrors(n_data2017_25ns, bunches_data2017_25ns, rate_data2017_25ns, bunches_data2017_25ns_error, rate_data2017_25ns_error);
+  //gr_style(graph_data2017_25ns,1,1,1,1001,50,-1111,-1111,510,510,22,3,1.3,1);
+  graph_data2017_25ns->SetMarkerStyle(21);
+  graph_data2017_25ns->SetMarkerColor(2);
+  graph_data2017_25ns->SetMarkerSize(1.6);
+  graph_data2017_25ns->SetTitle(";Number of Colliding Bunches;HLT Rate [Hz]");
+  graph_data2017_25ns->GetYaxis()->SetRangeUser(0,20);
+
+
   const Int_t n_data2016_25ns = 13;
   Float_t bunches_data2016_25ns[n_data2016_25ns] = {49,   74,  301, 589, 877, 1165, 1453, 1740, 1812, 2028, 2064, 2161, 2208}; //number of colliding bunches
   //Float_t rate_data2016_25ns[n_data2016_25ns]    = {21.5, 21, 19.5,  18, 17,    15,   13, 11.2, 10.8,  9.3,  8.9,  8.3,  8.0}; //2016 25 ns, 10e33 V1.0 rate of HLT_L2Mu35_NoVertex_3Sta_NoBPTX3BX (Hz), use 3.8T runs only
@@ -183,7 +198,7 @@
   r_axis->SetTitleOffset(1.5);
   //r_axis->SetLabelOffset(0.01);
 
-  Leg1 = new TLegend(0.50,0.80,0.80,0.85);
+  Leg1 = new TLegend(0.50,0.80,0.80,0.90);
   //Leg1 = new TLegend(0.50,0.70,0.80,0.85);
   //Leg1 = new TLegend(0.18,0.75,0.43,0.85);
   //Leg1->AddEntry(graph_data_noChaCut,"Average Before TS","p");
@@ -196,6 +211,7 @@
   //Leg1->AddEntry(graph_data2015_25ns,"2015 Trigger, 25 ns","p");
   //Leg1->AddEntry(graph_data2016_25ns,"2016 Trigger, 25 ns","p");
   Leg1->AddEntry(graph_data2016_25ns,"L2Mu40 2016 Rate","p");
+  Leg1->AddEntry(graph_data2017_25ns,"L2Mu40 2017 Rate","p");
   Leg1->SetBorderSize(0);
   //Leg1->SetTextSize(0.03);
   Leg1->SetTextSize(0.04);
@@ -218,6 +234,7 @@
   //graph_data2015_50ns->Draw("Psame");
   //graph_data2015_25ns->Draw("Psame");
   graph_data2016_25ns->Draw("Psame");
+  graph_data2017_25ns->Draw("Psame");
   //graph_instLumi->Draw("Psame");
   //graph_data_noChaCut->Draw("Psame");
   //graph_predicted->Draw("Psame");
@@ -226,7 +243,7 @@
   Leg1->Draw();
   CMS_lumi( canvas, iPeriod, iPos );
   //if(save_plots) canvas->SaveAs("../../plots/nbunches_rate.eps");
-  if(save_plots) canvas->SaveAs("../../plots/L2Mu40RateVsNCollidingBunches_2016.pdf");
+  if(save_plots) canvas->SaveAs("../../plots/L2Mu40RateVsNCollidingBunches_2016_2017.pdf");
 
 
 
