@@ -40,7 +40,7 @@ CMS_lumi( TPad* pad, int iPeriod, int iPosX )
       //lumiText += lumi_8TeV;
       //lumiText += " (8 TeV)";
       //lumiText += " (8, 13 TeV)";
-      lumiText += " (13 TeV)";
+      lumiText += "2015 + 2016: 39.0 fb^{-1} (13 TeV)";
       //lumiText += ", 8 TeV";
       //lumiText += "8 TeV";
     }
