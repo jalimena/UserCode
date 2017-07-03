@@ -46,11 +46,11 @@
   h1->GetXaxis()->SetNdivisions(505);
   //h2_style(h1,3,1,1,1001,50,-1111.,-1111.,510,510,20,1,1.4,0);
 
-  const Int_t n_data2017_25ns = 9;
-  Float_t bunches_data2017_25ns[n_data2017_25ns] = {589, 973, 1213, 1549, 1729, 2017, 2161, 2305, 2448}; //number of colliding bunches
-  Float_t rate_data2017_25ns[n_data2017_25ns]    = {0.9, 0.9, 1.3,  1.4,  1.3,  0.95, 0.95,  0.8, 0.75}; //2017 25 ns, /cdaq/physics/Run2017/2e34/v1.0.0/HLT/V6 rate of HLT_UncorrectedJetE60_NoBPTX3BX (Hz), use 3.8T runs only
-  Float_t bunches_data2017_25ns_error[n_data2017_25ns] = {0,0,0, 0,0,0, 0,0,0};
-  Float_t rate_data2017_25ns_error[n_data2017_25ns] = {0.4,0.4,0.4, 0.4,0.4,0.4, 0.4,0.4,0.4}; //determined from width of rate plot in WBM
+  const Int_t n_data2017_25ns = 10;
+  Float_t bunches_data2017_25ns[n_data2017_25ns] = {589, 973, 1213, 1549, 1729, 2017, 2161, 2305, 2448, 2544}; //number of colliding bunches
+  Float_t rate_data2017_25ns[n_data2017_25ns]    = {0.9, 0.9, 1.3,  1.4,  1.3,  0.95, 0.95,  0.8, 0.75, 0.66}; //2017 25 ns, /cdaq/physics/Run2017/2e34/v1.0.0/HLT/V6 rate of HLT_UncorrectedJetE60_NoBPTX3BX (Hz), use 3.8T runs only
+  Float_t bunches_data2017_25ns_error[n_data2017_25ns] = {0,0,0, 0,0,0, 0,0,0, 0};
+  Float_t rate_data2017_25ns_error[n_data2017_25ns] = {0.4,0.4,0.4, 0.4,0.4,0.4, 0.4,0.4,0.4, 0.2}; //determined from width of rate plot in WBM
 
   TGraphErrors* graph_data2017_25ns = new TGraphErrors(n_data2017_25ns, bunches_data2017_25ns, rate_data2017_25ns, bunches_data2017_25ns_error, rate_data2017_25ns_error);
   //gr_style(graph_data2017_25ns,1,1,1,1001,50,-1111,-1111,510,510,22,3,1.3,1);
