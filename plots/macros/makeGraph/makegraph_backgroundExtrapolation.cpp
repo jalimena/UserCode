@@ -43,7 +43,7 @@
   //TH2* h1=new TH2F("h1","",20,-100,0,50,0,100);
   TH2* h1=new TH2F("h1","",100,-100,0,100000,-10,3000);
   h1->SetStats(kFALSE);
-  h1->SetTitle(";#Delta t_{RPC} Cut [ns];Integral of bkgnd fit #Delta t_{DT} > -20 ns");
+  h1->SetTitle(";Lower #Delta t_{RPC} Selection [ns];Integral of bkgnd fit #Delta t_{DT} > -20 ns");
   h1->GetYaxis()->SetTitleOffset(1.1);
   h1->GetXaxis()->SetNdivisions(505);
   //h2_style(h1,3,1,1,1001,50,-1111.,-1111.,510,510,20,1,1.4,0);
@@ -65,20 +65,23 @@
   //graph_integral2016->SetMarkerColor(6);
   graph_integral2016->SetMarkerColor(1);
   graph_integral2016->SetMarkerSize(1.6);
-  graph_integral2016->SetTitle(";#Delta t_{RPC} Cut [ns];Integral of bkgnd fit #Delta t_{DT} > -20 ns");
+  graph_integral2016->SetTitle(";Lower #Delta t_{RPC} Selection [ns];Integral of bkgnd fit #Delta t_{DT} > -20 ns");
   //graph_integral2016->GetYaxis()->SetRangeUser(0,20);
 
   //from stopped particles reco efficiency turn on curve
   //TF1* fit1 = new TF1("fit1", "[0]*TMath::Erf([1]*x-[2])+[3]", -60, -10);
   //fit1->SetParameters(0.25,0.034,2.33,0.25);
 
-  TF1* fit1 = new TF1("fit1", "[0]*TMath::Erf([1]*x-[2])+[3]", -60, -5);//2gaus, crystal ball, FINAL (C+D)
-  //TF1* fit1 = new TF1("fit1", "[0]*TMath::Erf([1]*x-[2])+[3]", -35, -5);//2gaus, landau, FINAL (C+D)    
+  TF1* fit1 = new TF1("fit1", "[0]*TMath::Erf([1]*x-[2])+[3]", -60, -7.5);//2gaus, crystal ball, FINAL (C+D)
+  //TF1* fit1 = new TF1("fit1", "[0]*TMath::Erf([1]*x-[2])+[3]", -35, -7.5);//2gaus, landau, FINAL (C+D)    
   //fit1->SetParameters(10,0.034,5,0);
   //fit1->SetParameters(1,0.034,5,0); //landau
   fit1->SetParameters(1,0.034,1,1); //crystal ball
   graph_integral2016->Fit("fit1","R");
-
+  TF1* fit1ext = (TF1*)fit1->Clone();
+  graph_integral2016->Fit("fit1ext","R+");
+  fit1ext->SetLineStyle(2);
+  fit1ext->SetRange(-7.5,0);
   //graph_integral2016->Fit("pol2","","",-25,-7.5);
 
 
@@ -101,13 +104,17 @@
   //graph_integral2015->SetMarkerColor(6);
   graph_integral2015->SetMarkerColor(2);
   graph_integral2015->SetMarkerSize(1.6);
-  graph_integral2015->SetTitle(";#Delta t_{RPC} Cut [ns];Integral of bkgnd fit #Delta t_{DT} > -20 ns");
+  graph_integral2015->SetTitle(";Lower #Delta t_{RPC} Selection [ns];Integral of bkgnd fit #Delta t_{DT} > -20 ns");
   //graph_integral2015->GetYaxis()->SetRangeUser(0,20);
 
-  TF1* fit2 = new TF1("fit2", "[0]*TMath::Erf([1]*x-[2])+[3]", -50, -5);
+  TF1* fit2 = new TF1("fit2", "[0]*TMath::Erf([1]*x-[2])+[3]", -50, -7.5);
   //fit2->SetParameters(1,0.034,5,0);
   fit2->SetParameters(1,0.034,1,0.5);
   graph_integral2015->Fit("fit2","R");
+  TF1* fit2ext = (TF1*)fit2->Clone();
+  graph_integral2015->Fit("fit2ext","R+");
+  fit2ext->SetLineStyle(2);
+  fit2ext->SetRange(-7.5,0);
 
   //graph_integral2015->Fit("pol2","","",-50,-25);
 
@@ -134,6 +141,8 @@
   h1->Draw();
   graph_integral2015->Draw("Psame");
   graph_integral2016->Draw("Psame");
+  fit1ext->Draw("same");
+  fit2ext->Draw("same");
   Leg1->Draw();
   CMS_lumi( canvas, iPeriod, iPos );
   if(save_plots) canvas->SaveAs("../../plots/backgroundExtrapolation_FINAL2GausCrystalBall_errorfuncfit.pdf");
