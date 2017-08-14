@@ -23,7 +23,8 @@
   //tdrGrid(false, tdrStyle);
 
   writeExtraText = true;
-  extraText  = "Preliminary";                                                                                                                                                                
+  //extraText  = "Preliminary"; 
+  extraText  = "";                                                                                                                                                                
   //lumi_8TeV = "8, 13 TeV";
   lumi_8TeV = "13 TeV";
   //lumi_8TeV = "";
