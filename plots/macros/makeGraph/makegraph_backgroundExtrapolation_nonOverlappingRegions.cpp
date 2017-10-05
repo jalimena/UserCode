@@ -23,7 +23,9 @@
   //tdrGrid(false, tdrStyle);
 
   writeExtraText = true;
-  extraText  = "Preliminary";                                                                                                                                                                
+  //extraText  = "Preliminary"; 
+  extraText  = "";
+
   //lumi_8TeV = "8, 13 TeV";
   lumi_8TeV = "13 TeV";
   //lumi_8TeV = "";
@@ -35,12 +37,13 @@
   bool save_plots = true;
 
   TCanvas* canvas = new TCanvas("c1","Integral #Delta t_{DT} > -20 ns vs #Delta t_{RPC} Cut",10,10,575,500);
+  canvas->SetLogy();
   //canvas->SetLogy();
   //canvas_style(canvas);
   //canvas->SetRightMargin(0.15);
 
-  //TH2* h1=new TH2F("h1","",100,-100,0,100000,-10,3000);
-  TH2* h1=new TH2F("h1","",100,-100,0,100000,0,150);
+  //TH2* h1=new TH2F("h1","",100,-100,0,100000,0,150);
+  TH2* h1=new TH2F("h1","",100,-100,0,100000,0,1000);
   h1->SetStats(kFALSE);
   h1->SetTitle(";#Delta t_{RPC} [ns];Integral of bkgnd fit #Delta t_{DT} > -20 ns");
   h1->GetYaxis()->SetTitleOffset(1.1);
@@ -69,17 +72,19 @@
   //from stopped particles reco efficiency turn on curve
   //TF1* fit1 = new TF1("fit1", "[0]*TMath::Erf([1]*x-[2])+[3]", -60, -10);
   //fit1->SetParameters(0.25,0.034,2.33,0.25);
-  /*
-  TF1* fit1 = new TF1("fit1", "[0]*TMath::Erf([1]*x-[2])+[3]", -32.5, -7.5);//2gaus, crystal ball, FINAL (C+D)
+
+  TF1* fit1 = new TF1("fit1", "gaus", -100, -7.5);//2gaus, crystal ball, FINAL (C+D)
   //TF1* fit1 = new TF1("fit1", "[0]*TMath::Erf([1]*x-[2])+[3]", -35, -7.5);//2gaus, landau, FINAL (C+D)    
-  fit1->SetParameters(1,0.001,0.09,1); //crystal ball
-  //graph_integral2016->Fit("fit1","R");
+  graph_integral2016->Fit("fit1","R");
   TF1* fit1ext = (TF1*)fit1->Clone();
-  //graph_integral2016->Fit("fit1ext","R+");
+  graph_integral2016->Fit("fit1ext","R+");
   fit1ext->SetLineStyle(2);
   fit1ext->SetRange(-7.5,0);
+  //background estimate is value from -7.5 to -2.5 (since did this in 5ns steps) + value from -2.5 to 2.5 + etc
+  //evaluate fitext1 at -5 (center of -7.5 to -2.5) plus at 0 (-2.5 to 2.5)
+  std::cout<<"value of fit1ext at x=-5 + x=0 is: "<<fit1ext->Eval(-5)+fit1ext->Eval(0)<<std::endl;
   //graph_integral2016->Fit("pol2","","",-25,-7.5);
-  */
+
   /*
   //const Int_t n_cuts2015 = 10;
   //const Int_t n_cuts2015 = 9;
@@ -135,7 +140,7 @@
   h1->Draw();
   //graph_integral2015->Draw("Psame");
   graph_integral2016->Draw("Psame");
-  //fit1ext->Draw("same");
+  fit1ext->Draw("same");
   //fit2ext->Draw("same");
   Leg1->Draw();
   CMS_lumi( canvas, iPeriod, iPos );
