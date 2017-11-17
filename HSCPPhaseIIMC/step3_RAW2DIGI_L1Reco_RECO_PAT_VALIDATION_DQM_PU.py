@@ -1,7 +1,7 @@
 # Auto generated configuration file
-# using: 
-# Revision: 1.19 
-# Source: /local/reps/CMSSW/CMSSW/Configuration/Applications/python/ConfigBuilder.py,v 
+# using:
+# Revision: 1.19
+# Source: /local/reps/CMSSW/CMSSW/Configuration/Applications/python/ConfigBuilder.py,v
 # with command line options: step3 --conditions auto:phase2_realistic -n -1 --era Phase2C2_timing --eventcontent FEVTDEBUGHLT,MINIAODSIM,DQM --runUnscheduled -s RAW2DIGI,L1Reco,RECO,PAT,VALIDATION:@phase2Validation+@miniAODValidation,DQM:@phase2+@miniAODDQM --datatier GEN-SIM-RECO,MINIAODSIM,DQMIO --geometry Extended2023D17 --pileup AVE_200_BX_25ns,{"B":(-8,8)} --pileup_input das:/RelValMinBias_14TeV/CMSSW_9_1_1_patch3-91X_upgrade2023_realistic_v3_D17noPU-v1/GEN-SIM --no_exec
 import FWCore.ParameterSet.Config as cms
 
@@ -32,7 +32,7 @@ process.maxEvents = cms.untracked.PSet(
 
 # Input source
 process.source = cms.Source("PoolSource",
-    fileNames = cms.untracked.vstring('file:step3_DIGI2RAW.root'),
+    fileNames = cms.untracked.vstring('file:step2_DIGI_L1_DIGI2RAW_HLT_PU.root'),
     secondaryFileNames = cms.untracked.vstring()
 )
 
@@ -166,7 +166,7 @@ associatePatAlgosToolsTask(process)
 # customisation of the process.
 
 # Automatic addition of the customisation function from SimGeneral.MixingModule.fullMixCustomize_cff
-from SimGeneral.MixingModule.fullMixCustomize_cff import setCrossingFrameOn 
+from SimGeneral.MixingModule.fullMixCustomize_cff import setCrossingFrameOn
 
 #call to customisation function setCrossingFrameOn imported from SimGeneral.MixingModule.fullMixCustomize_cff
 process = setCrossingFrameOn(process)
@@ -179,7 +179,7 @@ process=convertToUnscheduled(process)
 # customisation of the process.
 
 # Automatic addition of the customisation function from PhysicsTools.PatAlgos.slimming.miniAOD_tools
-from PhysicsTools.PatAlgos.slimming.miniAOD_tools import miniAOD_customizeAllMC 
+from PhysicsTools.PatAlgos.slimming.miniAOD_tools import miniAOD_customizeAllMC
 
 #call to customisation function miniAOD_customizeAllMC imported from PhysicsTools.PatAlgos.slimming.miniAOD_tools
 process = miniAOD_customizeAllMC(process)
