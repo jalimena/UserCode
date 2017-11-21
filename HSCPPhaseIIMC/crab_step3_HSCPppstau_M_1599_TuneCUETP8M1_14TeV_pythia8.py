@@ -7,7 +7,7 @@ config.General.transferOutputs = True
 config.General.transferLogs = True
 
 config.JobType.pluginName = 'Analysis'
-config.JobType.psetName = 'step3_RAW2DIGI_L1Reco_RECO_PAT_VALIDATION_DQM_PU.py'
+config.JobType.psetName = 'step3_RAW2DIGI_L1Reco_RECO_PU.py'
 config.JobType.maxMemoryMB = 8000
 
 config.Data.inputDataset = ''
