@@ -10,7 +10,7 @@ config.JobType.pluginName = 'Analysis'
 config.JobType.psetName = 'step3_RAW2DIGI_L1Reco_RECO_PU.py'
 config.JobType.maxMemoryMB = 8000
 
-config.Data.inputDataset = ''
+config.Data.inputDataset = '/HSCPppstau_M_1599_TuneCUETP8M1_14TeV_pythia8_912/jalimena-DigiHlt_PU200-d5c149c26ca31eebb3af832cdf9f3c9e/USER'
 config.Data.outputDatasetTag = 'Reco_PU200'
 config.Data.inputDBS = 'phys03'
 config.Data.splitting = 'FileBased'
