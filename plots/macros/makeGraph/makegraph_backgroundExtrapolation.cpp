@@ -14,6 +14,7 @@
   gStyle->SetOptStat("emrou"); //entries, mean, rms, overflow, underflow
   gStyle->SetFitFormat("6.4f");
   gStyle->SetStatFormat("6.4f");
+  gStyle->SetErrorX(0);
 
   gROOT->LoadMacro("tdrstyle.C");
   gROOT->LoadMacro("CMS_lumi.C");
@@ -35,7 +36,7 @@
   //bool save_plots = false;
   bool save_plots = true;
 
-  TCanvas* canvas = new TCanvas("c1","Integral #Delta t_{DT} > -20 ns vs #Delta t_{RPC} Cut",10,10,575,500);
+  TCanvas* canvas = new TCanvas("c1","Integral #Deltat_{DT} > -20 ns vs #Deltat_{RPC} Cut",10,10,575,500);
   canvas->SetLogy();
   //canvas_style(canvas);
   //canvas->SetRightMargin(0.15);
@@ -44,7 +45,7 @@
   //TH2* h1=new TH2F("h1","",20,-100,0,50,0,100);
   TH2* h1=new TH2F("h1","",100,-100,0,100000,-10,3000);
   h1->SetStats(kFALSE);
-  h1->SetTitle(";Lower #Delta t_{RPC} Selection [ns];Integral of bkgnd fit #Delta t_{DT} > -20 ns");
+  h1->SetTitle(";Lower #Deltat_{RPC} selection [ns];Integral of fit for #Deltat_{DT} > #font[122]{\55}20 ns");
   h1->GetYaxis()->SetTitleOffset(1.1);
   h1->GetXaxis()->SetNdivisions(505);
   //h2_style(h1,3,1,1,1001,50,-1111.,-1111.,510,510,20,1,1.4,0);
@@ -66,7 +67,7 @@
   //graph_integral2016->SetMarkerColor(6);
   graph_integral2016->SetMarkerColor(1);
   graph_integral2016->SetMarkerSize(1.6);
-  graph_integral2016->SetTitle(";Lower #Delta t_{RPC} Selection [ns];Integral of bkgnd fit #Delta t_{DT} > -20 ns");
+  graph_integral2016->SetTitle(";Lower #Deltat_{RPC} Selection [ns];Integral of fit for #Deltat_{DT} > #font[122]{\55}20 ns");
   //graph_integral2016->GetYaxis()->SetRangeUser(0,20);
 
   //from stopped particles reco efficiency turn on curve
@@ -78,10 +79,12 @@
   //fit1->SetParameters(10,0.034,5,0);
   //fit1->SetParameters(1,0.034,5,0); //landau
   fit1->SetParameters(1,0.034,1,1); //crystal ball
+  fit1->SetLineColor(1);
   graph_integral2016->Fit("fit1","R");
   TF1* fit1ext = (TF1*)fit1->Clone();
   graph_integral2016->Fit("fit1ext","R+");
   fit1ext->SetLineStyle(2);
+  fit1ext->SetLineColor(1);
   fit1ext->SetRange(-7.5,0);
   //graph_integral2016->Fit("pol2","","",-25,-7.5);
 
@@ -104,8 +107,9 @@
   graph_integral2015->SetMarkerStyle(21);
   //graph_integral2015->SetMarkerColor(6);
   graph_integral2015->SetMarkerColor(2);
+  graph_integral2015->SetLineColor(2);
   graph_integral2015->SetMarkerSize(1.6);
-  graph_integral2015->SetTitle(";Lower #Delta t_{RPC} Selection [ns];Integral of bkgnd fit #Delta t_{DT} > -20 ns");
+  graph_integral2015->SetTitle(";Lower #Deltat_{RPC} selection [ns];Integral of fit for #Deltat_{DT} > #font[122]{\55}20 ns");
   //graph_integral2015->GetYaxis()->SetRangeUser(0,20);
 
   TF1* fit2 = new TF1("fit2", "[0]*TMath::Erf([1]*x-[2])+[3]", -50, -7.5);
@@ -119,9 +123,9 @@
 
   //graph_integral2015->Fit("pol2","","",-50,-25);
 
-  Leg1 = new TLegend(0.70,0.80,0.90,0.90);
-  Leg1->AddEntry(graph_integral2015,"2015 Data","p");
-  Leg1->AddEntry(graph_integral2016,"2016 Data","p");
+  Leg1 = new TLegend(0.70,0.80,0.90,0.93);
+  Leg1->AddEntry(graph_integral2015,"2015 data","pe");
+  Leg1->AddEntry(graph_integral2016,"2016 data","pe");
   Leg1->SetBorderSize(0);
   //Leg1->SetTextSize(0.03);
   Leg1->SetTextSize(0.04);

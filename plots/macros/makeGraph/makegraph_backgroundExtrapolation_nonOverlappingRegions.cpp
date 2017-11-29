@@ -45,7 +45,7 @@
   //TH2* h1=new TH2F("h1","",100,-100,0,100000,0,150);
   TH2* h1=new TH2F("h1","",100,-100,0,100000,0,1000);
   h1->SetStats(kFALSE);
-  h1->SetTitle(";#Delta t_{RPC} [ns];Integral of bkgnd fit #Delta t_{DT} > -20 ns");
+  h1->SetTitle(";#Delta t_{RPC} [ns];Integral of fit for #Delta t_{DT} > -20 ns");
   h1->GetYaxis()->SetTitleOffset(1.1);
   h1->GetXaxis()->SetNdivisions(505);
   //h2_style(h1,3,1,1,1001,50,-1111.,-1111.,510,510,20,1,1.4,0);
@@ -66,7 +66,7 @@
   //graph_integral2016->SetMarkerColor(6);
   graph_integral2016->SetMarkerColor(1);
   graph_integral2016->SetMarkerSize(1.6);
-  graph_integral2016->SetTitle(";#Delta t_{RPC} [ns];Integral of bkgnd fit #Delta t_{DT} > -20 ns");
+  graph_integral2016->SetTitle(";#Delta t_{RPC} [ns];Integral of fit for #Delta t_{DT} > -20 ns");
   //graph_integral2016->GetYaxis()->SetRangeUser(0,20);
 
   //from stopped particles reco efficiency turn on curve
@@ -103,7 +103,7 @@
   //graph_integral2015->SetMarkerColor(6);
   graph_integral2015->SetMarkerColor(2);
   graph_integral2015->SetMarkerSize(1.6);
-  graph_integral2015->SetTitle(";#Delta t_{RPC} [ns];Integral of bkgnd fit #Delta t_{DT} > -20 ns");
+  graph_integral2015->SetTitle(";#Delta t_{RPC} [ns];Integral of fit for #Delta t_{DT} > -20 ns");
   //graph_integral2015->GetYaxis()->SetRangeUser(0,20);
 
   TF1* fit2 = new TF1("fit2", "[0]*TMath::Erf([1]*x-[2])+[3]", -50, -7.5);
