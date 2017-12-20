@@ -74,18 +74,28 @@
   //TF1* fit1 = new TF1("fit1", "[0]*TMath::Erf([1]*x-[2])+[3]", -60, -10);
   //fit1->SetParameters(0.25,0.034,2.33,0.25);
 
-  TF1* fit1 = new TF1("fit1", "[0]*TMath::Erf([1]*x-[2])+[3]", -60, -7.5);//2gaus, crystal ball, FINAL (C+D)
+  //TF1* fitExp = new TF1("fitExp", "[0]*exp([1]*x*x+[2]*x)", -60, -7.5);
+  //fitExp->SetLineColor(1);
+
+  TF1* fit1 = new TF1("fit1", "[0]*TMath::Erf([1]*x-[2])+[3]", -50, -7.5);//2gaus, crystal ball, FINAL (C+D)
   //TF1* fit1 = new TF1("fit1", "[0]*TMath::Erf([1]*x-[2])+[3]", -35, -7.5);//2gaus, landau, FINAL (C+D)    
   //fit1->SetParameters(10,0.034,5,0);
   //fit1->SetParameters(1,0.034,5,0); //landau
   fit1->SetParameters(1,0.034,1,1); //crystal ball
   fit1->SetLineColor(1);
   graph_integral2016->Fit("fit1","R");
+  //graph_integral2016->Fit("fitExp","R");
   TF1* fit1ext = (TF1*)fit1->Clone();
-  graph_integral2016->Fit("fit1ext","R+");
   fit1ext->SetLineStyle(2);
   fit1ext->SetLineColor(1);
   fit1ext->SetRange(-7.5,0);
+  graph_integral2016->Fit("fit1ext","R+");
+
+  //TF1* fitExpext = (TF1*)fitExp->Clone();
+  //graph_integral2016->Fit("fitExpext","R+");
+  //fitExpext->SetLineStyle(2);
+  //fitExpext->SetLineColor(1);
+  //fitExpext->SetRange(-7.5,0);
   //graph_integral2016->Fit("pol2","","",-25,-7.5);
 
 
@@ -147,6 +157,7 @@
   graph_integral2015->Draw("Psame");
   graph_integral2016->Draw("Psame");
   fit1ext->Draw("same");
+  //fitExpext->Draw("same");
   fit2ext->Draw("same");
   Leg1->Draw();
   CMS_lumi( canvas, iPeriod, iPos );
