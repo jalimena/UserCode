@@ -271,7 +271,7 @@
   Leg1->Draw();
   //CMS_lumi( canvas, iPeriod, iPos );
   //if(save_plots) canvas->SaveAs("../../plots/nbunches_rate.eps");
-  if(save_plots) canvas->SaveAs("L2Mu40RateVsNCollidingBunches_2016_2017.pdf");
+  if(save_plots) canvas->SaveAs("L2Mu40RateVsNCollidingBunches.pdf");
 
 
 
