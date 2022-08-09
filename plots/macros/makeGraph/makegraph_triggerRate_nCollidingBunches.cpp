@@ -42,10 +42,38 @@
   //TH2* h1=new TH2F("h1","",100,0,1,20,0,20);
   //TH2* h1=new TH2F("h1","",30,0,1500,100,0,1);
   h1->SetStats(kFALSE);
-  h1->SetTitle(";Number of Colliding Bunches;HLT Rate [Hz]");
-  h1->GetYaxis()->SetTitleOffset(0.8);
+  h1->SetTitle(";Number of Colliding Bunches;Rate of L2Mu40 NoBPTX Path [Hz]");
+  h1->GetYaxis()->SetTitleOffset(1);
   h1->GetXaxis()->SetNdivisions(505);
   //h2_style(h1,3,1,1,1001,50,-1111.,-1111.,510,510,20,1,1.4,0);
+
+  const Int_t n_data2022_25ns = 6;
+  Float_t bunches_data2022_25ns[n_data2022_25ns] = {590,   974, 1214, 1538, 1922, 2160}; //number of colliding bunches
+  Float_t rate_data2022_25ns[n_data2022_25ns]    = {22,   19,   17,   14,   11,  9.5}; //2022 25 ns, rate of HLT_L2Mu40_NoVertex_3Sta_NoBPTX3BX (Hz)
+  Float_t bunches_data2022_25ns_error[n_data2022_25ns] = {0,0,0, 0,0,0};
+  Float_t rate_data2022_25ns_error[n_data2022_25ns] = {2,1.5,1.5, 1.5, 1, 1}; //determined from width of rate plot in WBM, L2Mu40
+
+  TGraphErrors* graph_data2022_25ns = new TGraphErrors(n_data2022_25ns, bunches_data2022_25ns, rate_data2022_25ns, bunches_data2022_25ns_error, rate_data2022_25ns_error);
+  //gr_style(graph_data2022_25ns,1,1,1,1001,50,-1111,-1111,510,510,22,3,1.3,1);
+  graph_data2022_25ns->SetMarkerStyle(23);
+  graph_data2022_25ns->SetMarkerColor(4);
+  graph_data2022_25ns->SetMarkerSize(1.6);
+
+
+
+  const Int_t n_data2018_25ns = 8;
+  Float_t bunches_data2018_25ns[n_data2018_25ns] = {973, 1213, 1549, 1900, 2161, 2305, 2448, 2544}; //number of colliding bunches
+  Float_t rate_data2018_25ns[n_data2018_25ns]    = {14, 12.4,  11, 9.1,  7.1,  6.1,  5.4,  4.8}; //2018 25 ns, rate of HLT_L2Mu40_NoVertex_3Sta_NoBPTX3BX (Hz)
+  Float_t bunches_data2018_25ns_error[n_data2018_25ns] = {0,0,0, 0,0,0, 0,0};
+  Float_t rate_data2018_25ns_error[n_data2018_25ns] = {1,1,1, 1,1,1, 1,0.6}; //determined from width of rate plot in WBM, L2Mu40
+
+  TGraphErrors* graph_data2018_25ns = new TGraphErrors(n_data2018_25ns, bunches_data2018_25ns, rate_data2018_25ns, bunches_data2018_25ns_error, rate_data2018_25ns_error);
+  //gr_style(graph_data2018_25ns,1,1,1,1001,50,-1111,-1111,510,510,22,3,1.3,1);
+  graph_data2018_25ns->SetMarkerStyle(22);
+  graph_data2018_25ns->SetMarkerColor(8);
+  graph_data2018_25ns->SetMarkerSize(1.6);
+
+
 
   const Int_t n_data2017_25ns = 10;
   Float_t bunches_data2017_25ns[n_data2017_25ns] = {589,   973, 1213, 1549, 1729, 2017, 2161, 2305, 2448, 2544}; //number of colliding bunches
@@ -58,8 +86,6 @@
   graph_data2017_25ns->SetMarkerStyle(21);
   graph_data2017_25ns->SetMarkerColor(2);
   graph_data2017_25ns->SetMarkerSize(1.6);
-  graph_data2017_25ns->SetTitle(";Number of Colliding Bunches;HLT Rate [Hz]");
-  graph_data2017_25ns->GetYaxis()->SetRangeUser(0,20);
 
 
   const Int_t n_data2016_25ns = 13;
@@ -77,8 +103,6 @@
   //graph_data2016_25ns->SetMarkerColor(6);
   graph_data2016_25ns->SetMarkerColor(1);
   graph_data2016_25ns->SetMarkerSize(1.6);
-  graph_data2016_25ns->SetTitle(";Number of Colliding Bunches;HLT Rate [Hz]");
-  graph_data2016_25ns->GetYaxis()->SetRangeUser(0,20);
 
 
 
@@ -198,7 +222,7 @@
   r_axis->SetTitleOffset(1.5);
   //r_axis->SetLabelOffset(0.01);
 
-  Leg1 = new TLegend(0.50,0.80,0.80,0.90);
+  Leg1 = new TLegend(0.70,0.70,0.90,0.90);
   //Leg1 = new TLegend(0.50,0.70,0.80,0.85);
   //Leg1 = new TLegend(0.18,0.75,0.43,0.85);
   //Leg1->AddEntry(graph_data_noChaCut,"Average Before TS","p");
@@ -210,8 +234,10 @@
   //Leg1->AddEntry(graph_data2015_50ns,"2015 Trigger, 50 ns","p");
   //Leg1->AddEntry(graph_data2015_25ns,"2015 Trigger, 25 ns","p");
   //Leg1->AddEntry(graph_data2016_25ns,"2016 Trigger, 25 ns","p");
-  Leg1->AddEntry(graph_data2016_25ns,"L2Mu40, 2016","p");
-  Leg1->AddEntry(graph_data2017_25ns,"L2Mu40, 2017","p");
+  Leg1->AddEntry(graph_data2016_25ns,"2016","p");
+  Leg1->AddEntry(graph_data2017_25ns,"2017","p");
+  Leg1->AddEntry(graph_data2018_25ns,"2018","p");
+  Leg1->AddEntry(graph_data2022_25ns,"2022","p");
   Leg1->SetBorderSize(0);
   //Leg1->SetTextSize(0.03);
   Leg1->SetTextSize(0.04);
@@ -235,16 +261,17 @@
   //graph_data2015_25ns->Draw("Psame");
   graph_data2016_25ns->Draw("Psame");
   graph_data2017_25ns->Draw("Psame");
+  graph_data2018_25ns->Draw("Psame");
+  graph_data2022_25ns->Draw("Psame");
   //graph_instLumi->Draw("Psame");
   //graph_data_noChaCut->Draw("Psame");
   //graph_predicted->Draw("Psame");
   //text1->Draw();
   //r_axis->Draw();
   Leg1->Draw();
-  CMS_lumi( canvas, iPeriod, iPos );
+  //CMS_lumi( canvas, iPeriod, iPos );
   //if(save_plots) canvas->SaveAs("../../plots/nbunches_rate.eps");
-  if(save_plots) canvas->SaveAs("../../plots/L2Mu40RateVsNCollidingBunches_2016_2017.pdf");
-
+  if(save_plots) canvas->SaveAs("L2Mu40RateVsNCollidingBunches_2016_2017.pdf");
 
 
 
@@ -254,7 +281,7 @@
   TH2* h2=new TH2F("h2","",100,0,3000,50,0,1);
   h2->SetStats(kFALSE);
   h2->SetTitle(";Number of Colliding Bunches;L1 Rate [kHz]");
-  h2->GetYaxis()->SetTitleOffset(0.8);
+  h2->GetYaxis()->SetTitleOffset(1);
   h2->GetXaxis()->SetNdivisions(505);
 
   const Int_t n_data2016_25ns_L1 = 13;
@@ -283,7 +310,7 @@
   graph_data2016_25ns_L1->Draw("Psame");
   //r_axis->Draw();
   Leg2->Draw();
-  CMS_lumi( c2, iPeriod, iPos );
-  if(save_plots) c2->SaveAs("../../plots/delayedMuons_L1RateVsNCollidingBunches.pdf");
+  //CMS_lumi( c2, iPeriod, iPos );
+  if(save_plots) c2->SaveAs("delayedMuons_L1RateVsNCollidingBunches.pdf");
 
 }
