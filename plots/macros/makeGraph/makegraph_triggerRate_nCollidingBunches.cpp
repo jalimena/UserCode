@@ -47,6 +47,22 @@
   h1->GetXaxis()->SetNdivisions(505);
   //h2_style(h1,3,1,1,1001,50,-1111.,-1111.,510,510,20,1,1.4,0);
 
+  const Int_t n_data2023_25ns = 6;
+  Float_t bunches_data2023_25ns[n_data2023_25ns] = {62,  386,   986, 1150,  1805, 2361}; //number of colliding bunches
+  Float_t rate_data2023_25ns[n_data2023_25ns]    = {25,   20,    17,   16,    11,  6.9}; //2023 25 ns, rate of HLT_L2Mu40_NoVertex_3Sta_NoBPTX3BX (Hz)
+  Float_t bunches_data2023_25ns_error[n_data2023_25ns] = {0,0,0, 0,0,0};
+  Float_t rate_data2023_25ns_error[n_data2023_25ns] = {2,2,1, 0.5,0.5,0.5};
+
+  TGraphErrors* graph_data2023_25ns = new TGraphErrors(n_data2023_25ns, bunches_data2023_25ns, rate_data2023_25ns, bunches_data2023_25ns_error, rate_data2023_25ns_error);
+  //gr_style(graph_data2023_25ns,1,1,1,1001,50,-1111,-1111,510,510,22,3,1.3,1);
+  graph_data2023_25ns->SetMarkerStyle(29);
+  graph_data2023_25ns->SetMarkerColor(6);
+  graph_data2023_25ns->SetMarkerSize(1.6);
+
+
+
+
+
   const Int_t n_data2022_25ns = 8;
   Float_t bunches_data2022_25ns[n_data2022_25ns] = {590,   974, 1214, 1538, 1922, 2160, 2400, 2448}; //number of colliding bunches
   Float_t rate_data2022_25ns[n_data2022_25ns]    = {22,   19,   17,   14,   11,   9.5,  7.5,  7}; //2022 25 ns, rate of HLT_L2Mu40_NoVertex_3Sta_NoBPTX3BX (Hz)
@@ -246,6 +262,7 @@
   Leg1->AddEntry(graph_data2017_25ns,"2017","p");
   Leg1->AddEntry(graph_data2018_25ns,"2018","p");
   Leg1->AddEntry(graph_data2022_25ns,"2022","p");
+  Leg1->AddEntry(graph_data2023_25ns,"2023","p");
   Leg1->SetBorderSize(0);
   //Leg1->SetTextSize(0.03);
   Leg1->SetTextSize(0.04);
@@ -271,6 +288,7 @@
   graph_data2017_25ns->Draw("Psame");
   graph_data2018_25ns->Draw("Psame");
   graph_data2022_25ns->Draw("Psame");
+  graph_data2023_25ns->Draw("Psame");
   //graph_instLumi->Draw("Psame");
   //graph_data_noChaCut->Draw("Psame");
   //graph_predicted->Draw("Psame");
