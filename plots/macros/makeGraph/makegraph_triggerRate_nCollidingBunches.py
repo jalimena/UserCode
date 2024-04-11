@@ -1,7 +1,8 @@
 #!/usr/bin/env python
 
+#run with: python3 makegraph_triggerRate_nCollidingBunches.py
 
-#plots trigger rate as function of number of colliding bunches, saves eps files
+#plots trigger rate as function of number of colliding bunches, saves pdf files
 #7e33 V3 menu, June/July 2012
 
 import sys
@@ -93,7 +94,7 @@ h1 = TH2F("h1","",100,0,3000,30,0,30)
 #TH2* h1= TH2F("h1","",100,0,1,20,0,20)
 #TH2* h1= TH2F("h1","",30,0,1500,100,0,1)
 #h1.SetStats(kFALSE)
-h1.SetTitle(";Number of Colliding Bunches;Rate of L2Mu40 NoBPTX Path [Hz]")
+h1.SetTitle("HLT_L2Mu40_NoVertex_3Sta_NoBPTX3BX;Number of Colliding Bunches;Rate [Hz]")
 h1.GetYaxis().SetTitleOffset(1)
 h1.GetXaxis().SetNdivisions(505)
 #h2_style(h1,3,1,1,1001,50,-1111.,-1111.,510,510,20,1,1.4,0)
@@ -102,6 +103,21 @@ h1.GetXaxis().SetNdivisions(505)
 def makeTGraphErrors(x, y, x_err, y_err):
     graph_arrays = [array('d', arg) for arg in [x, y, x_err, y_err]]
     return TGraphErrors(int(len(x)), *graph_arrays)
+
+
+
+bunches_data2024_25ns = [2, 8, 62, 386] #number of colliding bunches
+rate_data2024_25ns    = [25, 25, 25, 22] #2024 25 ns, rate of HLT_L2Mu40_NoVertex_3Sta_NoBPTX3BX (Hz)
+bunches_data2024_25ns_error = [0,0,0,0]
+rate_data2024_25ns_error = [2,2,2,2]
+
+graph_data2024_25ns = makeTGraphErrors(bunches_data2024_25ns, rate_data2024_25ns, bunches_data2024_25ns_error, rate_data2024_25ns_error)
+graph_data2024_25ns.SetMarkerStyle(30)
+graph_data2024_25ns.SetMarkerColor(1)
+graph_data2024_25ns.SetMarkerSize(1.6)
+
+
+
 
 #n_data2023_25ns = 6
 bunches_data2023_25ns = [62,  386,   986, 1150,  1805, 2361] #number of colliding bunches
@@ -318,6 +334,7 @@ Leg1.AddEntry(graph_data2017_25ns,"2017","p")
 Leg1.AddEntry(graph_data2018_25ns,"2018","p")
 Leg1.AddEntry(graph_data2022_25ns,"2022","p")
 Leg1.AddEntry(graph_data2023_25ns,"2023","p")
+Leg1.AddEntry(graph_data2024_25ns,"2024","p")
 Leg1.SetBorderSize(0)
 #Leg1.SetTextSize(0.03)
 Leg1.SetTextSize(0.04)
@@ -325,13 +342,32 @@ Leg1.SetFillColor(0)
 
 
 
+#bestest place for lumi. label, in top left corner
+topLeft_x_left    = 0.18
+y_bottom    = 0.86
+y_bottomCMS = 0.77
+topLeft_x_right   = 0.53
+y_top     = 0.91
+y_topCMS  = 0.82
 
-#text1 =  TPaveLabel(.17,.85,.37,.89,"CMS Preliminary    #sqrt{s}=8 TeV","NDC")
-text1 =  TPaveLabel(.17,.92,.37,.96,"CMS Preliminary    #sqrt{s}=8 TeV, 13, 13.6 TeV","NDC")
+#position for header
+header_x_left    = 0.60
+header_x_right   = 0.95
 
-text1.SetBorderSize(0)
-text1.SetTextSize(0.7)
-text1.SetFillColor(0)
+
+HeaderLabel = TPaveLabel(header_x_left,y_bottom,header_x_right,y_top,"(13, 13.6 TeV)","NDC")
+HeaderLabel.SetTextAlign(32)
+HeaderLabel.SetTextFont(42)
+HeaderLabel.SetTextSize(0.9)
+HeaderLabel.SetBorderSize(0)
+HeaderLabel.SetFillColor(0)
+
+CMSLabel = TPaveLabel(topLeft_x_left,y_bottomCMS,topLeft_x_right,y_topCMS,"CMS","NDC")
+CMSLabel.SetTextFont(62)
+CMSLabel.SetTextSize(1)
+CMSLabel.SetTextAlign(12)
+CMSLabel.SetBorderSize(0)
+CMSLabel.SetFillColor(0)
 
 
 canvas.cd()
@@ -344,10 +380,12 @@ graph_data2017_25ns.Draw("Psame")
 graph_data2018_25ns.Draw("Psame")
 graph_data2022_25ns.Draw("Psame")
 graph_data2023_25ns.Draw("Psame")
+graph_data2024_25ns.Draw("Psame")
 #graph_instLumi.Draw("Psame")
 #graph_data_noChaCut.Draw("Psame")
 #graph_predicted.Draw("Psame")
-#text1.Draw()
+CMSLabel.Draw()
+HeaderLabel.Draw()
 #r_axis.Draw()
 Leg1.Draw()
 #CMS_lumi( canvas, iPeriod, iPos )
