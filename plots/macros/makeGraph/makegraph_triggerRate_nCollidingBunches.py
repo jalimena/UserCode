@@ -106,8 +106,8 @@ def makeTGraphErrors(x, y, x_err, y_err):
 
 
 
-bunches_data2024_25ns = [ 2,  8, 62, 386, 818, 1199, 1772] #number of colliding bunches
-rate_data2024_25ns    = [25, 25, 25,  22,  18,   15,   11] #2024 25 ns, rate of HLT_L2Mu40_NoVertex_3Sta_NoBPTX3BX (Hz)
+bunches_data2024_25ns = [ 2,  8, 62, 386, 818, 1199, 1778] #number of colliding bunches
+rate_data2024_25ns    = [25, 25, 25,  22,  18,   15,   12] #2024 25 ns, rate of HLT_L2Mu40_NoVertex_3Sta_NoBPTX3BX (Hz)
 bunches_data2024_25ns_error = [0,0,0,0,0,0,0]
 rate_data2024_25ns_error = [2,2,2,2,2,2,1.5]
 
