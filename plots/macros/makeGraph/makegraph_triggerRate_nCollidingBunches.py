@@ -106,10 +106,21 @@ def makeTGraphErrors(x, y, x_err, y_err):
 
 
 
-bunches_data2024_25ns = [ 2,  8, 62, 386, 818, 1199, 1778] #number of colliding bunches
-rate_data2024_25ns    = [25, 25, 25,  22,  18,   15,   12] #2024 25 ns, rate of HLT_L2Mu40_NoVertex_3Sta_NoBPTX3BX (Hz)
-bunches_data2024_25ns_error = [0,0,0,0,0,0,0]
-rate_data2024_25ns_error = [2,2,2,2,2,2,1.5]
+#bunches_data2024_25ns_3x48 = [ 2,  8, 62, 386, 818, 1199, 1778, 1970] #number of colliding bunches, 3x48 bunch trains
+#rate_data2024_25ns_3x48    = [25, 25, 25,  22,  18,   15,   12, 11] #2024 25 ns, rate of HLT_L2Mu40_NoVertex_3Sta_NoBPTX3BX (Hz)
+#bunches_data2024_25ns_error_3x48 = [0,0,0,0,0,0,0,0]
+#rate_data2024_25ns_error_3x48 = [2,2,2,2,2,2,1.5,1.5]
+
+#graph_data2024_25ns_3x48 = makeTGraphErrors(bunches_data2024_25ns_3x48, rate_data2024_25ns_3x48, bunches_data2024_25ns_error_3x48, rate_data2024_25ns_error_3x48)
+#graph_data2024_25ns_3x48.SetMarkerStyle(31)
+#graph_data2024_25ns_3x48.SetMarkerColor(2)
+#graph_data2024_25ns_3x48.SetMarkerSize(1.6)
+
+
+bunches_data2024_25ns = [ 2,  8, 62, 386, 818, 1202, 1406, 1946, 2198, 2340] #number of colliding bunches, mostly 3x36 bunch trains
+rate_data2024_25ns    = [25, 25, 25,  22,  18, 16.5,   15,   11,    9,  7.8] #2024 25 ns, rate of HLT_L2Mu40_NoVertex_3Sta_NoBPTX3BX (Hz)
+bunches_data2024_25ns_error = [0,0,0,0,0,0,0,0,0,0]
+rate_data2024_25ns_error = [2,2,2,2,2,2,1.5,1.5,1.5,1.5]
 
 graph_data2024_25ns = makeTGraphErrors(bunches_data2024_25ns, rate_data2024_25ns, bunches_data2024_25ns_error, rate_data2024_25ns_error)
 graph_data2024_25ns.SetMarkerStyle(30)
@@ -150,13 +161,13 @@ graph_data2022_25ns.SetMarkerSize(1.6)
 
 fit1 = TF1("fit1","[0]*x+[1]",bunches_data2022_25ns[0],bunches_data2022_25ns[n_data2022_25ns-1])
 fit1.SetLineColor(2)
-graph_data2022_25ns.Fit("fit1","R")
+#graph_data2022_25ns.Fit("fit1","R")
 
 fit1ext = TF1("fit1ext","[0]*x+[1]",bunches_data2022_25ns[n_data2022_25ns-1],3000)
 fit1ext.SetParameters(-0.008,26.64)
 fit1ext.SetLineColor(2)
 fit1ext.SetLineStyle(2)
-graph_data2022_25ns.Fit("fit1ext","R+")
+#graph_data2022_25ns.Fit("fit1ext","R+")
 
 #n_data2018_25ns = 8
 bunches_data2018_25ns = [973, 1213, 1549, 1900, 2161, 2305, 2448, 2544] #number of colliding bunches
@@ -334,7 +345,8 @@ Leg1.AddEntry(graph_data2017_25ns,"2017","p")
 Leg1.AddEntry(graph_data2018_25ns,"2018","p")
 Leg1.AddEntry(graph_data2022_25ns,"2022","p")
 Leg1.AddEntry(graph_data2023_25ns,"2023","p")
-Leg1.AddEntry(graph_data2024_25ns,"2024","p")
+Leg1.AddEntry(graph_data2024_25ns,"2024","p") #mostly 3x36 trains
+#Leg1.AddEntry(graph_data2024_25ns_3x48,"2024, 3x48 trains","p")
 Leg1.SetBorderSize(0)
 #Leg1.SetTextSize(0.03)
 Leg1.SetTextSize(0.04)
@@ -381,6 +393,7 @@ graph_data2018_25ns.Draw("Psame")
 graph_data2022_25ns.Draw("Psame")
 graph_data2023_25ns.Draw("Psame")
 graph_data2024_25ns.Draw("Psame")
+#graph_data2024_25ns_3x48.Draw("Psame")
 #graph_instLumi.Draw("Psame")
 #graph_data_noChaCut.Draw("Psame")
 #graph_predicted.Draw("Psame")
